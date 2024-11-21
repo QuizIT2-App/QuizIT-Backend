@@ -16,7 +16,7 @@ router.post('/login', login);
 //GET
 router.get('/users', authAll, users);
 router.get('/users/:id', authAll, user);
-router.get('/quizes', authAll, );               //TODO
+router.get('/quizes', authAll, );               //TODO adsad
 router.get('/quizes/:id', authAll, );           //TODO
 router.get('/fragen/:quizid', authAll, );       //TODO
 router.get('/tags/:quizid', authAll, );         //TODO
