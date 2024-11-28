@@ -6,9 +6,13 @@ const ldap = require('ldap');
 const {userDN,newUser, updateUser} = require('../db/queries');
 
 
-async function login(req, res, next) {
+async function login(req, res) {
     let { username, password } = req.body;
-    if(!username || !password) return res.status(400).send('Login daten fehlen');
+    if(!username || !password)
+        return  res.status(400).json({
+                    success: false,
+                    error: "MissingCredentialsError"
+                });
 
     let daten;
 
@@ -34,15 +38,20 @@ async function login(req, res, next) {
         });
 
     } catch (error) {
-        return res.status(401).json({
-            success: -1,
-            error: error.name,
-        });
+        return  res.status(401).json({
+                    success: false,
+                    error: error.name,
+                });
     }
 
-    if(!daten) return res.status(401).send('Login ungültig');
+    if(!daten)
+        return  res.status(401).json({
+                    success: false,
+                    error: "InvalidLoginError",
+                });
 
-    let user = (await userDN(daten.mailNickname))[0];
+
+    let user = await userDN(daten.mailNickname);
     console.log(user);
     let jg = daten.department.slice(0,1);
     let kl = daten.department.slice(1,2);
@@ -54,19 +63,27 @@ async function login(req, res, next) {
         let sn = daten.sn;
         let type = daten.employeeType;
         newUser(dn, dn, vn, sn, jg, kl, ab, type);
+        
     } else {
-        updateUser(user.uuid, jg, kl, ab);
+        updateUser(user.UUID, jg, kl, ab);
     }
-    user = (await userDN(daten.mailNickname))[0];
 
-    const token = jwt.sign(
-        { vn: user.vn, username: user.distinguishedName, role: user.type }, jwt_key,
+    user = await userDN(daten.mailNickname);
+
+    let token = jwt.sign({
+            id: user.UUID,
+            role: user.type,
+            vn: user.vn,
+            abteilung: user.abteilung,
+            jahrgang: user.jahrgang,
+            klasse: user.klasse,
+
+        }, jwt_key,
         { expiresIn: '8h' }
     );
 
     return res.status(200).json({
-        success: 0,
-        error: "",
+        success: true,
         data: {
             token: token,
         }
@@ -97,15 +114,24 @@ async function ldapSuche(client, searchOptions) {
 function authenticateRole (roles) {
     return (req, res, next) => {
         const token = req.headers['authorization'];
-        if (!token) return res.status(400).send("Fehlender Token");
+        if (!token) return  res.status(400).json({
+                                success: false,
+                                error: "MissingCredentialsError"
+                            });
 
         jwt.verify(token, env.JWT_KEY, (err, user) => {
-            if (err) return res.status(401).send(err.message);
+            if (err) return res.status(401).json({
+                                success: false,
+                                error: err.name
+                            });
 
             if (!roles.includes(user.role))
-                return res.status(403).send('Unzureichende Berechtigungen.');
+                return  res.status(403).json({
+                            success: false,
+                            error: "InsufficientPermissionsError"
+                        });
 
-            req.role = user;
+            req.token = user;
             next();
         });
     }

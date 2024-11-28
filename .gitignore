@@ -13,6 +13,7 @@ web-build/
 .env
 tests/
 package-lock.json
+*.env.json
 
 # macOS
 .DS_Store

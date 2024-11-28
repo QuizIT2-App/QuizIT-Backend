@@ -4,7 +4,7 @@ async function getUserByDN(dn) {
     return new Promise( (resolve, reject) => {
         db.query('SELECT * FROM User WHERE distinguishedName = ?', [dn], (err, result) => {
             if (err) reject(err);
-            else resolve(result);
+            else resolve(result[0]);
         })
     });
 }
@@ -13,7 +13,7 @@ async function getUserByID(id) {
     return new Promise( (resolve, reject) => {
         db.query('SELECT * FROM User WHERE UUID = ?', [id], (err, result) => {
             if (err) reject(err);
-            else resolve(result);
+            else resolve(result[0]);
         })
     });
 }
@@ -51,7 +51,7 @@ function getQuizByID(id) {
     return new Promise( (resolve, reject) => {
         db.query('SELECT * FROM Quiz WHERE quizID = ?', [id], (err, result) => {
             if (err) reject(err);
-            else resolve(result);
+            else resolve(result[0]);
         })
     });
 }
