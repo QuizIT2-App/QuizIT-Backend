@@ -1,27 +1,29 @@
 const router = require('express').Router();
 const {auth, login} = require('./validation');
 const {serve, setup} = require('../endpoints/swagger');
-const {users, user} = require('../endpoints/endpoints');
+const {getSelf, deleteSelf} = require('../endpoints/userEndpoints');
+const {getFriends,getPending} = require('../endpoints/friendEndpoints');
 
 const authAll = auth(['schueler','lehrer','admin']);
 const authLA = auth(['lehrer','admin']);
 const authAdmin = auth(['admin']);
 
-//use
-router.use('/api', serve, setup);
+// Swagger
+//router.use('/api', serve, setup);
 
-//POST
+// Login
 router.post('/login', login);
 
-//GET
-router.get('/users', authAll, users);
-router.get('/users/:id', authAll, user);
-router.get('/quizes', authAll, );               //TODO adsad
-router.get('/quizes/:id', authAll, );           //TODO
-router.get('/fragen/:quizid', authAll, );       //TODO
-router.get('/tags/:quizid', authAll, );         //TODO
-router.get('/bewertungen/:quizid', authAll, );  //TODO
+// Self
+router.get('/self', authAll, getSelf);
+router.post('/self', authAll, );                //TODO
+router.delete('/self', authAll, deleteSelf);
 
+// Friends
+router.get('/self/friends', authAll, getFriends);
+router.get('/self/friends/pending', authAll, getPending);
+router.post('/self/friends', authAll, );        //TODO
+router.delete('/self/friends', authAll, );      //TODO
 
 
 
