@@ -11,7 +11,7 @@ npm-debug.*
 web-build/
 .idea/
 .env
-tests/
+tests/env/
 package-lock.json
 *.env.json
 
