@@ -16,9 +16,7 @@ const options = {
 
 const swaggerSpec = swaggerJsdoc(options);
 
-const swaggerMiddleware = swaggerUi.setup(swaggerSpec);
-
 module.exports = {
   serve: swaggerUi.serve,
-  setup: swaggerMiddleware,
+  setup: swaggerUi.setup(swaggerSpec),
 };
