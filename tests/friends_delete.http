@@ -1,0 +1,3 @@
+DELETE {{host}}/self/friends
+Content-Type: application/json
+Authorization:  {{key}}

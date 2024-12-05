@@ -1,0 +1,3 @@
+DELETE {{host}}/self
+Content-Type: application/json
+Authorization:  {{key}}
