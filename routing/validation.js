@@ -1,18 +1,16 @@
 require('dotenv').config();
-const env = process.env;
-const jwt_key = env.JWT_KEY;
 const jwt = require('jsonwebtoken');
 const ldap = require('ldap');
-const {userDN,newUser, updateUser} = require('../db/queries');
+const {getUserByDN,newUser, updateUser} = require('../db/userQueries');
+const {returnHTML} = require('../utils/utils.js');
 
+const env = process.env;
+const jwt_key = env.JWT_KEY;
 
 async function login(req, res) {
     let { username, password } = req.body;
     if(!username || !password)
-        return  res.status(400).json({
-                    success: false,
-                    error: "MissingCredentialsError"
-                });
+        return returnHTML(res,400,{error:"MissingCredentialsError"})
 
     let daten;
 
@@ -22,7 +20,7 @@ async function login(req, res) {
         });
 
         daten = await new Promise((resolve, reject) => {
-            client.bind("tgm\\"+username, password, (err,res) => {
+            client.bind(env.LDAP_PREFIX+username, password, (err,res) => {
                 if(err)
                     reject(err);
                 resolve(res);
@@ -38,20 +36,14 @@ async function login(req, res) {
         });
 
     } catch (error) {
-        return  res.status(401).json({
-                    success: false,
-                    error: error.name,
-                });
+        return returnHTML(res,401,{error: error.name})
     }
 
     if(!daten)
-        return  res.status(401).json({
-                    success: false,
-                    error: "InvalidLoginError",
-                });
+        return returnHTML(res,401,{error:"InvalidLoginError"})
 
 
-    let user = await userDN(daten.mailNickname);
+    let user = await getUserByDN(daten.mailNickname);
     console.log(user);
     let jg = daten.department.slice(0,1);
     let kl = daten.department.slice(1,2);
@@ -65,29 +57,20 @@ async function login(req, res) {
         newUser(dn, dn, vn, sn, jg, kl, ab, type);
         
     } else {
-        updateUser(user.UUID, jg, kl, ab);
+        updateUser(user.uuid, {jahrgang: jg, klasse: kl, abteilung: ab});
     }
 
-    user = await userDN(daten.mailNickname);
+    user = await getUserByDN(daten.mailNickname);
 
     let token = jwt.sign({
-            id: user.UUID,
+            id: user.uuid,
             role: user.type,
-            vn: user.vn,
-            abteilung: user.abteilung,
-            jahrgang: user.jahrgang,
-            klasse: user.klasse,
 
         }, jwt_key,
         { expiresIn: '8h' }
     );
 
-    return res.status(200).json({
-        success: true,
-        data: {
-            token: token,
-        }
-    });
+    return returnHTML(res,200,{data:{token:token}})
 }
 
 async function ldapSuche(client, searchOptions) {
@@ -114,22 +97,14 @@ async function ldapSuche(client, searchOptions) {
 function authenticateRole (roles) {
     return (req, res, next) => {
         const token = req.headers['authorization'];
-        if (!token) return  res.status(400).json({
-                                success: false,
-                                error: "MissingCredentialsError"
-                            });
+        if (!token) return returnHTML(res,400, {error: "MissingCredentialsError"});
 
         jwt.verify(token, env.JWT_KEY, (err, user) => {
-            if (err) return res.status(401).json({
-                                success: false,
-                                error: err.name
-                            });
+            if (err) return returnHTML(res,401, {error: err.name});
 
             if (!roles.includes(user.role))
-                return  res.status(403).json({
-                            success: false,
-                            error: "InsufficientPermissionsError"
-                        });
+                return returnHTML(res,403,{error: "InsufficientPermissionsError"
+        });
 
             req.token = user;
             next();
