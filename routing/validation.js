@@ -22,22 +22,21 @@ async function login(req, res) {
             url: env.LDAP_URL,
         });
 
-        if(client.connected)
-            daten = await new Promise((resolve, reject) => {
-                client.bind(env.LDAP_PREFIX+username, password, (err,res) => {
-                    if(err)
-                        reject(err);
-                    resolve(res);
-                });
-            }).then(async () => {
-                let searchOptions = {
-                    filter: `(&(mailNickname=${username})(objectClass=user))`,
-                    scope: "sub",
-                    attributes: ["mailNickname", "department", "employeeType", "sn", "givenName"],
-                };
-
-                return await ldapSuche(client, searchOptions);
+        daten = await new Promise((resolve, reject) => {
+            client.bind(env.LDAP_PREFIX+username, password, (err,res) => {
+                if(err)
+                    reject(err);
+                resolve(res);
             });
+        }).then(async () => {
+            let searchOptions = {
+                filter: `(&(mailNickname=${username})(objectClass=user))`,
+                scope: "sub",
+                attributes: ["mailNickname", "department", "employeeType", "sn", "givenName"],
+            };
+
+            return await ldapSuche(client, searchOptions);
+        });
     } catch (error) {
         return returnHTML(res,401,{error: error.name})
     } finally {
