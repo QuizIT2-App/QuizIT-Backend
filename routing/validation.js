@@ -1,11 +1,12 @@
 require('dotenv').config();
+const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
 const ldap = require('ldap');
-const {getUserByDN,newUser, updateUser} = require('../db/userQueries');
+const {getUserByDN,getUserByID,newUser, updateUser} = require('../db/userQueries');
 const {returnHTML} = require('../utils/utils.js');
 
 const env = process.env;
-const jwt_key = env.JWT_KEY;
+const jwt_key = crypto.randomBytes(32).toString('hex');
 
 async function login(req, res) {
     let { username, password } = req.body;
@@ -14,29 +15,33 @@ async function login(req, res) {
 
     let daten;
 
+    let client;
+
     try {
-        let client = ldap.createClient({
+        client = await ldap.createClient({
             url: env.LDAP_URL,
         });
 
-        daten = await new Promise((resolve, reject) => {
-            client.bind(env.LDAP_PREFIX+username, password, (err,res) => {
-                if(err)
-                    reject(err);
-                resolve(res);
+        if(client.connected)
+            daten = await new Promise((resolve, reject) => {
+                client.bind(env.LDAP_PREFIX+username, password, (err,res) => {
+                    if(err)
+                        reject(err);
+                    resolve(res);
+                });
+            }).then(async () => {
+                let searchOptions = {
+                    filter: `(&(mailNickname=${username})(objectClass=user))`,
+                    scope: "sub",
+                    attributes: ["mailNickname", "department", "employeeType", "sn", "givenName"],
+                };
+
+                return await ldapSuche(client, searchOptions);
             });
-        }).then(async () => {
-            let searchOptions = {
-                filter: `(&(mailNickname=${username})(objectClass=user))`,
-                scope: "sub",
-                attributes: ["mailNickname", "department", "employeeType", "sn", "givenName"],
-            };
-
-            return await ldapSuche(client, searchOptions);
-        });
-
     } catch (error) {
         return returnHTML(res,401,{error: error.name})
+    } finally {
+        await client.destroy();
     }
 
     if(!daten)
@@ -44,7 +49,7 @@ async function login(req, res) {
 
 
     let user = await getUserByDN(daten.mailNickname);
-    console.log(user);
+
     let jg = daten.department.slice(0,1);
     let kl = daten.department.slice(1,2);
     let ab = daten.department.slice(2);
@@ -63,9 +68,7 @@ async function login(req, res) {
     user = await getUserByDN(daten.mailNickname);
 
     let token = jwt.sign({
-            id: user.uuid,
-            role: user.type,
-
+            id: user.uuid
         }, jwt_key,
         { expiresIn: '8h' }
     );
@@ -96,17 +99,19 @@ async function ldapSuche(client, searchOptions) {
 
 function authenticateRole (roles) {
     return (req, res, next) => {
-        const token = req.headers['authorization'];
+        let token = req.headers['authorization'];
         if (!token) return returnHTML(res,400, {error: "MissingCredentialsError"});
 
-        jwt.verify(token, env.JWT_KEY, (err, user) => {
+        jwt.verify(token, jwt_key, async (err, user) => {
             if (err) return returnHTML(res,401, {error: err.name});
 
-            if (!roles.includes(user.role))
+            let role = (await getUserByID(user.id)).type;
+
+            if (!roles.includes(role))
                 return returnHTML(res,403,{error: "InsufficientPermissionsError"
         });
 
-            req.token = user;
+            req.user = user;
             next();
         });
     }
