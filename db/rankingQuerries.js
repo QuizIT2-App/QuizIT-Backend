@@ -3,8 +3,8 @@ const {getUserByID} = require("./userQueries");
 
 async function getFriendsRanking(id) {
     return new Promise( async (resolve, reject) => {
-        db.query('SELECT uuid, displayName as name, punkte FROM (SELECT DISTINCT CASE WHEN id1 = ? THEN id2 ELSE id1 END AS id FROM friends f1 WHERE (id1 = ? OR id2 = ?) AND EXISTS (SELECT 1 FROM friends f2 WHERE f1.id1 = f2.id2 AND f1.id2 = f2.id1)) AS friend JOIN User user ON friend.id = user.uuid;',
-            [id,id,id], (err, result) => {
+        db.query('SELECT uuid, displayName as name, punkte, false as isme FROM (SELECT DISTINCT CASE WHEN id1 = ? THEN id2 ELSE id1 END AS id FROM friends f1 WHERE (id1 = ? OR id2 = ?) AND EXISTS (SELECT 1 FROM friends f2 WHERE f1.id1 = f2.id2 AND f1.id2 = f2.id1)) AS friend JOIN User user ON friend.id = user.uuid UNION SELECT uuid, displayName as name, punkte, true as isme FROM User WHERE uuid = ?',
+            [id,id,id,id], (err, result) => {
             if (err) reject(err);
             else resolve(result);
         })
