@@ -3,5 +3,5 @@ Content-Type: application/json
 Authorization:  {{key}}
 
 {
-  "friend": 1
+  "id": 1
 }
