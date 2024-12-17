@@ -1,0 +1,3 @@
+GET {{host}}/self/departmentRanking
+Content-Type: application/json
+Authorization:  {{key}}
