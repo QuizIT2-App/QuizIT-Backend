@@ -12,8 +12,8 @@
     "express": "^4.17.1",
     "jsonwebtoken": "^9.0.2",
     "ldap": "^0.7.1",
-    "ldapjs": "^3.0.7",
     "mysql2": "3.9.8",
+    "path": "^0.12.7",
     "swagger-jsdoc": "^6.0.0",
     "swagger-ui-express": "^4.5.0"
   }
