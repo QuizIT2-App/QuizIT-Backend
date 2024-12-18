@@ -7,7 +7,7 @@ const options = {
     info: {
       title: 'QuizIT API',
       version: '1.0.0',
-      description: 'API documentation for QuizIT',
+      description: 'API documentation for the QuizIT project',
     },
     tags: [
       {
