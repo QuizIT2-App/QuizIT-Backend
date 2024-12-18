@@ -57,6 +57,7 @@ router.get('/', (req, res) => {
  *                   properties:
  *                     token:
  *                       type: string
+ *                       example: <token>
  *       400:
  *         description: MissingCredentialsError
  *         content:
