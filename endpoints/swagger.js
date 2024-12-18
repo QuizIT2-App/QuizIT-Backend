@@ -47,6 +47,88 @@ const options = {
           bearerFormat: 'JWT',
         },
       },
+      schemas: {
+        rankingElement: {
+          type: 'object',
+          properties: {
+            uuid: {
+              type: 'integer',
+              description: 'Unique identifier for the user',
+            },
+            name: {
+              type: 'string',
+              description: 'displayName of the user'
+            },
+            punkte: {
+              type: 'integer',
+              description: 'Points the user has'
+            },
+            isme: {
+              type: 'boolean',
+              description: 'boolean if it is the current user'
+            }
+          }
+        },
+        User: {
+          type: object,
+          properties: {
+            uuid: {
+              type: 'integer',
+              example: 1
+            },
+            displayName: {
+              type: 'string',
+              example: 'maxi'
+            },
+            distinguishedName: {
+              type: 'string',
+              example: 'mmusterman'
+            },
+            vorname: {
+              type: 'string',
+              example: 'Max'
+            },
+            nachname: {
+              type: 'string',
+              example: 'Musterman'
+            },
+            jahrgang: {
+              type: 'string',
+              example: 1
+            },
+            klasse: {
+              type: 'string',
+              example: a
+            },
+            abteilung: {
+              type: 'string',
+              example: 'HIT'
+            },
+            punkte: {
+              type: 'integer',
+              example: 0
+            },
+            streak: {
+              type: 'integer',
+              example: 0
+            },
+            erstelldatum: {
+              type: 'string',
+              format: 'date-time',
+              example: '2024-12-12T13:57:01.000Z'
+            },
+            zuletztOn: {
+              type: 'string',
+              format: 'date-time',
+              example: '2024-12-12T13:57:01.000Z'
+            },
+            type: {
+              type: 'string',
+              example: 'schueler'
+            }
+          }
+        },
+      }
     },
   },
   apis: ['./routing/*.js'],
