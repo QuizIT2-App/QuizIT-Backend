@@ -9,8 +9,47 @@ const options = {
       version: '1.0.0',
       description: 'API documentation for QuizIT',
     },
+    tags: [
+      {
+        name: 'General',
+        description: 'Endpoints related to general stuff including **login**, **index** and **authentication**',
+      },
+      {
+        name: 'User',
+        description: 'Endpoints related to user and user functions',
+      },
+      {
+        name: 'Friends',
+        description: 'Endpoints related to friends and friend functions',
+      },
+      {
+        name: 'Rankings',
+        description: 'Endpoints related to rankings and ranking functions',
+      },
+      {
+        name: 'Documentation',
+        description: 'Endpoints related to API documentation',
+      },
+    ],
+    servers: [
+      {
+        url: 'http://localhost:3000',
+      },
+      {
+        url: 'https://projekte.tgm.ac.at/quizit2',
+      },
+    ],
+    components: {
+      securitySchemes: {
+        Authorization: {
+          type: 'http',
+          scheme: 'Bearer',
+          bearerFormat: 'JWT',
+        },
+      },
+    },
   },
-  apis: ['./routing/router.js'],
+  apis: ['./routing/*.js'],
 };
 
 
