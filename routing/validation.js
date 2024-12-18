@@ -22,6 +22,11 @@ async function login(req, res) {
             url: env.LDAP_URL,
         });
 
+        client.on('error', (err) => {
+            console.error('LDAP Client Error:', err);
+            return returnHTML(res, 500, { error: err.name});
+        });
+
         daten = await new Promise((resolve, reject) => {
             client.bind(env.LDAP_PREFIX+username, password, (err,res) => {
                 if(err)
@@ -40,7 +45,9 @@ async function login(req, res) {
     } catch (error) {
         return returnHTML(res,401,{error: error.name})
     } finally {
-        await client.destroy();
+        if (client) {
+            await client.destroy();
+        }
     }
 
     if(!daten)
@@ -101,6 +108,9 @@ function authenticateRole (roles) {
         let token = req.headers['authorization'];
         if (!token) return returnHTML(res,400, {error: "MissingCredentialsError"});
 
+        if(token.split(" ")[0]==="Bearer")
+            token = token.split(" ")[1];
+
         jwt.verify(token, jwt_key, async (err, user) => {
             if (err) return returnHTML(res,401, {error: err.name});
 
@@ -118,7 +128,11 @@ function authenticateRole (roles) {
 
 
 
-module.exports = { login: login, auth: authenticateRole,
+module.exports = {
+    login: login,
+    authAll: authenticateRole(['schueler','lehrer','admin']),
+    authLA: authenticateRole(['lehrer','admin']),
+    authAdmin: authenticateRole(['admin']),
 
 
 }
