@@ -1,7 +1,6 @@
 node_modules/
 .expo/
 dist/
-data
 npm-debug.*
 *.jks
 *.p8
@@ -10,17 +9,10 @@ npm-debug.*
 *.mobileprovision
 *.orig.*
 web-build/
-.idea/
+../app/.idea/
 .env
-tests/env/
+tests/
 package-lock.json
-*.env.json
-.dockerignore
-Dockerfile
-compose.yaml
-init.sql
-logs
-*.log
 
 # macOS
 .DS_Store
