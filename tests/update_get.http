@@ -1,0 +1,3 @@
+GET {{host}}/admin/update
+Content-Type: application/json
+Authorization:  {{key}}

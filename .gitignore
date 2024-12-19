@@ -19,6 +19,8 @@ package-lock.json
 Dockerfile
 compose.yaml
 init.sql
+logs
+*.log
 
 # macOS
 .DS_Store
