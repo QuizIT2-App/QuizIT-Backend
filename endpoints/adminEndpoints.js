@@ -4,10 +4,11 @@ const {update} = require('../utils/updateRoutine');
 async function adminUpdate(req, res) {
     try {
         await update(req, res);
-        return returnHTML(res, 200, {data: "Update completed successfully"});
+        returnHTML(res, 200, {data: "Update completed successfully"});
     }catch(err) {
-        return returnHTML(res, 500, {error: "something went wrong"});
+        returnHTML(res, 500, {error: "asdasd"});
     }
+    process.exit();
 }
 module.exports = {
     update: adminUpdate,

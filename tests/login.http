@@ -3,6 +3,6 @@ Content-Type: application/json
 Authorization:
 
 {
-  "username": "{{username}}",
+  "username": "bpopescu",
   "password": "{{password}}"
 }
