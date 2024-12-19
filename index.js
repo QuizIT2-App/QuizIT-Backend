@@ -27,6 +27,8 @@ app.use(friendRouter);
 app.use(rankingRouter);
 app.use(adminRouter);
 
+//asdasfjsdkfgd
+
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
