@@ -21,6 +21,7 @@ compose.yaml
 init.sql
 logs
 *.log
+tests
 
 # macOS
 .DS_Store

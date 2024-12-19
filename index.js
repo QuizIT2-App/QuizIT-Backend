@@ -8,6 +8,7 @@ const userRouter = require('./routing/userRoutes');
 const friendRouter = require('./routing/friendRoutes');
 const rankingRouter = require('./routing/rankingRoutes');
 const adminRouter = require('./routing/adminRoutes');
+const {log, errorLog, cleanupOldLogs} = require("./utils/logger");
 
 
 const app = express();
@@ -27,6 +28,10 @@ app.use(friendRouter);
 app.use(rankingRouter);
 app.use(adminRouter);
 
+
+log('This is a log message');
+errorLog('This is an error message');
+cleanupOldLogs();
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
