@@ -6,7 +6,7 @@ async function adminUpdate(req, res) {
         await update(req, res);
         returnHTML(res, 200, {data: "Update completed successfully"});
     }catch(err) {
-        returnHTML(res, 500, {error: "asdasd"});
+        returnHTML(res, 500, {error: "jkhgjkklj"});
     }
     process.exit();
 }
