@@ -8,10 +8,20 @@ const userRouter = require('./routing/userRoutes');
 const friendRouter = require('./routing/friendRoutes');
 const rankingRouter = require('./routing/rankingRoutes');
 const adminRouter = require('./routing/adminRoutes');
-
+const {errorLog} = require("./utils/logger");
 
 const app = express();
 const PORT = env.PORT || 3000;
+
+process.on('uncaughtException', (err) => {
+  errorLog('Uncaught Exception: ' + err.message, { stack: err.stack });
+  process.exit(1);
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+  errorLog('Unhandled Rejection: ' + reason, { promise: promise });
+  process.exit(1);
+});
 
 app.use(express.json());
 app.use(maintenance);
@@ -26,9 +36,6 @@ app.use(userRouter);
 app.use(friendRouter);
 app.use(rankingRouter);
 app.use(adminRouter);
-
-//asdasfjsdkfgd
-
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
