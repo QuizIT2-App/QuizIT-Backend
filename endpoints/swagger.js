@@ -27,6 +27,10 @@ const options = {
         description: 'Endpoints related to rankings and ranking functions',
       },
       {
+        name: 'Admin',
+        description: 'Endpoints related to Admin only functions',
+      },
+      {
         name: 'Documentation',
         description: 'Endpoints related to API documentation',
       },
