@@ -11,7 +11,12 @@ npm-debug.*
 web-build/
 ../app/.idea/
 .env
-tests/
+tests
+env
+.dockerignore
+Dockerfile
+init.sql
+compose.yaml
 package-lock.json
 
 # macOS
