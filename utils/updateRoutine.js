@@ -3,8 +3,6 @@ const pm2 = require('pm2');
 const {returnHTML} = require("./utils");
 const {log} = require('./logger');
 
-const appName = 'your-app-name';
-
 let isMaintenanceMode = false;
 
 function pullLatestCode() {
@@ -34,7 +32,7 @@ function restartApp() {
                 log('Failed to connect to PM2');
                 return reject(err);
             }
-            pm2.restart(appName, (err, apps) => {
+            pm2.restart('index.js', (err, apps) => {
                 if (err) {
                     log('App restart failed');
                     return reject(err);
