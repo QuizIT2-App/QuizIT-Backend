@@ -6,13 +6,14 @@ const {log} = require('./logger');
 let isMaintenanceMode = false;
 
 function pullLatestCode() {
-    log('git pull started');
+    log('Git pull started');
     try {
         execSync('git pull origin main', { stdio: 'inherit' });
     } catch (err) {
         log('Git pull failed');
         throw err;
     }
+    log('Git pull finished');
 }
 
 function installDependencies() {
@@ -23,6 +24,7 @@ function installDependencies() {
         log('npm install failed');
         throw err;
     }
+    log('npm install finished');
 }
 
 function restartApp() {
@@ -37,9 +39,8 @@ function restartApp() {
                     log('App restart failed');
                     return reject(err);
                 }
-
-                pm2.disconnect();
                 log('App restarted successfully');
+                pm2.disconnect();
                 resolve(apps);
             });
         });
@@ -65,7 +66,6 @@ async function updateRoutine() {
 
         await restartApp();
 
-        log('Update routine completed successfully');
     } catch (error) {
         log('An error occurred during the update process: ' + error.message);
         throw error;
