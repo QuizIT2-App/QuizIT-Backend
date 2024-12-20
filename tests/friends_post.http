@@ -1,7 +1,0 @@
-POST {{host}}/self/friends
-Content-Type: application/json
-Authorization:  {{key}}
-
-{
-  "id": 1
-}

@@ -1,3 +1,0 @@
-GET {{host}}/self/friends/requested
-Content-Type: application/json
-Authorization:  {{key}}

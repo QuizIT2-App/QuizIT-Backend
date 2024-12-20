@@ -1,3 +1,0 @@
-GET {{host}}/self/friends/pending
-Content-Type: application/json
-Authorization:  {{key}}
