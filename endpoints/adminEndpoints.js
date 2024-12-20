@@ -5,12 +5,8 @@ const {join} = require("path");
 
 
 async function adminUpdate(req, res) {
-    try {
-        await update(req, res);
-        returnHTML(res, 200, {data: "Update completed successfully"});
-    }catch(err) {
-        returnHTML(res, 500, {error: "jkhgjkklj"});
-    }
+    returnHTML(res, 200, {data: "Update completed successfully"});
+    await update(req, res);
     process.exit();
 }
 
