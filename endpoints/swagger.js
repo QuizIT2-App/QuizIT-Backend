@@ -37,9 +37,6 @@ const options = {
     ],
     servers: [
       {
-        url: 'http://localhost:3000',
-      },
-      {
         url: 'https://projekte.tgm.ac.at/quizit2',
       },
     ],
