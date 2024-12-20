@@ -28,6 +28,7 @@ function installDependencies() {
 }
 
 function restartApp() {
+    log('App restart started');
     return new Promise((resolve, reject) => {
         pm2.connect((err) => {
             if (err) {
@@ -39,7 +40,6 @@ function restartApp() {
                     log('App restart failed');
                     return reject(err);
                 }
-                log('App restarted successfully');
                 pm2.disconnect();
                 resolve(apps);
             });
