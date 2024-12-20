@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const { format } = require('date-fns');
 
-const logsDir = path.join(__dirname,'/../', 'logs');
+const logsDir = path.join(process.cwd(), 'logs');
 
 
 const getCurrentDate = () => {

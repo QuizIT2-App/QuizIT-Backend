@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const {authAdmin} = require('./validation');
-const {update} = require('../endpoints/adminEndpoints');
+const {update, getLogs} = require('../endpoints/adminEndpoints');
 /**
  * @swagger
  * /admin/update:
@@ -67,6 +67,10 @@ const {update} = require('../endpoints/adminEndpoints');
  *                   type: string
  *                   example: InsufficientPermissionsError
  */
-router.get('/admin/update', authAdmin, update)
+router.get('/admin/update', authAdmin, update);
+
+router.get(/^\/admin\/logs(\/[^/]+)*?$/, authAdmin,getLogs);
+
+
 
 module.exports = router;
