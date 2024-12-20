@@ -1,3 +1,0 @@
-GET {{host}}/self/friendsRanking
-Content-Type: application/json
-Authorization:  {{key}}
