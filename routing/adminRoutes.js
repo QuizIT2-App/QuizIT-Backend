@@ -3,7 +3,7 @@ const {authAdmin} = require('./validation');
 const {update} = require('../endpoints/adminEndpoints');
 /**
  * @swagger
- * /self/friends:
+ * /admin/update:
  *   get:
  *     summary: Update server to the newest code versions
  *     description: This endpoint endpoints allows one cause the server to update to the newest version of the code.
