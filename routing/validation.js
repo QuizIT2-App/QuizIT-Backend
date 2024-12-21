@@ -46,7 +46,9 @@ async function login(req, res) {
         return returnHTML(res,401,{error: error.name})
     } finally {
         if (client) {
-            await client.destroy();
+            await client.destroy((err)=> {
+                throw err;
+            });
         }
     }
 
