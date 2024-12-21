@@ -2,21 +2,27 @@ const db = require("./db");
 const mysql = require("mysql2");
 
 async function getUserByDN(dn) {
-    return new Promise( (resolve, reject) => {
-        db.query('SELECT * FROM User WHERE distinguishedName = ?', [dn], (err, result) => {
-            if (err) reject(err);
-            else resolve(result[0]);
-        })
-    });
+    try {
+        const [result] = await db.query(
+            `SELECT * FROM User WHERE distinguishedName = ?`,
+            [dn]
+        );
+        return result[0];
+    } catch (err) {
+        throw err;
+    }
 }
 
 async function getUserByID(id) {
-    return new Promise( (resolve, reject) => {
-        db.query('SELECT * FROM User WHERE UUID = ?', [id], (err, result) => {
-            if (err) reject(err);
-            else resolve(result[0]);
-        })
-    });
+    try {
+        const [result] = await db.query(
+            `SELECT * FROM User WHERE uuid = ?`,
+            [id]
+        );
+        return result[0];
+    } catch (err) {
+        throw err;
+    }
 }
 
 function newUser(displayName, distinguishedName, vorname, nachname, jahrgang, klasse, abteilung, type) {
