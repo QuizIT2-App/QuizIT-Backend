@@ -12,6 +12,7 @@ web-build/
 ../app/.idea/
 .env
 tests
+data
 env
 .dockerignore
 Dockerfile
