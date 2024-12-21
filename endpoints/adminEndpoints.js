@@ -5,9 +5,12 @@ const {join} = require("path");
 
 
 async function adminUpdate(req, res) {
-    returnHTML(res, 200, {data: "Update completed successfully"});
-    await update(req, res);
-    process.exit();
+    try {
+        await update(req, res);
+        returnHTML(res, 200, {data: "Update completed successfully"});
+    } catch (error) {
+        returnHTML(res, 500, {error: error.message + error.stack});
+    }
 }
 
 async function getLogs(req, res) {
