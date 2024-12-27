@@ -1,5 +1,4 @@
 const db = require("./db");
-const {getUserByID} = require("./userQueries");
 
 async function getFriendsRanking(id) {
     try {
