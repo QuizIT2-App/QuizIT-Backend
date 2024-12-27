@@ -5,18 +5,21 @@ async function getFriendsRanking(id) {
     try {
         const [result] = await db.query(
             `SELECT uuid, displayName as name, punkte, false as isme FROM 
-            (SELECT DISTINCT 
-                CASE WHEN id1 = ? 
-                THEN id2 
-                ELSE id1 
+            (
+                SELECT DISTINCT 
+                    CASE WHEN id1 = ? 
+                    THEN id2 
+                    ELSE id1 
                 END AS id
-            FROM friends f1 
-            WHERE (id1 = ? OR id2 = ?) 
-            AND EXISTS 
-                (SELECT 1 FROM friends f2 
+                FROM friends f1 
+                WHERE (id1 = ? OR id2 = ?) 
+                AND EXISTS 
+                (
+                    SELECT 1 FROM friends f2 
                     WHERE f1.id1 = f2.id2 
-                    AND f1.id2 = f2.id1)
-                ) 
+                    AND f1.id2 = f2.id1
+                )
+            ) 
             AS friend 
             JOIN User user ON friend.id = user.uuid 
             UNION 
