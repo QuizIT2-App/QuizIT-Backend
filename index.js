@@ -7,6 +7,7 @@ const generalRouter = require('./routing/generalRoutes');
 const userRouter = require('./routing/userRoutes');
 const friendRouter = require('./routing/friendRoutes');
 const rankingRouter = require('./routing/rankingRoutes');
+const quizRouter = require('./routing/quizRoutes');
 const adminRouter = require('./routing/adminRoutes');
 const {errorLog} = require("./utils/logger");
 
@@ -35,6 +36,7 @@ app.use(generalRouter);
 app.use(userRouter);
 app.use(friendRouter);
 app.use(rankingRouter);
+app.use(quizRouter);
 app.use(adminRouter);
 
 app.listen(PORT, () => {
