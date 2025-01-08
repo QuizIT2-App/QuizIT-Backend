@@ -4,13 +4,9 @@ const fs = require('fs');
 const {join} = require("path");
 
 
-async function adminUpdate(req, res) {
-    try {
-        await update(req, res);
-        returnHTML(res, 200, {data: "Update completed successfully"});
-    } catch (error) {
-        returnHTML(res, 500, {error: error.message + error.stack});
-    }
+function adminUpdate(req, res) {
+    returnHTML(res, 200, {data: "Update request sent successfully"});
+    update();
 }
 
 async function getLogs(req, res) {
@@ -21,7 +17,6 @@ async function getLogs(req, res) {
         return res.status(404).send({});
 
     if(!fs.statSync(path).isDirectory()) {
-        console.log("not a directory: "+path);
         return res.status(200).send(fs.readFileSync(path));
     }
 
