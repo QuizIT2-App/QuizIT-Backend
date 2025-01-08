@@ -1,5 +1,5 @@
 const {returnHTML} = require("../utils/utils");
-const {dbGetQuizes, dbGetSubQuizes} = require("../db/models");
+const {dbGetQuizes, dbGetSubQuizes} = require("../db/quizQueries");
 
 async function getQuizes(req, res) {
     let items = await dbGetQuizes();
