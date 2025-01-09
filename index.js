@@ -8,6 +8,7 @@ const userRouter = require('./routing/userRoutes');
 const friendRouter = require('./routing/friendRoutes');
 const rankingRouter = require('./routing/rankingRoutes');
 const quizRouter = require('./routing/quizRoutes');
+const fragenRouter = require('./routing/fragenRoutes');
 const adminRouter = require('./routing/adminRoutes');
 const {errorLog} = require("./utils/logger");
 
@@ -37,6 +38,7 @@ app.use(userRouter);
 app.use(friendRouter);
 app.use(rankingRouter);
 app.use(quizRouter);
+app.use(fragenRouter);
 app.use(adminRouter);
 
 app.listen(PORT, () => {
