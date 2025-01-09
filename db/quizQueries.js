@@ -3,7 +3,7 @@ const db = require("./db");
 async function dbGetQuizes() {
     try {
         const [result] = await db.query(
-            `SELECT * FROM Quiz`
+            `SELECT * FROM Quiz WHERE sub IS NULL`
         );
         return result;
     } catch (err) {
