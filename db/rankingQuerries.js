@@ -54,7 +54,7 @@ async function getDepartmentRanking(id) {
         const [result] = await db.query(
             `SELECT uuid, displayName as name, punkte, uuid = ? as isme FROM User u
             JOIN (SELECT abteilung FROM User WHERE uuid = ?) AS me
-                AND u.abteilung = me.abteilung
+            WHERE u.abteilung = me.abteilung
             ORDER BY punkte DESC`,
             [id, id]
         );
