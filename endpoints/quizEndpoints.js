@@ -10,8 +10,12 @@ async function getSubQuizes(req, res) {
     let id = req.params.id;
     let sub = await dbGetSubQuizes(id);
     let quiz = await dbGetQuizesByID(id);
+    let jsonformat = {
+        quiz,
+        children: sub
+    }
 
-    return returnHTML(res, 200, {data: quiz + "children:"+ sub})
+    return returnHTML(res, 200, {data: jsonformat})
 }
 
 

@@ -29,7 +29,7 @@ async function dbGetQuizesByID(id) {
             `SELECT * FROM Quiz WHERE id=?`,
             [id]
         );
-        return result;
+        return result[0];
     } catch (err) {
         throw err;
     }
