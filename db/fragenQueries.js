@@ -4,13 +4,13 @@ async function dbFragenFromPool(id) {
     try {
         const [result] = await db.query(
             `WITH RECURSIVE fragenDingi AS (
-                SELECT id, title
+                SELECT id
                 FROM Quiz
                 WHERE id = ?
 
                 UNION ALL
 
-                SELECT quiz.id, quiz.title
+                SELECT quiz.id
                 FROM Quiz quiz
                 INNER JOIN fragenDingi fd ON quiz.sub = fd.id
             )
@@ -19,7 +19,7 @@ async function dbFragenFromPool(id) {
                 INNER JOIN fragenDingi fd ON f.quiz = fd.id;`,
             [id]
         );
-        return result[0];
+        return result;
     } catch (err) {
         throw err;
     }
