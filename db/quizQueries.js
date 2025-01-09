@@ -37,5 +37,5 @@ async function dbGetQuizesByID(id) {
 module.exports = {
     dbGetQuizes,
     dbGetSubQuizes,
-    dbGetQuizesByID
+    dbGetQuizesByID,
 }

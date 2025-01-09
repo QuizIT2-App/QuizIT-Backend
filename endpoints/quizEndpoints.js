@@ -13,7 +13,7 @@ async function getSubQuizes(req, res) {
     let jsonformat = {
         id: quiz.id,
         sub: quiz.sub,
-        titel: quiz.titel,
+        title: quiz.title,
         description: quiz.description,
         children: sub
     }
@@ -21,9 +21,21 @@ async function getSubQuizes(req, res) {
     return returnHTML(res, 200, {data: jsonformat})
 }
 
+async function startQuiz(req, res) {
+    let id = req.params.id;
+    let {count, timelimit } = req.body;
+    if(!timelimit || timelimit <= 0) {
+        timelimit = 60*60*24; //24h
+    }
+    if(!count) {
+        count = 5;
+    }
+}
+
 
 
 module.exports = {
     getQuizes,
-    getSubQuizes
+    getSubQuizes,
+    startQuiz
 };
