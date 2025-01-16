@@ -19,6 +19,14 @@ const options = {
         description: 'Endpoints related to user and user functions',
       },
       {
+        name: 'Quiz',
+        description: "Endpoints related to quiz's and quiz functions",
+      },
+      {
+        name: 'Question',
+        description: 'Endpoints related to questions and question functions',
+      },
+      {
         name: 'Friends',
         description: 'Endpoints related to friends and friend functions',
       },
@@ -49,6 +57,51 @@ const options = {
         },
       },
       schemas: {
+        quiz: {
+          type: 'object',
+          properties: {
+            id: {
+              type: 'integer',
+              description: 'Unique identifier for the quiz',
+              example: 1
+            },
+            title: {
+              type: 'string',
+              description: 'title of the quiz',
+              example: 'Mathe',
+            },
+            description: {
+              type: 'string',
+              description: 'description of the quiz',
+              example: 'Fragenpool für Mathematik'
+            },
+            sub: {
+              type: 'integer',
+              description: 'the quiz it is under in the hirearchy',
+              example: null
+            }
+          }
+        },
+        question: {
+          type: 'object',
+          properties: {
+            id: {
+              type: 'integer',
+              description: 'Unique identifier for the question',
+              example: 1
+            },
+            title: {
+              type: 'string',
+              description: 'The title of the pool the question originates from',
+              example: 'AM S01A',
+            },
+            inhalt: {
+              type: 'JSON',
+              description: 'the question itself & and extra data',
+              example: '{"question": "text", "type": "type"}'
+            },
+          }
+        },
         rankingElement: {
           type: 'object',
           properties: {
