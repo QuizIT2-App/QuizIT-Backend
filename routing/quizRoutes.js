@@ -84,6 +84,13 @@ router.get('/quiz', authAll, getQuizes);
  *   get:
  *     summary: get own user
  *     description: This endpoint allows one to access quiz's lower in the hierarchy
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: The ID of the quiz.
  *     tags:
  *       - Quiz
  *     security:

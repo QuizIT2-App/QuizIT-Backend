@@ -7,6 +7,13 @@ const {getQuizes} = require("../endpoints/fragenEndpoints");
  *   get:
  *     summary: get own user
  *     description: This endpoint allows one to access all questions in a pool
+ *     parameters:
+ *       - name: quizId
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: The ID of the quiz.
  *     tags:
  *       - Question
  *     security:
@@ -26,9 +33,6 @@ const {getQuizes} = require("../endpoints/fragenEndpoints");
  *                   type: array
  *                   items:
  *                     $ref: '#/components/schemas/question'
- *                   example:
- *
- *
  *       400:
  *         description: MissingCredentialsError
  *         content:
