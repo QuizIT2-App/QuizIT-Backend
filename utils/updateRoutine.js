@@ -5,6 +5,9 @@ const {log} = require('./logger');
 
 let isMaintenanceMode = false;
 
+/**
+ * a function to get the latest code
+ */
 function pullLatestCode() {
     log('Git pull started');
     try {
@@ -16,6 +19,9 @@ function pullLatestCode() {
     log('Git pull finished');
 }
 
+/**
+ * a function to get dependencies
+ */
 function installDependencies() {
     log('npm install started');
     try {
@@ -27,6 +33,10 @@ function installDependencies() {
     log('npm install finished');
 }
 
+/**
+ * a function to restart with the new code
+ * @returns {Promise<unknown>} the new process
+ */
 function restartApp() {
     log('App restart started');
     return new Promise((resolve, reject) => {
@@ -47,6 +57,12 @@ function restartApp() {
     });
 }
 
+/**
+ * a switch to stop requests while the application is updating
+ * @param req
+ * @param res
+ * @param next
+ */
 function maintenanceMiddleware(req, res, next) {
     if (isMaintenanceMode) {
         return returnHTML(res, 503, {error: "Server updating"});
@@ -54,6 +70,10 @@ function maintenanceMiddleware(req, res, next) {
     next();
 }
 
+/**
+ * the whole update routine in function to simplify calling including setting the maintenance flag
+ * @returns {Promise<void>}
+ */
 async function updateRoutine() {
     try {
         log('Starting update routine:');
