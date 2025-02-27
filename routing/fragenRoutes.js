@@ -148,6 +148,6 @@ router.get("/question/:id", authLA, getQuizes);
  *                   type: string
  *                   example: InsufficientPermissionsError
  */
-router.get("/question/currentquiz/", authLA, getCurrentQuiz);
+router.get("/question/currentquiz/", authAll, getCurrentQuiz);
 
 module.exports = router;
