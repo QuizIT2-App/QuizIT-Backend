@@ -10,7 +10,7 @@ const rankingRouter = require('./routing/rankingRoutes');
 const quizRouter = require('./routing/quizRoutes');
 const fragenRouter = require('./routing/fragenRoutes');
 const adminRouter = require('./routing/adminRoutes');
-const {errorLog} = require("./utils/logger");
+const {log, errorLog} = require("./utils/logger");
 
 const app = express();
 const PORT = env.PORT || 3000;
@@ -45,3 +45,4 @@ app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
 
+log("Server started");
