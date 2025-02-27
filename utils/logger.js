@@ -8,10 +8,10 @@ const daysSaved = 7;
 
 /**
  * a function to return a date in form of a string
- * @returns {string} in format dd-mm-yyyy
+ * @returns {string} in format dd-MM-yyyy
  */
 function getCurrentDate() {
-    return format(new Date(new Date().getTime()+ 60*60*1000), 'dd-mm-yyyy');
+    return format(new Date(new Date().getTime()+ 60*60*1000), 'dd-MM-yyyy');
 }
 
 /**
@@ -39,7 +39,6 @@ function createLogDirectory() {
         fs.mkdirSync(logsDir);
     }
     let currentDateDir = path.join(logsDir, getCurrentDate());
-    log(currentDateDir);
     if (!fs.existsSync(currentDateDir)) {
         fs.mkdirSync(currentDateDir);
     }
