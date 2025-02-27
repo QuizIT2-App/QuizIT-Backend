@@ -29,7 +29,6 @@ async function getCurrentQuiz(req, res) {
           },
         },
       });
-      break;
     case QuestionType.Checkbox:
       return returnHTML(res, 200, {
         data: {
@@ -49,7 +48,6 @@ async function getCurrentQuiz(req, res) {
           },
         },
       });
-      break;
     case QuestionType.Number:
       return returnHTML(res, 200, {
         data: {
@@ -63,7 +61,6 @@ async function getCurrentQuiz(req, res) {
           },
         },
       });
-      break;
     case QuestionType.Boolean:
       return returnHTML(res, 200, {
         data: {
@@ -77,7 +74,6 @@ async function getCurrentQuiz(req, res) {
           },
         },
       });
-      break;
     case QuestionType.Text:
       return returnHTML(res, 200, {
         data: {
@@ -91,7 +87,6 @@ async function getCurrentQuiz(req, res) {
           },
         },
       });
-      break;
     default:
       return returnHTML(res, 400, { error: "Invalid question type" });
   }
