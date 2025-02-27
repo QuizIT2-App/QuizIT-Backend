@@ -1,6 +1,6 @@
-const router = require('express').Router();
-const {authAll, authLA, authAdmin} = require('./validation');
-const {getQuizes} = require("../endpoints/fragenEndpoints");
+const router = require("express").Router();
+const { authAll, authLA, authAdmin } = require("./validation");
+const { getQuizes, getCurrentQuiz } = require("../endpoints/fragenEndpoints");
 /**
  * @swagger
  * /question/{quizId}:
@@ -73,6 +73,7 @@ const {getQuizes} = require("../endpoints/fragenEndpoints");
  *                   type: string
  *                   example: InsufficientPermissionsError
  */
-router.get('/question/:id', authLA, getQuizes);
+router.get("/question/:id", authLA, getQuizes);
+router.get("/question/currentquiz/", authLA, getCurrentQuiz);
 
 module.exports = router;
