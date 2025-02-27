@@ -72,7 +72,12 @@ const { getQuizes, getCurrentQuiz } = require("../endpoints/fragenEndpoints");
  *                 error:
  *                   type: string
  *                   example: InsufficientPermissionsError
- * 
+ */
+router.get("/question/:id", authLA, getQuizes);
+
+
+/**
+ * @swagger
  * /question/currentquiz/:
  *   get:
  *     summary: get current quiz questions
@@ -143,7 +148,6 @@ const { getQuizes, getCurrentQuiz } = require("../endpoints/fragenEndpoints");
  *                   type: string
  *                   example: InsufficientPermissionsError
  */
-router.get("/question/:id", authLA, getQuizes);
 router.get("/question/currentquiz/", authLA, getCurrentQuiz);
 
 module.exports = router;
