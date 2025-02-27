@@ -74,6 +74,23 @@ const { getQuizes, getCurrentQuiz } = require("../endpoints/fragenEndpoints");
  *                   example: InsufficientPermissionsError
  */
 router.get("/question/:id", authLA, getQuizes);
+
+/**
+ * @swagger
+ * /question/currentquiz/:
+ *   get:
+ *     summary: 
+ *     description: This endpoint allows one to access the current quiz
+ *     tags:
+ *       - Question
+ *     security:
+ *       - Authorization: [schueler, lehrer, admin]
+ *     responses:
+ *       200:
+ *         description: Successful request
+ *         content:
+ *           application/json:
+ */
 router.get("/question/currentquiz/", authLA, getCurrentQuiz);
 
 module.exports = router;
