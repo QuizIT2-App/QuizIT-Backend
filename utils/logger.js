@@ -23,13 +23,20 @@ function cleanupOldLogs() {
 
     directories.forEach((dir) => {
         let dirPath = path.join(logsDir, dir);
+
+        if (!/^[0123]\d-[01]\d-\d{4}$/.test(dir)) {
+            console.warn(`Deleting invalid log directory (incorrect format): ${dir}`);
+            fs.rmSync(dirPath, { recursive: true, force: true });
+            return;
+        }
+
         let dirDate = new Date(dir.split('-').reverse().join('-'));
 
         let diffTime = Math.abs(currentDate - dirDate);
         let diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
         if (diffDays > daysSaved) {
-            fs.rmdirSync(dirPath, { recursive: true });
+            fs.rmSync(dirPath, { recursive: true, force: true });
         }
     });
 }
@@ -71,8 +78,7 @@ function errorLog (message) {
     fs.appendFileSync(errorLogFile, logMessage, 'utf8');
 }
 
-setInterval(cleanupOldLogs, 24 * 60 * 60 * 1000);
-
+cleanupOldLogs();
 module.exports = {
     log,
     errorLog,
