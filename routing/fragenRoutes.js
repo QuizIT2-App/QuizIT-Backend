@@ -85,11 +85,6 @@ router.get("/question/:id", authLA, getQuizes);
  *       - Question
  *     security:
  *       - Authorization: [schueler, lehrer, admin]
- *     responses:
- *       200:
- *         description: Successful request
- *         content:
- *           application/json:
  */
 router.get("/question/currentquiz/", authLA, getCurrentQuiz);
 
