@@ -39,6 +39,7 @@ function createLogDirectory() {
         fs.mkdirSync(logsDir);
     }
     let currentDateDir = path.join(logsDir, getCurrentDate());
+    log(currentDateDir);
     if (!fs.existsSync(currentDateDir)) {
         fs.mkdirSync(currentDateDir);
     }
@@ -72,7 +73,6 @@ function errorLog (message) {
 }
 
 setInterval(cleanupOldLogs, 24 * 60 * 60 * 1000);
-cleanupOldLogs();
 
 module.exports = {
     log,
