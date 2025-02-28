@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const { format } = require('date-fns');
+const { format, isValid} = require('date-fns');
 
 const logsDir = path.join(process.cwd(), 'logs');
 
@@ -31,6 +31,13 @@ function cleanupOldLogs() {
         }
 
         let dirDate = new Date(dir.split('-').reverse().join('-'));
+
+        if (!isValid(dirDate)) {
+            console.warn(`Deleting invalid log directory (invalid date): ${dir}`);
+            fs.rmSync(dirPath, { recursive: true, force: true });
+            return;
+        }
+
 
         let diffTime = Math.abs(currentDate - dirDate);
         let diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
