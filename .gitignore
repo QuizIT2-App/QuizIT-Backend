@@ -20,6 +20,7 @@ init.sql
 compose.yaml
 package-lock.json
 logs/
+.log
 
 # macOS
 .DS_Store
