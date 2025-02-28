@@ -82,13 +82,6 @@ router.get("/question/:id", authLA, getQuizes);
  *   get:
  *     summary: get current quiz questions
  *     description: This endpoint allows one to access all questions in a pool
- *     parameters:
- *       - name: quizId
- *         in: path
- *         required: true
- *         schema:
- *           type: integer
- *         description: The ID of the quiz.
  *     tags:
  *       - Question
  *     security:

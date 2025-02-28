@@ -14,77 +14,87 @@ async function getCurrentQuiz(req, res) {
       return returnHTML(res, 200, {
         data: {
           success: true,
-          data: {
-            runId: 200,
-            question: {
-              title: "Was ist 1+1?",
-              type: QuestionType.Radio,
-              options: [
-                { id: 1, text: "1" },
-                { id: 2, text: "2" },
-                { id: 3, text: "3" },
-                { id: 4, text: "4" },
-              ],
-            },
-          },
+          data: [
+            {
+              runId: 200,
+              question: {
+                title: "Was ist 1+1?",
+                type: QuestionType.Radio,
+                options: [
+                  { id: 1, text: "1" },
+                  { id: 2, text: "2" },
+                  { id: 3, text: "3" },
+                  { id: 4, text: "4" },
+                ],
+              },
+            }
+          ],
         },
       });
     case QuestionType.Checkbox:
       return returnHTML(res, 200, {
         data: {
           success: true,
-          data: {
-            runId: 200,
-            question: {
-              title: "Was ist 1+1?",
-              type: QuestionType.Checkbox,
-              options: [
-                { id: 1, text: "1" },
-                { id: 2, text: "2" },
-                { id: 3, text: "3" },
-                { id: 4, text: "4" },
-              ],
+          data: [
+            {
+              runId: 200,
+              question: {
+                title: "Was ist 1+1?",
+                type: QuestionType.Checkbox,
+                options: [
+                  { id: 1, text: "1" },
+                  { id: 2, text: "2" },
+                  { id: 3, text: "3" },
+                  { id: 4, text: "4" },
+                ],
+              },
             },
-          },
+          ],
         },
       });
     case QuestionType.Number:
       return returnHTML(res, 200, {
         data: {
           success: true,
-          data: {
-            runId: 200,
-            question: {
-              title: "Was ist 1+1?",
-              type: QuestionType.Number,
+          data: [
+            {
+              runId: 200,
+              question: {
+                title: "Was ist 1+1?",
+                type: QuestionType.Number,
+              },
             },
-          },
+          ],
         },
       });
     case QuestionType.Boolean:
       return returnHTML(res, 200, {
         data: {
           success: true,
-          data: {
-            runId: 200,
-            question: {
-              title: "Stimmt folgende Gleichung: 1+1=3?",
-              type: QuestionType.Boolean,
+          data: [
+            {
+              runId: 200,
+              question: {
+                title: "Stimmt folgende Gleichung: 1+1=3?",
+                type: QuestionType.Boolean,
+              },
             },
-          },
+          ],
         },
       });
     case QuestionType.Text:
       return returnHTML(res, 200, {
         data: {
           success: true,
-          data: {
-            runId: 200,
-            question: {
-              title: "Was versteht man unter KlamPuStri?",
-              type: QuestionType.Text,
+          data: [
+            {
+              runId: 200,
+              question: {
+                title: "Was versteht man unter KlamPuStri?",
+                type: QuestionType.Text,
+              },
             },
-          },
+          ],
         },
       });
     default:
