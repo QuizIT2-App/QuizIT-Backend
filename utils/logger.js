@@ -85,7 +85,6 @@ function errorLog (message) {
     fs.appendFileSync(errorLogFile, logMessage, 'utf8');
 }
 
-cleanupOldLogs();
 module.exports = {
     log,
     errorLog,
