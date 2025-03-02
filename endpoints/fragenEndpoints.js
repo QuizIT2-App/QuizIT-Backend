@@ -11,7 +11,7 @@ async function getCurrentQuiz(req, res) {
 
   return res.status(200).json({
     success: true,
-    data: JSON.parse(req.body),
+  
 });
 
   /* switch (body.type) {
