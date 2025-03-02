@@ -12,7 +12,7 @@ async function getCurrentQuiz(req, res) {
       return returnHTML(res, 200, {
         data: {
           success: true,
-          data: [
+          data: JSON.parse(`[
             {
               runId: 200,
               question: {
@@ -25,15 +25,15 @@ async function getCurrentQuiz(req, res) {
                   { id: 4, text: "4" },
                 ],
               },
-            }
-          ],
+            },
+          ]`),
         },
       });
     case QuestionType.Checkbox:
       return returnHTML(res, 200, {
         data: {
           success: true,
-          data: [
+          data: JSON.parse(`[
             {
               runId: 200,
               question: {
@@ -47,14 +47,14 @@ async function getCurrentQuiz(req, res) {
                 ],
               },
             },
-          ],
+          ]`),
         },
       });
     case QuestionType.Number:
       return returnHTML(res, 200, {
         data: {
           success: true,
-          data: [
+          data: JSON.parse(`[
             {
               runId: 200,
               question: {
@@ -62,14 +62,14 @@ async function getCurrentQuiz(req, res) {
                 type: QuestionType.Number,
               },
             },
-          ],
+          ]`),
         },
       });
     case QuestionType.Boolean:
       return returnHTML(res, 200, {
         data: {
           success: true,
-          data: [
+          data: JSON.parse(`[
             {
               runId: 200,
               question: {
@@ -77,14 +77,14 @@ async function getCurrentQuiz(req, res) {
                 type: QuestionType.Boolean,
               },
             },
-          ],
+          ]`),
         },
       });
     case QuestionType.Text:
       return returnHTML(res, 200, {
         data: {
           success: true,
-          data: [
+          data: JSON.parse(`[
             {
               runId: 200,
               question: {
@@ -92,7 +92,7 @@ async function getCurrentQuiz(req, res) {
                 type: QuestionType.Text,
               },
             },
-          ],
+          ]`),
         },
       });
     default:
