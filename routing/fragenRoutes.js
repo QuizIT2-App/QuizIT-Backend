@@ -99,7 +99,7 @@ const { getQuizes, getCurrentQuiz } = require("../endpoints/fragenEndpoints");
  *                   type: string
  *                   example: InsufficientPermissionsError
  */
-router.get("/question/currentquiz/", authAll, getCurrentQuiz);
+router.get("/question/currentquiz/:type", authAll, getCurrentQuiz);
 
 /**
  * @swagger

@@ -7,7 +7,7 @@ async function getQuizes(req, res) {
 }
 
 async function getCurrentQuiz(req, res) {
-  switch (JSON.parse(req.body).type) {
+  switch (req.params.type) {
     case QuestionType.Radio:
       return returnHTML(res, 200, {
         data: {
