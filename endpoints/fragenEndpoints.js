@@ -9,6 +9,11 @@ async function getQuizes(req, res) {
 async function getCurrentQuiz(req, res) {
   body = JSON.parse(req.body);
 
+  return returnHTML(res, 200, {data: {
+    success: true,
+    body: body
+  }})
+
   switch (body.type) {
     case QuestionType.Radio:
       return returnHTML(res, 200, {
