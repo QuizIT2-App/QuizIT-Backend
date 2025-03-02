@@ -7,14 +7,7 @@ async function getQuizes(req, res) {
 }
 
 async function getCurrentQuiz(req, res) {
-  
-
-  return res.status(200).json({
-    success: true,
-  
-});
-
-  /* switch (body.type) {
+  switch (JSON.parse(req.body).type) {
     case QuestionType.Radio:
       return returnHTML(res, 200, {
         data: {
@@ -104,7 +97,7 @@ async function getCurrentQuiz(req, res) {
       });
     default:
       return returnHTML(res, 400, { error: "Invalid question type" });
-  } */
+  }
 }
 
 module.exports = {
