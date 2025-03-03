@@ -1,5 +1,6 @@
 const {returnHTML} = require("../utils/utils");
-const {dbGetQuizes, dbGetSubQuizes, dbGetQuizesByID} = require("../db/quizQueries");
+const {dbGetQuizes, dbGetSubQuizes, dbGetQuizesByID, dbStartQuiz} = require("../db/quizQueries");
+const {dbFragenFromPool, dbAddCurrentQuestion} = require("../db/fragenQueries");
 
 async function getQuizes(req, res) {
     let items = await dbGetQuizes();
@@ -22,7 +23,8 @@ async function getSubQuizes(req, res) {
 }
 
 async function startQuiz(req, res) {
-    let id = req.params.id;
+    let quizID = req.params.id;
+    let userID = req.user.id;
     let {count, timelimit } = req.body;
 
     if(!timelimit || timelimit <= 0) {
@@ -33,11 +35,22 @@ async function startQuiz(req, res) {
         count = 1;
     }
 
-    let questions = await dbGetQuizesByID(id);
+    let allQuestions = await dbFragenFromPool(quizID);
 
-    count = count > questions.length ? questions.length : count;
+    count = count > allQuestions.length ? allQuestions.length : count;
 
+    let currentQuizID = await dbStartQuiz(quizID, userID, timelimit);
 
+    let questions = new Set();
+
+    while (questions.size < count) {
+        let questionID = allQuestions[Math.floor(Math.random() * allQuestions.length)].id;
+        questions.add(questionID);
+    }
+
+    questions.forEach(questionID => {
+        dbAddCurrentQuestion(currentQuizID, questionID)
+    })
 }
 
 

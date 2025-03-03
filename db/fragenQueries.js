@@ -25,6 +25,12 @@ async function dbFragenFromPool(id) {
         throw err;
     }
 }
+
+function dbAddCurrentQuestion(currentQuizID, questionID) {
+    db.query('INSERT INTO CurrentQuestions (currentQuizID, questionID) VALUES (?,?)',[currentQuizID,questionID]);
+
+}
 module.exports = {
-    dbFragenFromPool
+    dbFragenFromPool,
+    dbAddCurrentQuestion
 }
