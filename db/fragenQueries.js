@@ -5,7 +5,7 @@ async function dbFragenFromPool(id) {
         const [result] = await db.query(
             `WITH RECURSIVE fragenDingi AS (
                 SELECT id
-                FROM Quiz
+                FROM Quizzes
                 WHERE id = ?
 
                 UNION ALL
