@@ -10,11 +10,11 @@ async function getFriendsRanking(id) {
                     THEN id2 
                     ELSE id1 
                 END AS id
-                FROM friends f1 
+                FROM Friends f1 
                 WHERE (id1 = ? OR id2 = ?) 
                 AND EXISTS 
                 (
-                    SELECT 1 FROM friends f2 
+                    SELECT 1 FROM Friends f2 
                     WHERE f1.id1 = f2.id2 
                     AND f1.id2 = f2.id1
                 )

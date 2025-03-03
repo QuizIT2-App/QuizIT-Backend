@@ -11,11 +11,11 @@ async function getFriends(id) {
                      THEN id2 
                      ELSE id1 
                  END AS id 
-                 FROM friends f1 
+                 FROM Friends f1 
                  WHERE (id1 = ? OR id2 = ?) 
                  AND EXISTS 
                  (
-                     SELECT 1 FROM friends f2 
+                     SELECT 1 FROM Friends f2 
                      WHERE f1.id1 = f2.id2 
                      AND f1.id2 = f2.id1
                  )
@@ -34,11 +34,11 @@ async function getPending(id) {
             `SELECT user.* FROM 
              (
                  SELECT DISTINCT id1 AS id 
-                 FROM friends f1 
+                 FROM Friends f1 
                  WHERE id2 = ?
                  AND NOT EXISTS 
                  (
-                     SELECT 1 FROM friends f2 
+                     SELECT 1 FROM Friends f2 
                      WHERE f1.id1 = f2.id2 
                      AND f1.id2 = f2.id1
                  )
@@ -57,11 +57,11 @@ async function getRequested(id) {
             `SELECT user.* FROM 
              (
                  SELECT DISTINCT id2 AS id 
-                 FROM friends f1 
+                 FROM Friends f1 
                  WHERE id1 = ?
                  AND NOT EXISTS 
                  (
-                     SELECT 1 FROM friends f2 
+                     SELECT 1 FROM Friends f2 
                      WHERE f1.id1 = f2.id2 
                      AND f1.id2 = f2.id1
                  )
@@ -76,14 +76,14 @@ async function getRequested(id) {
 }
 
 function addFriend(id1,id2) {
-    db.query('INSERT INTO friends(id1, id2) VALUES(?, ?)', [id1, id2], (err, result) => {
+    db.query('INSERT INTO Friends(id1, id2) VALUES(?, ?)', [id1, id2], (err, result) => {
         if(err)
             errorLog(err);
     });
 }
 
 function deleteFriend(id1, id2) {
-    db.query('DELETE FROM friends WHERE (id1 = ? AND id2 = ?) OR (id1 = ? AND id2 = ?) ', [id1, id2, id2, id1]);
+    db.query('DELETE FROM Friends WHERE (id1 = ? AND id2 = ?) OR (id1 = ? AND id2 = ?) ', [id1, id2, id2, id1]);
 }
 
 
