@@ -11,13 +11,13 @@ async function dbFragenFromPool(id) {
                 UNION ALL
 
                 SELECT quiz.id
-                FROM Quiz quiz
+                FROM Quizzes quiz
                 INNER JOIN fragenDingi fd ON quiz.sub = fd.id
             )
             SELECT f.id,q.title,f.inhalt
-            FROM Question f
+            FROM Questions f
                 INNER JOIN fragenDingi fd ON f.quiz = fd.id
-                INNER JOIN Quiz q ON f.quiz = q.id;`,
+                INNER JOIN Quizzes q ON f.quiz = q.id;`,
             [id]
         );
         return result;

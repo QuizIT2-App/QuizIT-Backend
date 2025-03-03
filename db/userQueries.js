@@ -4,7 +4,7 @@ const mysql = require("mysql2");
 async function getUserByDN(dn) {
     try {
         const [result] = await db.query(
-            `SELECT * FROM User WHERE distinguishedName = ?`,
+            `SELECT * FROM Users WHERE distinguishedName = ?`,
             [dn]
         );
         return result[0];
@@ -16,7 +16,7 @@ async function getUserByDN(dn) {
 async function getUserByID(id) {
     try {
         const [result] = await db.query(
-            `SELECT * FROM User WHERE uuid = ?`,
+            `SELECT * FROM Users WHERE uuid = ?`,
             [id]
         );
         return result[0];
@@ -26,7 +26,7 @@ async function getUserByID(id) {
 }
 
 function newUser(displayName, distinguishedName, vorname, nachname, jahrgang, klasse, abteilung, type) {
-    db.query('INSERT INTO User (displayName, distinguishedName, vorname, nachname, jahrgang, klasse, abteilung, type) VALUES (?,?,?,?,?,?,?,?)',
+    db.query('INSERT INTO Users (displayName, distinguishedName, vorname, nachname, jahrgang, klasse, abteilung, type) VALUES (?,?,?,?,?,?,?,?)',
         [displayName, distinguishedName, vorname, nachname, jahrgang, klasse, abteilung, type]);
 }
 
@@ -35,12 +35,12 @@ function updateUser(id, updates = {}) {
         .map(key => `${mysql.escapeId(key)} = ?`)
         .join(", ");
 
-    db.query(`UPDATE User SET ${toSet} WHERE uuid = ?`,
+    db.query(`UPDATE Users SET ${toSet} WHERE uuid = ?`,
         [...Object.values(updates), id]);
 }
 
 function deleteUser(id) {
-    db.query(`DELETE FROM User WHERE uuid = ?`,[id]);
+    db.query(`DELETE FROM Users WHERE uuid = ?`,[id]);
 }
 
 module.exports = {

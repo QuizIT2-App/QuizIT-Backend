@@ -20,7 +20,7 @@ async function getFriends(id) {
                      AND f1.id2 = f2.id1
                  )
              ) AS friend 
-             JOIN User user ON friend.id = user.uuid;`,
+             JOIN Users user ON friend.id = user.uuid;`,
             [id,id,id]
         );
         return result;
@@ -43,7 +43,7 @@ async function getPending(id) {
                      AND f1.id2 = f2.id1
                  )
              ) AS friend 
-             JOIN User user ON friend.id = user.uuid;`,
+             JOIN Users user ON friend.id = user.uuid;`,
             [id]
         );
         return result;
@@ -66,7 +66,7 @@ async function getRequested(id) {
                      AND f1.id2 = f2.id1
                  )
              ) AS friend 
-             JOIN User user ON friend.id = user.uuid;`,
+             JOIN Users user ON friend.id = user.uuid;`,
             [id]
         );
         return result;

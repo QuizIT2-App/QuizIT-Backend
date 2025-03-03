@@ -20,9 +20,9 @@ async function getFriendsRanking(id) {
                 )
             ) 
             AS friend 
-            JOIN User user ON friend.id = user.uuid 
+            JOIN Users user ON friend.id = user.uuid 
             UNION 
-            SELECT uuid, displayName as name, punkte, true as isme FROM User WHERE uuid = ? 
+            SELECT uuid, displayName as name, punkte, true as isme FROM Users WHERE uuid = ? 
             ORDER BY punkte DESC`,
             [id,id,id,id]
         );
@@ -35,8 +35,8 @@ async function getFriendsRanking(id) {
 async function getClassRanking(id) {
     try {
         const [result] = await db.query(
-            `SELECT uuid, displayName as name, punkte, uuid = ? as isme FROM User u
-            JOIN (SELECT jahrgang, klasse, abteilung FROM User WHERE uuid = ?) AS me
+            `SELECT uuid, displayName as name, punkte, uuid = ? as isme FROM Users u
+            JOIN (SELECT jahrgang, klasse, abteilung FROM Users WHERE uuid = ?) AS me
                 ON u.jahrgang = me.jahrgang 
                 AND u.klasse = me.klasse 
                 AND u.abteilung = me.abteilung
@@ -52,8 +52,8 @@ async function getClassRanking(id) {
 async function getDepartmentRanking(id) {
     try {
         const [result] = await db.query(
-            `SELECT uuid, displayName as name, punkte, uuid = ? as isme FROM User u
-            JOIN (SELECT abteilung FROM User WHERE uuid = ?) AS me
+            `SELECT uuid, displayName as name, punkte, uuid = ? as isme FROM Users u
+            JOIN (SELECT abteilung FROM Users WHERE uuid = ?) AS me
             WHERE u.abteilung = me.abteilung
             ORDER BY punkte DESC`,
             [id, id]
