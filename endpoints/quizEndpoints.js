@@ -24,12 +24,20 @@ async function getSubQuizes(req, res) {
 async function startQuiz(req, res) {
     let id = req.params.id;
     let {count, timelimit } = req.body;
+
     if(!timelimit || timelimit <= 0) {
-        timelimit = 60*60*24; //24h
+        timelimit = 60*60; //1h
     }
-    if(!count) {
-        count = 5;
+
+    if(!count || count <= 0) {
+        count = 1;
     }
+
+    let questions = await dbGetQuizesByID(id);
+
+    count = count > questions.length ? questions.length : count;
+
+
 }
 
 

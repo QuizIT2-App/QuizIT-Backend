@@ -165,5 +165,6 @@ router.get('/quiz', authAll, getQuizes);
  *                   example: InsufficientPermissionsError
  */
 router.get('/quiz/:id', authAll, getSubQuizes);
+router.get('/startQuiz/:id', authAll, startQuiz);
 
 module.exports = router;

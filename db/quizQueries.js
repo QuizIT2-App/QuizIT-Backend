@@ -34,6 +34,10 @@ async function dbGetQuizesByID(id) {
         throw err;
     }
 }
+
+function dbStartQuiz(quizID, userID, quizTime) {
+    db.querry('INSERT INTO CurrentQuestions (quizID, userID, quizTime) VALUES (?,?,?)', [quizID, userID, quizTime]);
+}
 module.exports = {
     dbGetQuizes,
     dbGetSubQuizes,
