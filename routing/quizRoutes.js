@@ -165,6 +165,78 @@ router.get('/quiz', authAll, getQuizes);
  *                   example: InsufficientPermissionsError
  */
 router.get('/quiz/:id', authAll, getSubQuizes);
+/**
+ * @swagger
+ * /startQuiz/{id}:
+ *   get:
+ *     summary: start quiz
+ *     description: This endpoint allows one to start a quiz
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: The ID of the quiz.
+ *     tags:
+ *       - Quiz
+ *     security:
+ *       - Authorization: [schueler, lehrer, admin]
+ *     responses:
+ *       200:
+ *         description: Successful request
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 data:
+ *                   type: integer
+ *                   example: 4
+ *
+ *       400:
+ *         description: MissingCredentialsError
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 error:
+ *                   type: string
+ *                   example: MissingCredentialsError
+ *       401:
+ *         description: JsonWebTokenError
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 error:
+ *                   type: string
+ *                   example: JsonWebTokenError
+ *       403:
+ *         description: InsufficientPermissionsError
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 error:
+ *                   type: string
+ *                   example: InsufficientPermissionsError
+ */
 router.get('/startQuiz/:id', authAll, startQuiz);
 
 module.exports = router;
