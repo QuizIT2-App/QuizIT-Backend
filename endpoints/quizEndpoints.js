@@ -51,6 +51,9 @@ async function startQuiz(req, res) {
     questions.forEach(questionID => {
         dbAddCurrentQuestion(currentQuizID, questionID)
     })
+
+    return returnHTML(res, 200, {data:"idk"})
+    // TODO austauschen durch weiterleitung an erste frage rückgabe
 }
 
 
