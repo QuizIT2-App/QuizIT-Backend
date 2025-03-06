@@ -80,10 +80,10 @@ router.get('/admin/update', authAdmin, update);
  *         in: path
  *         required: false
  *         schema:
- *           type: integer
+ *           type: string
  *         description: The location of the logs.
  *     tags:
- *       - Question
+ *       - Admin
  *     security:
  *       - Authorization: [schueler, lehrer, admin]
  *     responses:
