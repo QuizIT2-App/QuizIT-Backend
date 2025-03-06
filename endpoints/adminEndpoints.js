@@ -14,21 +14,20 @@ async function getLogs(req, res) {
     path = path.substring(path.indexOf('admin/')+6);
 
     if(!fs.existsSync(path))
-        return res.status(404).send({});
+        return returnHTML(res, 404, {error:"file does not exist"});
 
     if(!fs.statSync(path).isDirectory()) {
-        return res.status(200).send(fs.readFileSync(path));
+        return returnHTML(res, 200, {data:fs.readFileSync(path)});
     }
 
     let items = fs.readdirSync(path);
 
-    let html = '<ul>';
+    let data = "";
     items.forEach(item => {
-        html += `<li><a href="${join('/',path, item)}">${item}</a></li>`;
+        data += `${join('/',path, item)}`;
     })
-    html += '</ul>';
 
-    return res.status(200).send(html);
+    return returnHTML(res, 200, {data:data});
 }
 
 
