@@ -71,7 +71,7 @@ router.get('/admin/update', authAdmin, update);
 
 /**
  * @swagger
- * /admin/logs{location}:
+ * /admin/logs:
  *   get:
  *     summary: get logs
  *     description: This endpoint allows one to access logs
@@ -81,6 +81,7 @@ router.get('/admin/update', authAdmin, update);
  *         required: false
  *         schema:
  *           type: string
+ *           default: ""
  *         description: The location of the logs.
  *     tags:
  *       - Admin
