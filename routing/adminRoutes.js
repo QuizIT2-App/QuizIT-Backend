@@ -68,10 +68,75 @@ const {update, getLogs} = require('../endpoints/adminEndpoints');
  *                   example: InsufficientPermissionsError
  */
 router.get('/admin/update', authAdmin, update);
-
 /**
  * @swagger
  * /admin/logs:
+ *   get:
+ *     summary: get logs
+ *     description: This endpoint allows one to access logs
+ *     tags:
+ *       - Admin
+ *     security:
+ *       - Authorization: [schueler, lehrer, admin]
+ *     responses:
+ *       200:
+ *         description: Successful request
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: string
+ *                     example: "logs/07-06-2025"
+ *       400:
+ *         description: MissingCredentialsError
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 error:
+ *                   type: string
+ *                   example: MissingCredentialsError
+ *       401:
+ *         description: JsonWebTokenError
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 error:
+ *                   type: string
+ *                   example: JsonWebTokenError
+ *       403:
+ *         description: InsufficientPermissionsError
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 error:
+ *                   type: string
+ *                   example: InsufficientPermissionsError
+ */
+/**
+ * @swagger
+ * /admin/logs/{location}:
  *   get:
  *     summary: get logs
  *     description: This endpoint allows one to access logs
@@ -101,7 +166,8 @@ router.get('/admin/update', authAdmin, update);
  *                 data:
  *                   type: array
  *                   items:
- *                     $ref: '#/components/schemas/question'
+ *                     type: string
+ *                     example: "logs/07-06-2025/logs.log"
  *       400:
  *         description: MissingCredentialsError
  *         content:

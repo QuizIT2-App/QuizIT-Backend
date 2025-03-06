@@ -24,7 +24,7 @@ async function getLogs(req, res) {
 
     let data = "";
     items.forEach(item => {
-        data += `${join('/',path, item)}`;
+        data += `"${join('/',path, item)}"\n`;
     })
 
     return returnHTML(res, 200, {data:data});
