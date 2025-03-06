@@ -22,7 +22,7 @@ async function getLogs(req, res) {
 
     let items = fs.readdirSync(path);
 
-    let data = items.map(item => `"${path.join('/logs', item)}"\n`).join('');
+    let data = items.map(item => `"${join('/logs', item)}"\n`).join('');
 
     return returnHTML(res, 200, {data:data});
 }
