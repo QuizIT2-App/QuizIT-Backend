@@ -17,15 +17,12 @@ async function getLogs(req, res) {
         return returnHTML(res, 404, {error:"file does not exist"});
 
     if(!fs.statSync(path).isDirectory()) {
-        return returnHTML(res, 200, {data:fs.readFileSync(path)});
+        return returnHTML(res, 200, {data:fs.readFileSync(path, 'utf8')});
     }
 
     let items = fs.readdirSync(path);
 
-    let data = "";
-    items.forEach(item => {
-        data += `"${join('/',path, item)}"\n`;
-    })
+    let data = items.map(item => `"${path.join('/logs', item)}"\n`).join('');
 
     return returnHTML(res, 200, {data:data});
 }
