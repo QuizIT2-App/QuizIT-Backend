@@ -4,10 +4,17 @@ const { getQuizes, getCurrentQuiz } = require("../endpoints/fragenEndpoints");
 
 /**
  * @swagger
- * /question/currentquiz/:
+ * /question/currentquiz/{type}:
  *   get:
  *     summary: get current quiz questions
  *     description: This endpoint allows one to access all questions in a pool
+ *     parameters:
+ *       - name: type
+ *         in: path
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: The ID of the quiz.
  *     tags:
  *       - Question
  *     security:
