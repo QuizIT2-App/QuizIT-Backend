@@ -1,7 +1,6 @@
 const {returnHTML} = require("../utils/utils");
 const {update} = require('../utils/updateRoutine');
 const fs = require('fs');
-const {join} = require("path");
 
 
 function adminUpdate(req, res) {
@@ -17,14 +16,12 @@ async function getLogs(req, res) {
         return returnHTML(res, 404, {error:"file does not exist"});
 
     if(!fs.statSync(path).isDirectory()) {
-        return res.status(200).send(fs.readFileSync(path, 'utf8'));
+        return res.status(200).send(fs.readFileSync(path));
     }
 
     let items = fs.readdirSync(path);
 
-    let data = items.map(item => `"/logs/${item}"\n`).join('');
-
-    return returnHTML(res, 200, {data:data});
+    return returnHTML(res, 200, {data:items});
 }
 
 
