@@ -12,98 +12,75 @@ async function getCurrentQuiz(req, res) {
     case QuestionType.Radio:
       return returnHTML(res, 200, {
         data: {
-          success: true,
-          data: [
-            {
-              runId: 200,
-              question: {
-                title: "Was ist 1+1?",
-                type: QuestionType.Radio,
-                options: [
-                  { id: 1, text: "1" },
-                  { id: 2, text: "2" },
-                  { id: 3, text: "3" },
-                  { id: 4, text: "4" },
-                ],
-              },
-            },
-          ],
+          runId: 200,
+          question: {
+            title: "Was ist 1+1?",
+            type: QuestionType.Radio,
+            options: [
+              { id: 1, text: "1" },
+              { id: 2, text: "2" },
+              { id: 3, text: "3" },
+              { id: 4, text: "4" },
+            ],
+          },
         },
       });
     case QuestionType.Checkbox:
       return returnHTML(res, 200, {
         data: {
-          success: true,
-          data: [
-            {
-              runId: 200,
-              question: {
-                title: "Was ist 1+1?",
-                type: QuestionType.Checkbox,
-                options: [
-                  { id: 1, text: "1" },
-                  { id: 2, text: "2" },
-                  { id: 3, text: "3" },
-                  { id: 4, text: "4" },
-                ],
-              },
-            },
-          ],
+          runId: 200,
+          question: {
+            title: "Was ist 1+1?",
+            type: QuestionType.Checkbox,
+            options: [
+              { id: 1, text: "1" },
+              { id: 2, text: "2" },
+              { id: 3, text: "3" },
+              { id: 4, text: "4" },
+            ],
+          },
         },
       });
     case QuestionType.Number:
       return returnHTML(res, 200, {
         data: {
-          success: true,
-          data: [
-            {
-              runId: 200,
-              question: {
-                title: "Was ist 1+1?",
-                type: QuestionType.Number,
-              },
-            },
-          ],
+          runId: 200,
+          question: {
+            title: "Was ist 1+1?",
+            type: QuestionType.Number,
+          },
         },
       });
     case QuestionType.Boolean:
       return returnHTML(res, 200, {
         data: {
-          success: true,
-          data: [
-            {
-              runId: 200,
-              question: {
-                title: "Stimmt folgende Gleichung: 1+1=3?",
-                type: QuestionType.Boolean,
-              },
-            },
-          ],
+          runId: 200,
+          question: {
+            title: "Stimmt folgende Gleichung: 1+1=3?",
+            type: QuestionType.Boolean,
+          },
         },
       });
     case QuestionType.Text:
       return returnHTML(res, 200, {
         data: {
-          success: true,
-          data: [
-            {
-              runId: 200,
-              question: {
-                title: "Was versteht man unter KlamPuStri?",
-                type: QuestionType.Text,
-              },
-            },
-          ],
+          runId: 200,
+          question: {
+            title: "Was versteht man unter KlamPuStri?",
+            type: QuestionType.Text,
+          },
         },
       });
     default:
       return returnHTML(res, 400, { error: "Invalid question type" });
   }
 }
+async function setCurrentQuestionStat(req, res) {}
 
 module.exports = {
   getQuizes,
   getCurrentQuiz,
+  setCurrentQuestionStat,
 };
 
 // ? QuestionType is an enum that is used to define the type of a question.
