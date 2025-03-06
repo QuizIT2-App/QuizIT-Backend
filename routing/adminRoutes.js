@@ -69,6 +69,78 @@ const {update, getLogs} = require('../endpoints/adminEndpoints');
  */
 router.get('/admin/update', authAdmin, update);
 
+/**
+ * @swagger
+ * /admin/logs/{location}:
+ *   get:
+ *     summary: get logs
+ *     description: This endpoint allows one to access logs
+ *     parameters:
+ *       - name: location
+ *         in: path
+ *         required: false
+ *         schema:
+ *           type: integer
+ *         description: The location of the logs.
+ *     tags:
+ *       - Question
+ *     security:
+ *       - Authorization: [schueler, lehrer, admin]
+ *     responses:
+ *       200:
+ *         description: Successful request
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/question'
+ *       400:
+ *         description: MissingCredentialsError
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 error:
+ *                   type: string
+ *                   example: MissingCredentialsError
+ *       401:
+ *         description: JsonWebTokenError
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 error:
+ *                   type: string
+ *                   example: JsonWebTokenError
+ *       403:
+ *         description: InsufficientPermissionsError
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 error:
+ *                   type: string
+ *                   example: InsufficientPermissionsError
+ */
 router.get(/^\/admin\/logs(\/[^/]+)*?$/, authAdmin,getLogs);
 
 
