@@ -14,7 +14,7 @@ async function dbFragenFromPool(id) {
                 FROM Quizzes quiz
                 INNER JOIN fragenDingi fd ON quiz.sub = fd.id
             )
-            SELECT f.id,q.title,f.inhalt
+            SELECT *
             FROM Questions f
                 INNER JOIN fragenDingi fd ON f.quiz = fd.id
                 INNER JOIN Quizzes q ON f.quiz = q.id;`,
