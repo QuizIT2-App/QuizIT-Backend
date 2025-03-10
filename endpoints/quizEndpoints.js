@@ -1,4 +1,4 @@
-const {returnHTML} = require("../utils/utils");
+const {returnHTML, shuffleArray} = require("../utils/utils");
 const {dbGetQuizes, dbGetSubQuizes, dbGetQuizesByID, dbStartQuiz} = require("../db/quizQueries");
 const {dbFragenFromPool, dbAddCurrentQuestion} = require("../db/fragenQueries");
 
@@ -41,19 +41,15 @@ async function startQuiz(req, res) {
 
     let currentQuizID = await dbStartQuiz(quizID, userID, timelimit);
 
-    let questions = new Set();
+    let uniqueIDs = [...new Set(allQuestions.map(q => q.id))];
 
-    while (questions.size < count) {
-        let questionID = allQuestions[Math.floor(Math.random() * allQuestions.length)].id;
-        questions.add(questionID);
-    }
+    shuffleArray(uniqueIDs);
+
+    let questions = new Set(uniqueIDs.slice(0, count));
 
     questions.forEach(questionID => {
         dbAddCurrentQuestion(currentQuizID, questionID)
     })
-
-    return returnHTML(res, 200, {data:"idk"})
-    // TODO austauschen durch weiterleitung an erste frage rückgabe
 }
 
 
