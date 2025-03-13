@@ -1,3 +1,5 @@
+const { ca } = require("date-fns/locale");
+const { getCurrentQuiz } = require("../endpoints/fragenEndpoints");
 const db = require("./db");
 
 async function dbFragenFromPool(id) {
@@ -32,5 +34,18 @@ function dbAddCurrentQuestion(currentQuizID, questionID) {
 }
 module.exports = {
     dbFragenFromPool,
-    dbAddCurrentQuestion
+    dbAddCurrentQuestion,
+    dbGetCurrentQuiz: (userID, callback) => {
+        db.query("SELECT `CurrentQuestions`.`currentInput` AS input, `CurrentQuestions`.`questionID` AS questDbId FROM `CurrentQuestions` JOIN `CurrentQuizzes` ON `CurrentQuizzes`.`id` = `CurrentQuestions`.`currentQuizID` AND `CurrentQuizzes`.`userID` = ?;",
+            [userID],
+         (error, results, fields) => {
+            if (error) {
+                console.error(error);
+                return callback(error);
+            } else {
+                return callback(null, results);
+            }
+         }
+        )
+    }
 }

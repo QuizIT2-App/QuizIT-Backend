@@ -1,5 +1,5 @@
 const { returnHTML } = require("../utils/utils");
-const { dbFragenFromPool } = require("../db/fragenQueries");
+const { dbFragenFromPool, dbGetCurrentQuiz } = require("../db/fragenQueries");
 
 async function getQuizes(req, res) {
   let items = await dbFragenFromPool(req.params.id);
@@ -12,7 +12,8 @@ async function getCurrentQuiz(req, res) {
     case QuestionType.Radio:
       return returnHTML(res, 200, {
         data: {
-          runId: 200,
+          runId: 2,
+          lenth: 5,
           question: {
             title: "Was ist 1+1?",
             type: QuestionType.Radio,
@@ -28,15 +29,16 @@ async function getCurrentQuiz(req, res) {
     case QuestionType.Checkbox:
       return returnHTML(res, 200, {
         data: {
-          runId: 200,
+          runId: 2,
+          lenth: 5,
           question: {
-            title: "Was ist 1+1?",
+            title: "Was ist 1±1?",
             type: QuestionType.Checkbox,
             options: [
               { id: 1, text: "1" },
               { id: 2, text: "2" },
               { id: 3, text: "3" },
-              { id: 4, text: "4" },
+              { id: 4, text: "0" },
             ],
           },
         },
@@ -44,7 +46,8 @@ async function getCurrentQuiz(req, res) {
     case QuestionType.Number:
       return returnHTML(res, 200, {
         data: {
-          runId: 200,
+          runId: 2,
+          lenth: 5,
           question: {
             title: "Was ist 1+1?",
             type: QuestionType.Number,
@@ -54,7 +57,8 @@ async function getCurrentQuiz(req, res) {
     case QuestionType.Boolean:
       return returnHTML(res, 200, {
         data: {
-          runId: 200,
+          runId: 2,
+          lenth: 5,
           question: {
             title: "Stimmt folgende Gleichung: 1+1=3?",
             type: QuestionType.Boolean,
@@ -64,7 +68,8 @@ async function getCurrentQuiz(req, res) {
     case QuestionType.Text:
       return returnHTML(res, 200, {
         data: {
-          runId: 200,
+          runId: 2,
+          lenth: 5,
           question: {
             title: "Was versteht man unter KlamPuStri?",
             type: QuestionType.Text,
@@ -75,11 +80,32 @@ async function getCurrentQuiz(req, res) {
       return returnHTML(res, 400, { error: "Invalid question type" });
   }
 }
-async function setCurrentQuestionStat(req, res) {}
+
+async function getCurrentQuiz1(req, res) {
+  const user = req.user.id;
+  const runId = req.params.id;
+
+  dbGetCurrentQuiz(user, (err, result) => {
+    if (err) {
+      return returnHTML(res, 500, { error: "Database error" });
+    } else {
+      return returnHTML(res, 200, { data: result });
+    }
+  });
+}
+
+async function setCurrentQuestionStat(req, res) {
+  let user = req.user.id;
+  let runId = req.params.questionid;
+
+  
+  
+}
 
 module.exports = {
   getQuizes,
   getCurrentQuiz,
+  getCurrentQuiz1,
   setCurrentQuestionStat,
 };
 

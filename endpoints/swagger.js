@@ -47,6 +47,9 @@ const options = {
       {
         url: 'https://projekte.tgm.ac.at/quizit2',
       },
+      {
+        url: 'http://localhost:3000',
+      },
     ],
     components: {
       securitySchemes: {
