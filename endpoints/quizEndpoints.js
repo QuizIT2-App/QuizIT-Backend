@@ -1,6 +1,7 @@
 const {returnHTML, shuffleArray} = require("../utils/utils");
 const {dbGetQuizes, dbGetSubQuizes, dbGetQuizesByID, dbStartQuiz} = require("../db/quizQueries");
 const {dbFragenFromPool, dbAddCurrentQuestion} = require("../db/fragenQueries");
+const {log} = require("../utils/logger");
 
 async function getQuizes(req, res) {
     let items = await dbGetQuizes();
@@ -42,6 +43,8 @@ async function startQuiz(req, res) {
     let currentQuizID = await dbStartQuiz(quizID, userID, timelimit);
 
     let uniqueIDs = [...new Set(allQuestions.map(q => q.id))];
+
+    log(uniqueIDs);
 
     shuffleArray(uniqueIDs);
 
