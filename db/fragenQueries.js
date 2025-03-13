@@ -3,9 +3,9 @@ const { getCurrentQuiz } = require("../endpoints/fragenEndpoints");
 const db = require("./db");
 
 async function dbFragenFromPool(id) {
-    try {
-        const [result] = await db.query(
-            `WITH RECURSIVE fragenDingi AS (
+  try {
+    const [result] = await db.query(
+      `WITH RECURSIVE fragenDingi AS (
                 SELECT id
                 FROM Quizzes
                 WHERE id = ?
@@ -20,32 +20,35 @@ async function dbFragenFromPool(id) {
             FROM Questions f
                 INNER JOIN fragenDingi fd ON f.quiz = fd.id
                 INNER JOIN Quizzes q ON f.quiz = q.id;`,
-            [id]
-        );
-        return result;
-    } catch (err) {
-        throw err;
-    }
+      [id]
+    );
+    return result;
+  } catch (err) {
+    throw err;
+  }
 }
 
 function dbAddCurrentQuestion(currentQuizID, questionID) {
-    db.query('INSERT INTO CurrentQuestions (currentQuizID, questionID) VALUES (?,?)',[currentQuizID,questionID]);
-
+  db.query(
+    "INSERT INTO CurrentQuestions (currentQuizID, questionID) VALUES (?,?)",
+    [currentQuizID, questionID]
+  );
 }
 module.exports = {
-    dbFragenFromPool,
-    dbAddCurrentQuestion,
-    dbGetCurrentQuiz: (userID, callback) => {
-        db.query("SELECT `CurrentQuestions`.`currentInput` AS input, `CurrentQuestions`.`questionID` AS questDbId FROM `CurrentQuestions` JOIN `CurrentQuizzes` ON `CurrentQuizzes`.`id` = `CurrentQuestions`.`currentQuizID` AND `CurrentQuizzes`.`userID` = ?;",
-            [userID],
-         (error, results, fields) => {
-            if (error) {
-                console.error(error);
-                return callback(error);
-            } else {
-                return callback(null, results);
-            }
-         }
-        )
-    }
-}
+  dbFragenFromPool,
+  dbAddCurrentQuestion,
+  dbGetCurrentQuiz: (userID, callback) => {
+    db.query(
+      "SELECT `CurrentQuestions`.`currentInput` AS input, `CurrentQuestions`.`questionID` AS questDbId FROM `CurrentQuestions` JOIN `CurrentQuizzes` ON `CurrentQuizzes`.`id` = `CurrentQuestions`.`currentQuizID` AND `CurrentQuizzes`.`userID` = ?;",
+      [userID],
+      (error, results, fields) => {
+        if (error) {
+          console.error(error);
+          return callback(error);
+        } else {
+          return callback(null, results);
+        }
+      }
+    );
+  },
+};
