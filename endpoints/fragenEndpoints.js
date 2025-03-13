@@ -83,23 +83,25 @@ async function getCurrentQuiz(req, res) {
 
 async function getCurrentQuiz1(req, res) {
   const user = req.user.id;
-  const runId = req.params.id;
-
-  dbGetCurrentQuiz(user, (err, result) => {
-    if (err) {
-      return returnHTML(res, 500, { error: "Database error" });
-    } else {
-      return returnHTML(res, 200, { data: result });
-    }
-  });
+  console.log(user);
+  //const runId = req.params.id;
+  try {
+    await dbGetCurrentQuiz(user, (error, results) => {
+      if (error) {
+        return returnHTML(res, 500, { error: error });
+      } else {
+        return returnHTML(res, 200, { data: results });
+      }
+    });
+  } catch (error) {
+    console.log(error);
+    return returnHTML(res, 500, { error: error });
+  }
 }
 
 async function setCurrentQuestionStat(req, res) {
   let user = req.user.id;
   let runId = req.params.questionid;
-
-  
-  
 }
 
 module.exports = {
