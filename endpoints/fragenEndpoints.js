@@ -87,7 +87,9 @@ async function getCurrentQuiz1(req, res) {
   log(user);
   //const runId = req.params.id;
   try {
+    log("try started");
     dbGetCurrentQuiz(user, (error, results) => {
+      log("callback started");
       if (error) {
         return returnHTML(res, 500, { error: error });
       }
