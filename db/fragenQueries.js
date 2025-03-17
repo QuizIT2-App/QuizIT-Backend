@@ -1,4 +1,5 @@
 const { ca } = require("date-fns/locale");
+const { errorLog, log } = require("../utils/logger");
 const db = require("./db");
 
 async function dbFragenFromPool(id) {
@@ -42,10 +43,10 @@ module.exports = {
       [userID],
       (error, results, fields) => {
         if (error) {
-          console.error(error);
+          errorLog(error);
           return callback(error);
         } else {
-            console.log(results);
+            log(results);
           return callback(null, results);
         }
       }
