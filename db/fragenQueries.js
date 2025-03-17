@@ -38,6 +38,7 @@ module.exports = {
   dbFragenFromPool,
   dbAddCurrentQuestion,
   dbGetCurrentQuiz: async (userID, callback) => {
+    log("in the function");
     db.query(
       "SELECT `CurrentQuestions`.`currentInput` AS input, `CurrentQuestions`.`questionID` AS questDbId FROM `CurrentQuestions` JOIN `CurrentQuizzes` ON `CurrentQuizzes`.`id` = `CurrentQuestions`.`currentQuizID` AND `CurrentQuizzes`.`userID` = ?;",
       [userID],
