@@ -1,5 +1,6 @@
 const { returnHTML } = require("../utils/utils");
 const { dbFragenFromPool, dbGetCurrentQuiz } = require("../db/fragenQueries");
+const { errorLog, log } = require("../utils/logger");
 
 async function getQuizes(req, res) {
   let items = await dbFragenFromPool(req.params.id);
@@ -83,18 +84,17 @@ async function getCurrentQuiz(req, res) {
 
 async function getCurrentQuiz1(req, res) {
   const user = req.user.id;
-  console.log(user);
+  log(user);
   //const runId = req.params.id;
   try {
-    await dbGetCurrentQuiz(user, (error, results) => {
+    dbGetCurrentQuiz(user, (error, results) => {
       if (error) {
         return returnHTML(res, 500, { error: error });
-      } else {
-        return returnHTML(res, 200, { data: results });
       }
+      return returnHTML(res, 200, { data: results });
     });
   } catch (error) {
-    console.log(error);
+    errorLog(error);
     return returnHTML(res, 500, { error: error });
   }
 }
