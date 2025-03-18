@@ -39,17 +39,19 @@ module.exports = {
   dbAddCurrentQuestion,
   dbGetCurrentQuiz: async (userID, callback) => {
     log("in the function");
+    try {
     const [results] = await db.query(
-      "SELECT `CurrentQuestions`.`currentInput` AS input, `CurrentQuestions`.`questionID` AS questDbId FROM `CurrentQuestions` JOIN `CurrentQuizzes` ON `CurrentQuizzes`.`id` = `CurrentQuestions`.`currentQuizID` AND `CurrentQuizzes`.`userID` = ?;",
+      "SELECT `CurrentQuestions`.`currentInput` AS input, `CurrentQuestions`.`questionID` AS questDbId, `Questions`.`type` AS questionType, `Questions`.`title` AS questionTitle FROM `CurrentQuestions` JOIN `CurrentQuizzes` ON `CurrentQuizzes`.`id` = `CurrentQuestions`.`currentQuizID` AND `CurrentQuizzes`.`userID` = ? JOIN `Questions` ON `Questions`.`id` = `CurrentQuestions`.`questionID`;",
       [userID]
     );
-
-    if (!results) {
-      errorLog("DB Error");
-      return callback("DB Error");
-    } else {
-      log(results);
-      return callback(null, results);
+    if (results.length === 0) {
+      return callback("No Data", null);
+    }
+    log(results);
+    return callback(null, results);
+    } catch (error) {
+      errorLog(error);
+      return callback(error, null);
     }
   },
 };
