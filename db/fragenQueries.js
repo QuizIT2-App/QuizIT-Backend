@@ -1,6 +1,7 @@
 const { ca } = require("date-fns/locale");
 const { errorLog, log } = require("../utils/logger");
 const db = require("./db");
+const e = require("express");
 
 async function dbFragenFromPool(id) {
   try {
@@ -49,6 +50,18 @@ module.exports = {
     }
     log(results);
     return callback(null, results);
+    } catch (error) {
+      errorLog(error);
+      return callback(error, null);
+    }
+  },
+  dbGetCurrentQuizOptions: async (questionId, callback) => {
+    try {
+      const [results] = await db.query("SELECT * FROM `QuestionOptions` WHERE `questionId` = ?", [questionId]);
+      if (results.length === 0) {
+        return callback("No Data", null);
+      }
+      return callback(null, results);
     } catch (error) {
       errorLog(error);
       return callback(error, null);

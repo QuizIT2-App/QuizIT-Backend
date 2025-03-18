@@ -1,5 +1,5 @@
 const { returnHTML } = require("../utils/utils");
-const { dbFragenFromPool, dbGetCurrentQuiz } = require("../db/fragenQueries");
+const { dbFragenFromPool, dbGetCurrentQuiz, dbGetCurrentQuizOptions } = require("../db/fragenQueries");
 const { errorLog, log } = require("../utils/logger");
 
 async function getQuizes(req, res) {
@@ -84,13 +84,65 @@ async function getCurrentQuiz(req, res) {
 
 async function getCurrentQuiz1(req, res) {
   const user = req.user.id;
+  const runId = req.params.id;
   log(user);
-  //const runId = req.params.id;
   try {
     log("try started");
     dbGetCurrentQuiz(user, (error, results) => {
-      log("callback started");
-      return returnHTML(res, 200, { data: results });
+      /**
+       * [
+        {
+            "input": null,
+            "questDbId": 1,
+            "questionType": "radio",
+            "questionTitle": "Was ist 1+1?"
+        },
+        {
+            "input": null,
+            "questDbId": 2,
+            "questionType": "checkbox",
+            "questionTitle": "Was ist 1±1?"
+        },
+        {
+            "input": null,
+            "questDbId": 3,
+            "questionType": "number",
+            "questionTitle": "Was ist 1+1?"
+        },
+        {
+            "input": null,
+            "questDbId": 4,
+            "questionType": "boolean",
+            "questionTitle": "Stimmt folgende Gleichung: 1+1=3?"
+        },
+        {
+            "input": null,
+            "questDbId": 5,
+            "questionType": "text",
+            "questionTitle": "Was versteht man unter KlamPuStri?"
+        }
+    ]
+       */
+      if (error) {
+        errorLog(error);
+        return returnHTML(res, 500, { error: error });
+      }
+
+      if (0 <= runId < results.lenth) {
+        return returnHTML(res, 404, { error: "RunId out of scope" });
+      }
+
+      dbGetCurrentQuizOptions(results[runId].questDbId, (error, options) => {
+        if (error) {
+          errorLog(error);
+          return returnHTML(res, 500, { error: error });
+        }
+        if (options.length === 0) {
+          return returnHTML(res, 404, { error: "No options found" });
+        }
+        results[runId].options = options;
+        return returnHTML(res, 200, { data: results });
+      });
     });
   } catch (error) {
     errorLog(error);
