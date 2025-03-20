@@ -39,7 +39,6 @@ module.exports = {
   dbFragenFromPool,
   dbAddCurrentQuestion,
   dbGetCurrentQuiz: async (userID, callback) => {
-    log("in the function");
     try {
     const [results] = await db.query(
       "SELECT `CurrentQuestions`.`currentInput` AS input, `CurrentQuestions`.`questionID` AS questDbId, `Questions`.`type` AS questionType, `Questions`.`title` AS questionTitle FROM `CurrentQuestions` JOIN `CurrentQuizzes` ON `CurrentQuizzes`.`id` = `CurrentQuestions`.`currentQuizID` AND `CurrentQuizzes`.`userID` = ? JOIN `Questions` ON `Questions`.`id` = `CurrentQuestions`.`questionID`;",

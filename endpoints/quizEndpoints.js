@@ -53,6 +53,10 @@ async function startQuiz(req, res) {
     questions.forEach(questionID => {
         dbAddCurrentQuestion(currentQuizID, questionID)
     })
+
+
+    //TODO weiterleitung
+    return returnHTML(res, 200, {data: {}})
 }
 
 

@@ -233,17 +233,10 @@ async function getCurrentQuiz1(req, res) {
           length: results.length,
           question: {
             title: results[runId].questionTitle,
-            type: QuestionType[results[runId].questionType],
-            //options: questionType === QuestionType.Checkbox || questionType === QuestionType.Radio ? options : undefined,
+            type: results[runId].questionType,
+            options: results[runId].options
           },
         }
-
-
-
-
-
-
-
         return returnHTML(res, 200, { data: craftResponse });
       });
     });
