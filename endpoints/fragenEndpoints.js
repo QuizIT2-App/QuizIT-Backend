@@ -228,7 +228,7 @@ async function getCurrentQuiz1(req, res) {
          * ?  }
          * ? };
          */
-        results[runId].options.forEach((object) => {object.isTrue = undefined})
+        results[runId].options.forEach((object) => {object.isTrue = undefined; object.questionId = undefined;});
         const craftResponse = {
           runId: runId,
           length: results.length,
