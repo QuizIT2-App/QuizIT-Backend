@@ -235,7 +235,7 @@ async function getCurrentQuiz1(req, res) {
           question: {
             title: results[runId].questionTitle,
             type: results[runId].questionType,
-            options: results[runId].questionType == "checkbox" || results[runId].questionType == "radio" ? results[runId] : undefined
+            options: results[runId].questionType == "checkbox" || results[runId].questionType == "radio" ? results[runId].options : undefined
           },
         }
         return returnHTML(res, 200, { data: craftResponse });
