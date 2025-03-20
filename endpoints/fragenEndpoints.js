@@ -141,7 +141,110 @@ async function getCurrentQuiz1(req, res) {
           return returnHTML(res, 404, { error: "No options found" });
         }
         results[runId].options = options;
-        return returnHTML(res, 200, { data: results });
+
+        /**
+         * Example response:
+         * {
+         *  "success": true,
+         *  "data": [
+         *    {
+         *      "input": null,
+         *      "questDbId": 1,
+         *      "questionType": "radio",
+         *      "questionTitle": "Was ist 1+1?"
+         *    },
+         *    {
+         *      "input": null,
+         *      "questDbId": 2,
+         *      "questionType": "checkbox",
+         *      "questionTitle": "Was ist 1±1?",
+         *      "options": [
+         *        {
+         *          "id": 5,
+         *          "questionId": 2,
+         *          "key": "1",
+         *          "isTrue": 0
+         *        },
+         *        {
+         *          "id": 6,
+         *          "questionId": 2,
+         *          "key": "2",
+         *          "isTrue": 1
+         *        },
+         *        {
+         *          "id": 7,
+         *          "questionId": 2,
+         *          "key": "3",
+         *          "isTrue": 0
+         *        },
+         *        {
+         *          "id": 8,
+         *          "questionId": 2,
+         *          "key": "0",
+         *          "isTrue": 1
+         *        }
+         *      ]
+         *    },
+         *    {
+         *    "input": null,
+         *    "questDbId": 3,
+         *    "questionType": "number",
+         *    "questionTitle": "Was ist 1+1?"
+         *    },
+         *    {
+         *      "input": null,
+         *      "questDbId": 4,
+         *      "questionType": "boolean",
+         *      "questionTitle": "Stimmt folgende Gleichung: 1+1=3?"
+         *    },
+         *    {
+         *      "input": null,
+         *      "questDbId": 5,
+         *      "questionType": "text",
+         *      "questionTitle": "Was versteht man unter KlamPuStri?"
+         *    }
+         *  ]
+         * }
+         * 
+         * 
+         * * ----------------------------
+         * ! Bring the data in the following format
+         * 
+         * ? {
+         * ?  success: true,
+         * ?  data: {
+         * ?    runId: *,
+         * ?    length: *,
+         * ?    question: {
+         * ?      title: "*******",
+         * ?      type: QuestionType.****,
+         * ?      options: [
+         * ?        { id: *, text: "*" },
+         * ?        { id: *, text: "*" },
+         * ?        { id: *, text: "*" },
+         * ?        { id: *, text: "*" }
+         * ?      ]
+         * ?    }
+         * ?  }
+         * ? };
+         */
+        const craftResponse = {
+          runId: runId,
+          length: results.length,
+          question: {
+            title: results[runId].questionTitle,
+            type: QuestionType[results[runId].questionType],
+            //options: questionType === QuestionType.Checkbox || questionType === QuestionType.Radio ? options : undefined,
+          },
+        }
+
+
+
+
+
+
+
+        return returnHTML(res, 200, { data: craftResponse });
       });
     });
   } catch (error) {
@@ -170,10 +273,15 @@ const QuestionType = {
   Number: 2,
   Boolean: 3,
   Text: 4,
+  Ratio: "radio",
+  Checkbox: "checkbox",
+  Number: "number",
+  Boolean: "boolean",
+  Text: "text",
 };
 
 /*
-// Format für Radio Input
+ ? Format für Radio Input
 {
     success: true,
     data: {
@@ -191,7 +299,7 @@ const QuestionType = {
     }
 };
 
-// Format für Checkbox Input
+ ? Format für Checkbox Input
 {
     success: true,
     data: {
@@ -209,7 +317,7 @@ const QuestionType = {
     }
 };
 
-// Format für Number Input
+ ? Format für Number Input
 {
     success: true,
     data: {
@@ -222,7 +330,7 @@ const QuestionType = {
     }
 };
 
-// Format für Boolean Input
+ ? Format für Boolean Input
 {
     success: true,
     data: {
@@ -234,7 +342,7 @@ const QuestionType = {
     }
 };
 
-// Format für Text Input (optional)
+ ? Format für Text Input (optional)
 {
     success: true,
     data: {
