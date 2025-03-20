@@ -228,13 +228,14 @@ async function getCurrentQuiz1(req, res) {
          * ?  }
          * ? };
          */
+        results[runId].options.forEach((object) => {object.isTrue = undefined})
         const craftResponse = {
           runId: runId,
           length: results.length,
           question: {
             title: results[runId].questionTitle,
             type: results[runId].questionType,
-            options: results[runId].questionType == "checkbox" || results[runId].questionType == "radio" ? results[runId].options.forEach((object) => {object.isTrue = undefined}) : undefined
+            options: results[runId].questionType == "checkbox" || results[runId].questionType == "radio" ? results[runId] : undefined
           },
         }
         return returnHTML(res, 200, { data: craftResponse });
