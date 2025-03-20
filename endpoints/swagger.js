@@ -45,10 +45,10 @@ const options = {
     ],
     servers: [
       {
-        url: 'https://projekte.tgm.ac.at/quizit2',
+        url: 'http://localhost:3000',
       },
       {
-        url: 'http://localhost:3000',
+        url: 'https://projekte.tgm.ac.at/quizit2',
       },
     ],
     components: {
