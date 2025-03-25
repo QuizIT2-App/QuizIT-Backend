@@ -45,6 +45,9 @@ const options = {
     ],
     servers: [
       {
+        url: 'https://tgmquizit.gordlby.com/',
+      },
+      {
         url: 'http://localhost:3000',
       },
       {
