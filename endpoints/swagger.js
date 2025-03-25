@@ -5,7 +5,7 @@ const options = {
   definition: {
     openapi: '3.0.0',
     info: {
-      title: 'QuizIT API',
+      title: 'QuizIT APIx',
       version: '1.0.0',
       description: 'API documentation for the QuizIT project',
     },
