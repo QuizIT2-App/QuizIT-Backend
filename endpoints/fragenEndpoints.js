@@ -6,7 +6,7 @@ async function getQuizes(req, res) {
   let items = await dbFragenFromPool(req.params.id);
   return returnHTML(res, 200, { data: items });
 }
-
+/* 
 async function getCurrentQuiz(req, res) {
   var type = parseInt(req.params.type, 10);
   switch (type) {
@@ -80,9 +80,9 @@ async function getCurrentQuiz(req, res) {
     default:
       return returnHTML(res, 400, { error: "Invalid question type" });
   }
-}
+} */
 
-async function getCurrentQuiz1(req, res) {
+async function getCurrentQuiz(req, res) {
   const user = req.user.id;
   const runId = req.params.id;
   log(user);
@@ -255,7 +255,6 @@ async function setCurrentQuestionStat(req, res) {
 module.exports = {
   getQuizes,
   getCurrentQuiz,
-  getCurrentQuiz1,
   setCurrentQuestionStat,
 };
 

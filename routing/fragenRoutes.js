@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const { authAll, authLA, authAdmin } = require("./validation");
-const { getQuizes, getCurrentQuiz, getCurrentQuiz1, setCurrentQuestionStat } = require("../endpoints/fragenEndpoints");
+const { getQuizes, getCurrentQuiz, setCurrentQuestionStat } = require("../endpoints/fragenEndpoints");
 
 /**
  * @swagger
@@ -106,16 +106,16 @@ const { getQuizes, getCurrentQuiz, getCurrentQuiz1, setCurrentQuestionStat } = r
  *                   type: string
  *                   example: InsufficientPermissionsError
  */
-router.get("/question/currentquiz/:type", authAll, getCurrentQuiz);
-
+/* router.get("/question/currentquiz/:type", authAll, getCurrentQuiz);
+ */
 /**
  * @swagger
- * /question/currentquiz/{type}:
+ * /question/currentquiz/{id}:
  *   get:
  *     summary: get current quiz questions
  *     description: This endpoint allows one to access all questions in a pool
  *     parameters:
- *       - name: type
+ *       - name: id
  *         in: path
  *         required: true
  *         schema:
@@ -212,7 +212,7 @@ router.get("/question/currentquiz/:type", authAll, getCurrentQuiz);
  *                   type: string
  *                   example: InsufficientPermissionsError
  */
-router.get("/question/currentquiz1/:id", authAll, getCurrentQuiz1);
+router.get("/question/currentquiz/:id", authAll, getCurrentQuiz);
 
 /**
  * @swagger
