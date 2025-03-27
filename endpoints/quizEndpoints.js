@@ -2,6 +2,7 @@ const { returnHTML, shuffleArray } = require("../utils/utils");
 const { dbGetQuizes, dbGetSubQuizes, dbGetQuizesByID, dbStartQuiz } = require("../db/quizQueries");
 const { dbFragenFromPool, dbAddCurrentQuestion } = require("../db/fragenQueries");
 const { log } = require("../utils/logger");
+const { getCurrentQuiz } = require("./fragenEndpoints");
 
 async function getQuizes(req, res) {
     dbGetQuizes((error, results) => {
@@ -76,7 +77,8 @@ async function startQuiz(req, res) {
             
     
             //TODO weiterleitung
-            return returnHTML(res, 200, { data: {} })
+            req.params.id = 0;
+            return getCurrentQuiz(req, res);
         });
         
     });
