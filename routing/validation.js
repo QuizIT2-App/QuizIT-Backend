@@ -142,7 +142,7 @@ function authenticateRole(roles) {
         console.log(results);
         console.log(roles);
         console.log(results.type);
-        let role = results.type;
+        let role = results[0].type;
         if (!roles.includes(role))
           return returnHTML(res, 403, { error: "InsufficientPermissionsError" });
   
