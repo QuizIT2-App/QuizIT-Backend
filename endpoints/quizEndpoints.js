@@ -60,6 +60,7 @@ async function startQuiz(req, res) {
             if (startQuizerror) {
                 return returnHTML(res, 500, { error: startQuizerror })
             }
+            let questions = new Set(uniqueIDs.slice(0, count));
             
             questions.forEach(questionID => {
                 dbAddCurrentQuestion(currentQuizID, questionID)
@@ -73,7 +74,6 @@ async function startQuiz(req, res) {
     
             shuffleArray(uniqueIDs);
     
-            let questions = new Set(uniqueIDs.slice(0, count));
             
     
             //TODO weiterleitung
