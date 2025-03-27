@@ -50,7 +50,7 @@ async function startQuiz(req, res) {
         count = 1;
     }
 
-    let allQuestions = await dbFragenFromPool(quizID, (allQuestionserror, allQuestions) => {
+    dbFragenFromPool(quizID, (allQuestionserror, allQuestions) => {
         if (allQuestionserror) {
             return returnHTML(res, 500, { error: allQuestionserror })
         }
@@ -60,15 +60,15 @@ async function startQuiz(req, res) {
             if (startQuizerror) {
                 return returnHTML(res, 500, { error: startQuizerror })
             }
+            let uniqueIDs = [...new Set(allQuestions.map(q => q.id))];
+            
+            count = count > allQuestions.length ? allQuestions.length : count;
+            
             let questions = new Set(uniqueIDs.slice(0, count));
             
             questions.forEach(questionID => {
                 dbAddCurrentQuestion(currentQuizID, questionID)
             })
-            
-            count = count > allQuestions.length ? allQuestions.length : count;
-            
-            let uniqueIDs = [...new Set(allQuestions.map(q => q.id))];
     
             log(uniqueIDs);
     
