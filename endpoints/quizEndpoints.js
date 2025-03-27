@@ -70,17 +70,15 @@ async function startQuiz(req, res) {
 
             let questions = new Set(uniqueIDs.slice(0, count));
 
-            Promise.all(
-                questions.forEach(questionID => {
-                    dbAddCurrentQuestion(currentQuizID, questionID)
-                })
-            ).then(
-                () => {
-                    //TODO weiterleitung
-                    req.params.id = 0;
-                    return getCurrentQuiz(req, res);
-                }
-            )
+            for (questionID of questions) {
+                dbAddCurrentQuestion(currentQuizID, questionID)
+            }
+
+            
+            //TODO weiterleitung
+            req.params.id = 0;
+            return getCurrentQuiz(req, res);
+
 
 
 
