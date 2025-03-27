@@ -77,8 +77,8 @@ async function startQuiz(req, res) {
             
     
             //TODO weiterleitung
-            //req.params.id = 0;
-            //return getCurrentQuiz(req, res);
+            req.params.id = 0;
+            return getCurrentQuiz(req, res);
         });
         
     });
