@@ -139,7 +139,7 @@ function authenticateRole(roles) {
         if (error) {
           return returnHTML(res, 500, { error: error });
         }
-        let role = results.type;
+        let roles = results.type;
         if (!roles.includes(role))
           return returnHTML(res, 403, { error: "InsufficientPermissionsError" });
   
