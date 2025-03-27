@@ -133,13 +133,19 @@ function authenticateRole(roles) {
     jwt.verify(token, jwt_key, async (err, user) => {
       if (err) return returnHTML(res, 401, { error: err.name });
 
-      let role = (await getUserByID(user.id)).type;
+      //let role = (await getUserByID(user.id)).type;
 
-      if (!roles.includes(role))
-        return returnHTML(res, 403, { error: "InsufficientPermissionsError" });
-
-      req.user = user;
-      next();
+      getUserByID(user.id, (error, results) => {
+        if (error) {
+          return returnHTML(res, 500, { error: error });
+        }
+        let role = results.type;
+        if (!roles.includes(role))
+          return returnHTML(res, 403, { error: "InsufficientPermissionsError" });
+  
+        req.user = user;
+        next();
+      });
     });
   };
 }
