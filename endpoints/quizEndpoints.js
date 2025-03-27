@@ -50,14 +50,14 @@ async function startQuiz(req, res) {
         count = 1;
     }
 
-    dbFragenFromPool(quizID, async (allQuestionserror, allQuestions) => {
+    dbFragenFromPool(quizID, (allQuestionserror, allQuestions) => {
         if (allQuestionserror) {
             return returnHTML(res, 500, { error: allQuestionserror })
         }
 
         count = count > allQuestions.length ? allQuestions.length : count;
 
-        dbStartQuiz(quizID, userID, timelimit, async (startQuizerror, currentQuizID) => {
+        dbStartQuiz(quizID, userID, timelimit, (startQuizerror, currentQuizID) => {
             if (startQuizerror) {
                 return returnHTML(res, 500, { error: startQuizerror })
             }
@@ -70,18 +70,14 @@ async function startQuiz(req, res) {
 
             let questions = new Set(uniqueIDs.slice(0, count));
 
-            Promise.all(
-                questions.map(questionID => dbAddCurrentQuestion(currentQuizID, questionID))
-            ).then(() => {
-                //TODO weiterleitung
-                req.params.id = 0;
-                return getCurrentQuiz(req, res);
-            }).catch((error) => {
-                return returnHTML(res, 500, { error: error })
-            });
+            for (questionID of questions) {
+                dbAddCurrentQuestion(currentQuizID, questionID)
+            }
 
-
-
+            
+            //TODO weiterleitung
+            req.params.id = 0;
+            return getCurrentQuiz(req, res);
 
 
 
