@@ -55,32 +55,32 @@ async function startQuiz(req, res) {
             return returnHTML(res, 500, { error: allQuestionserror })
         }
 
-        
+        count = count > allQuestions.length ? allQuestions.length : count;
+
         dbStartQuiz(quizID, userID, timelimit, (startQuizerror, currentQuizID) => {
             if (startQuizerror) {
                 return returnHTML(res, 500, { error: startQuizerror })
             }
+
             let uniqueIDs = [...new Set(allQuestions.map(q => q.id))];
-            
-            count = count > allQuestions.length ? allQuestions.length : count;
-            
+
+            log(uniqueIDs);
+
+            shuffleArray(uniqueIDs);
+
             let questions = new Set(uniqueIDs.slice(0, count));
-            
+
             questions.forEach(questionID => {
                 dbAddCurrentQuestion(currentQuizID, questionID)
             })
-    
-            log(uniqueIDs);
-    
-            shuffleArray(uniqueIDs);
-    
-            
-    
+
+
+
             //TODO weiterleitung
             req.params.id = 0;
             return getCurrentQuiz(req, res);
         });
-        
+
     });
 }
 
