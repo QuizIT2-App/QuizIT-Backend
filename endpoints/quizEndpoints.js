@@ -72,13 +72,17 @@ async function startQuiz(req, res) {
 
             questions.forEach(questionID => {
                 dbAddCurrentQuestion(currentQuizID, questionID)
-            })
+            }).then(
+                () => {
+                    //TODO weiterleitung
+                    req.params.id = 0;
+                    return getCurrentQuiz(req, res);
+                }
+            )
 
 
 
-            //TODO weiterleitung
-            req.params.id = 0;
-            return getCurrentQuiz(req, res);
+
         });
 
     });
