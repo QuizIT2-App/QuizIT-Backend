@@ -70,9 +70,11 @@ async function startQuiz(req, res) {
 
             let questions = new Set(uniqueIDs.slice(0, count));
 
-            questions.forEach(questionID => {
-                dbAddCurrentQuestion(currentQuizID, questionID)
-            }).then(
+            Promise.all(
+                questions.forEach(questionID => {
+                    dbAddCurrentQuestion(currentQuizID, questionID)
+                })
+            ).then(
                 () => {
                     //TODO weiterleitung
                     req.params.id = 0;
