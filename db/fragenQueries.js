@@ -18,11 +18,20 @@ async function dbFragenFromPool(id, callback) {
   );
 }
 
-function dbAddCurrentQuestion(currentQuizID, questionID) {
-  db.query(
-    "INSERT INTO CurrentQuestions (currentQuizID, questionID) VALUES (?,?)",
-    [currentQuizID, questionID]
-  );
+function dbAddCurrentQuestion(currentQuizID, questions, callback) {
+    const queryString = questions.map(questionID =>
+        `INSERT INTO CurrentQuestions (currentQuizID, questionID) VALUES (${currentQuizID}, ${questionID});`
+    ).join(' ');
+
+    log(queryString);
+
+    db.query(queryString,
+        [],
+        (error, results, fields) => {
+            callback();
+        }
+    );
+
 }
 module.exports = {
   dbFragenFromPool,

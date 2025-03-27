@@ -70,15 +70,10 @@ async function startQuiz(req, res) {
 
             let questions = new Set(uniqueIDs.slice(0, count));
 
-            for (questionID of questions) {
-                dbAddCurrentQuestion(currentQuizID, questionID)
-            }
-
-            
-            //TODO weiterleitung
-            req.params.id = 0;
-            return getCurrentQuiz(req, res);
-
+            dbAddCurrentQuestion(currentQuizID, questions, () => {
+                req.params.id = 0;
+                return getCurrentQuiz(req, res);
+            });
 
 
 
