@@ -1,8 +1,7 @@
 const db = require("./db");
 
-async function getFriendsRanking(id) {
-    try {
-        const [result] = await db.query(
+async function getFriendsRanking(id, callback) {
+    db.query(
             `SELECT uuid, displayName as name, punkte, false as isme FROM 
             (
                 SELECT DISTINCT 
@@ -24,44 +23,51 @@ async function getFriendsRanking(id) {
             UNION 
             SELECT uuid, displayName as name, punkte, true as isme FROM Users WHERE uuid = ? 
             ORDER BY punkte DESC`,
-            [id,id,id,id]
+            [id, id, id, id],
+            (error, results, fields) => {
+              if (error) {
+                errorLog(error);
+                return callback(error, null);
+              }
+              return callback(null, results);
+            }
         );
-        return result;
-    } catch (err) {
-        throw err;
-    }
 }
 
-async function getClassRanking(id) {
-    try {
-        const [result] = await db.query(
-            `SELECT uuid, displayName as name, punkte, uuid = ? as isme FROM Users u
+async function getClassRanking(id, callback) {
+    db.query(
+        `SELECT uuid, displayName as name, punkte, uuid = ? as isme FROM Users u
             JOIN (SELECT jahrgang, klasse, abteilung FROM Users WHERE uuid = ?) AS me
                 ON u.jahrgang = me.jahrgang 
                 AND u.klasse = me.klasse 
                 AND u.abteilung = me.abteilung
             ORDER BY punkte DESC`,
-            [id, id]
-        );
-        return result;
-    } catch (err) {
-        throw err;
-    }
+        [id, id],
+        (error, results, fields) => {
+            if (error) {
+                errorLog(error);
+                return callback(error, null);
+            }
+            return callback(null, results);
+        }
+    );
 }
 
-async function getDepartmentRanking(id) {
-    try {
-        const [result] = await db.query(
-            `SELECT uuid, displayName as name, punkte, uuid = ? as isme FROM Users u
+async function getDepartmentRanking(id, callback) {
+    db.query(
+        `SELECT uuid, displayName as name, punkte, uuid = ? as isme FROM Users u
             JOIN (SELECT abteilung FROM Users WHERE uuid = ?) AS me
             WHERE u.abteilung = me.abteilung
             ORDER BY punkte DESC`,
-            [id, id]
-        );
-        return result;
-    } catch (err) {
-        throw err;
-    }
+        [id, id],
+        (error, results, fields) => {
+            if (error) {
+                errorLog(error);
+                return callback(error, null);
+            }
+            return callback(null, results);
+        }
+    );
 }
 
 module.exports = {

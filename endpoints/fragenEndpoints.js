@@ -3,8 +3,12 @@ const { dbFragenFromPool, dbGetCurrentQuiz, dbGetCurrentQuizOptions } = require(
 const { errorLog, log } = require("../utils/logger");
 
 async function getQuizes(req, res) {
-  let items = await dbFragenFromPool(req.params.id);
-  return returnHTML(res, 200, { data: items });
+  dbFragenFromPool(req.params.id, (error, results) => {
+    if (error) {
+      return returnHTML(res, 500, { error: error });
+    }
+    return returnHTML(res, 200, { data: results });
+  });
 }
 /* 
 async function getCurrentQuiz(req, res) {
@@ -89,40 +93,42 @@ async function getCurrentQuiz(req, res) {
   try {
     log("try started");
     dbGetCurrentQuiz(user, (error, results) => {
+
       /**
        * [
-        {
-            "input": null,
-            "questDbId": 1,
-            "questionType": "radio",
-            "questionTitle": "Was ist 1+1?"
-        },
-        {
-            "input": null,
-            "questDbId": 2,
-            "questionType": "checkbox",
-            "questionTitle": "Was ist 1±1?"
-        },
-        {
-            "input": null,
-            "questDbId": 3,
-            "questionType": "number",
-            "questionTitle": "Was ist 1+1?"
-        },
-        {
-            "input": null,
-            "questDbId": 4,
-            "questionType": "boolean",
-            "questionTitle": "Stimmt folgende Gleichung: 1+1=3?"
-        },
-        {
-            "input": null,
-            "questDbId": 5,
-            "questionType": "text",
-            "questionTitle": "Was versteht man unter KlamPuStri?"
-        }
-    ]
+       * {
+       *     "input": null,
+       *     "questDbId": 1,
+       *     "questionType": "radio",
+       *     "questionTitle": "Was ist 1+1?"
+       * },
+       * {
+       *     "input": null,
+       *     "questDbId": 2,
+       *     "questionType": "checkbox",
+       *     "questionTitle": "Was ist 1±1?"
+       * },
+       * {
+       *     "input": null,
+       *     "questDbId": 3,
+       *     "questionType": "number",
+       *     "questionTitle": "Was ist 1+1?"
+       * },
+       * {
+       *     "input": null,
+       *     "questDbId": 4,
+       *     "questionType": "boolean",
+       *     "questionTitle": "Stimmt folgende Gleichung: 1+1=3?"
+       * },
+       * {
+       *     "input": null,
+       *     "questDbId": 5,
+       *     "questionType": "text",
+       *     "questionTitle": "Was versteht man unter KlamPuStri?"
+       * }
+       * ]
        */
+      
       if (error) {
         errorLog(error);
         return returnHTML(res, 500, { error: error });
@@ -228,7 +234,7 @@ async function getCurrentQuiz(req, res) {
          * ?  }
          * ? };
          */
-        results[runId].options.forEach((object) => {object.isTrue = undefined; object.questionId = undefined;});
+        results[runId].options.forEach((object) => { object.isTrue = undefined; object.questionId = undefined; });
         const craftResponse = {
           runId: runId,
           length: results.length,

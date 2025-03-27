@@ -1,28 +1,32 @@
 const db = require("./db");
 const mysql = require("mysql2");
 
-async function getUserByDN(dn) {
-    try {
-        const [result] = await db.query(
-            `SELECT * FROM Users WHERE distinguishedName = ?`,
-            [dn]
-        );
-        return result[0];
-    } catch (err) {
-        throw err;
-    }
+async function getUserByDN(dn, callback) {
+    db.query(
+        `SELECT * FROM Users WHERE distinguishedName = ?`,
+        [dn],
+        (error, results, fields) => {
+            if (error) {
+                errorLog(error);
+                return callback(error, null);
+            }
+            return callback(null, results);
+        }
+    );
 }
 
-async function getUserByID(id) {
-    try {
-        const [result] = await db.query(
-            `SELECT * FROM Users WHERE uuid = ?`,
-            [id]
-        );
-        return result[0];
-    } catch (err) {
-        throw err;
-    }
+async function getUserByID(id, callback) {
+    db.query(
+        `SELECT * FROM Users WHERE uuid = ?`,
+        [id],
+        (error, results, fields) => {
+            if (error) {
+                errorLog(error);
+                return callback(error, null);
+            }
+            return callback(null, results);
+        }
+    );
 }
 
 function newUser(displayName, distinguishedName, vorname, nachname, jahrgang, klasse, abteilung, type) {
@@ -40,7 +44,7 @@ function updateUser(id, updates = {}) {
 }
 
 function deleteUser(id) {
-    db.query(`DELETE FROM Users WHERE uuid = ?`,[id]);
+    db.query(`DELETE FROM Users WHERE uuid = ?`, [id]);
 }
 
 module.exports = {

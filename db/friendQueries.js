@@ -1,10 +1,9 @@
 const db = require("./db");
-const {errorLog} = require("../utils/logger");
+const { errorLog } = require("../utils/logger");
 
-async function getFriends(id) {
-    try {
-        const [result] = await db.query(
-            `SELECT user.* FROM 
+async function getFriends(id, callback) {
+    db.query(
+        `SELECT user.* FROM 
              (
                  SELECT DISTINCT 
                      CASE WHEN id1 = ? 
@@ -21,17 +20,20 @@ async function getFriends(id) {
                  )
              ) AS friend 
              JOIN Users user ON friend.id = user.uuid;`,
-            [id,id,id]
-        );
-        return result;
-    } catch (err) {
-        throw err;
-    }
+        [id, id, id],
+        (error, results, fields) => {
+            if (error) {
+                errorLog(error);
+                return callback(error, null);
+            }
+            return callback(null, results);
+        }
+    );
 }
-async function getPending(id) {
-    try {
-        const [result] = await db.query(
-            `SELECT user.* FROM 
+
+async function getPending(id, callback) {
+    db.query(
+        `SELECT user.* FROM 
              (
                  SELECT DISTINCT id1 AS id 
                  FROM Friends f1 
@@ -44,17 +46,20 @@ async function getPending(id) {
                  )
              ) AS friend 
              JOIN Users user ON friend.id = user.uuid;`,
-            [id]
-        );
-        return result;
-    } catch (err) {
-        throw err;
-    }
+        [id],
+        (error, results, fields) => {
+            if (error) {
+                errorLog(error);
+                return callback(error, null);
+            }
+            return callback(null, results);
+        }
+    );
 }
-async function getRequested(id) {
-    try {
-        const [result] = await db.query(
-            `SELECT user.* FROM 
+
+async function getRequested(id, callback) {
+    db.query(
+        `SELECT user.* FROM 
              (
                  SELECT DISTINCT id2 AS id 
                  FROM Friends f1 
@@ -67,23 +72,39 @@ async function getRequested(id) {
                  )
              ) AS friend 
              JOIN Users user ON friend.id = user.uuid;`,
-            [id]
-        );
-        return result;
-    } catch (err) {
-        throw err;
-    }
+        [id],
+        (error, results, fields) => {
+            if (error) {
+                errorLog(error);
+                return callback(error, null);
+            }
+            return callback(null, results);
+        }
+    );
 }
 
-function addFriend(id1,id2) {
-    db.query('INSERT INTO Friends(id1, id2) VALUES(?, ?)', [id1, id2], (err, result) => {
-        if(err)
-            errorLog(err);
-    });
+function addFriend(id1, id2) {
+    db.query(
+        'INSERT INTO Friends(id1, id2) VALUES(?, ?)',
+        [id1, id2],
+        (error, results, fields) => {
+            if (error) {
+                errorLog(error);
+            }
+        }
+    );
 }
 
 function deleteFriend(id1, id2) {
-    db.query('DELETE FROM Friends WHERE (id1 = ? AND id2 = ?) OR (id1 = ? AND id2 = ?) ', [id1, id2, id2, id1]);
+    db.query(
+        'DELETE FROM Friends WHERE (id1 = ? AND id2 = ?) OR (id1 = ? AND id2 = ?) ',
+        [id1, id2, id2, id1],
+        (error, results, fields) => {
+            if (error) {
+                errorLog(error);
+            }
+        }
+    );
 }
 
 

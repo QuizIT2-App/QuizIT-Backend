@@ -2,18 +2,30 @@ const {getFriendsRanking, getClassRanking, getDepartmentRanking} = require("../d
 const {returnHTML} = require("../utils/utils");
 
 async function getSelfFriendsRanking(req, res) {
-    let items = await getFriendsRanking(req.user.id);
-    return returnHTML(res, 200, {data:items});
+    getFriendsRanking(req.user.id, (error, results) => {
+        if (error) {
+            return returnHTML(res, 500, { error: error })
+        }
+        return returnHTML(res, 200, { data: results });
+    });
 }
 
 async function getSelfClassRanking(req, res) {
-    let items = await getClassRanking(req.user.id);
-    return returnHTML(res, 200, {data:items});
+    getClassRanking(req.user.id, (error, results) => {
+        if (error) {
+            return returnHTML(res, 500, { error: error })
+        }
+        return returnHTML(res, 200, { data: results });
+    });
 }
 
 async function getSelfDepartmentRanking(req, res) {
-    let items = await getDepartmentRanking(req.user.id);
-    return returnHTML(res, 200, {data:items});
+    getDepartmentRanking(req.user.id, (error, results) => {
+        if (error) {
+            return returnHTML(res, 500, { error: error })
+        }
+        return returnHTML(res, 200, { data: results });
+    });
 }
 
 
