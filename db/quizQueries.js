@@ -1,6 +1,6 @@
 const db = require("./db");
 
-async function dbGetQuizes(callback) {
+async function dbGetQuizzes(callback) {
     db.query(
         `SELECT q.id, q.sub, q.title, q.description, EXISTS(SELECT s.id FROM Quizzes s WHERE s.sub = q.id) as hasChildren FROM Quizzes q WHERE sub IS NULL`,
         (error, results, fields) => {
@@ -13,7 +13,7 @@ async function dbGetQuizes(callback) {
     );
 }
 
-async function dbGetSubQuizes(id, callback) {
+async function dbGetSubQuizzes(id, callback) {
     db.query(
         `SELECT q.id, q.sub, q.title, q.description, EXISTS(SELECT s.id FROM Quizzes s WHERE s.sub = q.id) as hasChildren FROM Quizzes q WHERE sub=?`,
         [id],
@@ -27,7 +27,7 @@ async function dbGetSubQuizes(id, callback) {
     );
 }
 
-async function dbGetQuizesByID(id, callback) {
+async function dbGetQuizzesByID(id, callback) {
     db.query(
         `SELECT q.id, q.sub, q.title, q.description, EXISTS(SELECT s.id FROM Quizzes s WHERE s.sub = q.id) as hasChildren FROM Quizzes q WHERE id=?`,
         [id],
@@ -85,9 +85,9 @@ async function dbGetAllQuizzes(callback) {
 }
 
 module.exports = {
-    dbGetQuizes,
-    dbGetSubQuizes,
-    dbGetQuizesByID,
+    dbGetQuizzes,
+    dbGetSubQuizzes,
+    dbGetQuizzesByID,
     dbStartQuiz,
     dbGetAllQuizzes
 }

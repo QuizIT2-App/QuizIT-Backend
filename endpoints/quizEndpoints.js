@@ -1,11 +1,11 @@
 const { returnHTML, shuffleArray } = require("../utils/utils");
-const { dbGetQuizes, dbGetSubQuizes, dbGetQuizesByID, dbStartQuiz, dbAllGetQuizzes } = require("../db/quizQueries");
+const { dbGetQuizzes, dbGetSubQuizzes, dbGetQuizzesByID, dbStartQuiz, dbAllGetQuizzes } = require("../db/quizQueries");
 const { dbFragenFromPool, dbAddCurrentQuestion } = require("../db/fragenQueries");
 const { log } = require("../utils/logger");
 const { getCurrentQuiz } = require("./fragenEndpoints");
 
-async function getQuizes(req, res) {
-    dbGetQuizes((error, results) => {
+async function getQuizzes(req, res) {
+    dbGetQuizzes((error, results) => {
         if (error) {
             return returnHTML(res, 500, { error: error })
         }
@@ -13,14 +13,14 @@ async function getQuizes(req, res) {
     });
 }
 
-async function getSubQuizes(req, res) {
+async function getSubQuizzes(req, res) {
     let id = req.params.id;
 
-    dbGetSubQuizes(id, (suberror, subresults) => {
+    dbGetSubQuizzes(id, (suberror, subresults) => {
         if (suberror) {
             return returnHTML(res, 500, { error: suberror })
         }
-        dbGetQuizesByID(id, (quizerror, quizresults) => {
+        dbGetQuizzesByID(id, (quizerror, quizresults) => {
             if (quizerror) {
                 return returnHTML(res, 500, { error: quizerror })
             }
@@ -92,7 +92,7 @@ async function getAnswers(req, res) {
 }
 
 async function getAllQuizzes(req, res) {
-    dbAllGetQuizes((error, results) => {
+    dbAllGetQuizzes((error, results) => {
         if (error) {
             return returnHTML(res, 500, { error: error })
         }
@@ -101,8 +101,8 @@ async function getAllQuizzes(req, res) {
 }
 
 module.exports = {
-    getQuizes,
-    getSubQuizes,
+    getQuizzes,
+    getSubQuizzes,
     startQuiz,
     getAnswers,
     getAllQuizzes
