@@ -29,7 +29,7 @@ async function dbGetSubQuizes(id, callback) {
 
 async function dbGetQuizesByID(id, callback) {
     db.query(
-        `SELECT * FROM Quizzes WHERE id=?`,
+        `SELECT q.id, q.sub, q.title, q.description, EXISTS(SELECT s.id FROM Quizzes s WHERE s.sub = q.id) as hasChildren FROM Quizzes q WHERE id=?`,
         [id],
         (error, results, fields) => {
             if (error) {
@@ -70,9 +70,24 @@ async function dbStartQuiz(quizID, userID, quizTime, callback) {
         );
     });
 }
+
+async function dbGetAllQuizzes(callback) {
+    db.query(
+        `SELECT * FROM Quizzes`,
+        (error, results, fields) => {
+            if (error) {
+                errorLog(error);
+                return callback(error, null);
+            }
+            return callback(null, results);
+        }
+    );
+}
+
 module.exports = {
     dbGetQuizes,
     dbGetSubQuizes,
     dbGetQuizesByID,
-    dbStartQuiz
+    dbStartQuiz,
+    dbGetAllQuizzes
 }
