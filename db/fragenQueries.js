@@ -26,9 +26,12 @@ function dbAddCurrentQuestion(currentQuizID, questions, callback) {
     log(queryString);
 
     db.query(queryString,
-        [],
         (error, results, fields) => {
-            callback();
+          if (error) {
+            errorLog(error);
+            return callback(error, null);
+          }
+          return callback(null, results);
         }
     );
 
