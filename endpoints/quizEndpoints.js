@@ -1,5 +1,5 @@
 const { returnHTML, shuffleArray } = require("../utils/utils");
-const { dbGetQuizes, dbGetSubQuizes, dbGetQuizesByID, dbStartQuiz } = require("../db/quizQueries");
+const { dbGetQuizes, dbGetSubQuizes, dbGetQuizesByID, dbStartQuiz, dbAllGetQuizzes } = require("../db/quizQueries");
 const { dbFragenFromPool, dbAddCurrentQuestion } = require("../db/fragenQueries");
 const { log } = require("../utils/logger");
 const { getCurrentQuiz } = require("./fragenEndpoints");
@@ -87,10 +87,23 @@ async function startQuiz(req, res) {
     });
 }
 
+async function getAnswers(req, res) {
 
+}
+
+async function getAllQuizzes(req, res) {
+    dbAllGetQuizes((error, results) => {
+        if (error) {
+            return returnHTML(res, 500, { error: error })
+        }
+        return returnHTML(res, 200, { data: results })
+    });
+}
 
 module.exports = {
     getQuizes,
     getSubQuizes,
-    startQuiz
+    startQuiz,
+    getAnswers,
+    getAllQuizzes
 };

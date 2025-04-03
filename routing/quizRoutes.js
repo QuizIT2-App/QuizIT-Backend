@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const {authAll, authLA, authAdmin} = require('./validation');
-const {getQuizes, getSubQuizes, startQuiz} = require("../endpoints/quizEndpoints");
+const {getAllQuizzes, getQuizzes, getSubQuizzes, startQuiz, getAnswers} = require("../endpoints/quizEndpoints");
 /**
  * @swagger
  * /quiz:
@@ -77,7 +77,7 @@ const {getQuizes, getSubQuizes, startQuiz} = require("../endpoints/quizEndpoints
  *                   type: string
  *                   example: InsufficientPermissionsError
  */
-router.get('/quiz', authAll, getQuizes);
+router.get('/quiz', authAll, getQuizzes);
 /**
  * @swagger
  * /quiz/{id}:
@@ -164,7 +164,7 @@ router.get('/quiz', authAll, getQuizes);
  *                   type: string
  *                   example: InsufficientPermissionsError
  */
-router.get('/quiz/:id', authAll, getSubQuizes);
+router.get('/quiz/:id', authAll, getSubQuizzes);
 /**
  * @swagger
  * /startQuiz/{id}:
@@ -238,5 +238,9 @@ router.get('/quiz/:id', authAll, getSubQuizes);
  *                   example: InsufficientPermissionsError
  */
 router.get('/startQuiz/:id', authAll, startQuiz);
+
+router.get('/getAnswers', authAll, getAnswers);
+
+router.get('/getAllQuizzes', authAll, getAllQuizzes);
 
 module.exports = router;

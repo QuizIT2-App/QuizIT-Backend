@@ -2,7 +2,7 @@ const db = require("./db");
 
 async function dbGetQuizes(callback) {
     db.query(
-        `SELECT * FROM Quizzes WHERE sub IS NULL`,
+        `SELECT q.id, q.sub, q.title, q.description, EXISTS(SELECT s.id FROM Quizzes s WHERE s.sub = q.id) as hasChildren FROM Quizzes q WHERE sub IS NULL`,
         (error, results, fields) => {
             if (error) {
                 errorLog(error);
@@ -15,7 +15,7 @@ async function dbGetQuizes(callback) {
 
 async function dbGetSubQuizes(id, callback) {
     db.query(
-        `SELECT * FROM Quizzes WHERE sub=?`,
+        `SELECT q.id, q.sub, q.title, q.description, EXISTS(SELECT s.id FROM Quizzes s WHERE s.sub = q.id) as hasChildren FROM Quizzes q WHERE sub=?`,
         [id],
         (error, results, fields) => {
             if (error) {
