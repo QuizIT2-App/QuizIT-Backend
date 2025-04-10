@@ -237,7 +237,7 @@ router.get('/quiz/:id', authAll, getSubQuizzes);
  *                   type: string
  *                   example: InsufficientPermissionsError
  */
-router.get('/startQuiz/:id', authAll, startQuiz);
+router.post('/startQuiz/:id', authAll, startQuiz);
 
 router.get('/getAnswers', authAll, getAnswers);
 
