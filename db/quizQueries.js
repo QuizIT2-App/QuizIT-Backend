@@ -42,6 +42,8 @@ async function dbGetQuizzesByID(id, callback) {
 }
 
 async function dbStartQuiz(quizID, userID, quizTime, callback) {
+    db.query("DELETE FROM CurrentQuizzes WHERE userID = ?", userID)
+
     db.getConnection(async (error, connection) => {
         if (error) {
             errorLog(error);
