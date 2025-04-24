@@ -112,12 +112,12 @@ async function closeOpenQuizzes(user, callback) {
                     errorLog(insertResulterror);
                     return callback(insertResulterror, null);
                 }
-                connection.query(`SELECT LAST_INSERT_ID() AS quizResultsID`,
+                connection.query(`SELECT LAST_INSERT_ID() AS asd`,
                     (lastIdResulterror, lastIdResult, insertResultfields) => {
                         if (lastIdResulterror) {
                             errorLog(lastIdResulterror);
                         }
-                        resultid = lastIdResult[0].quizResultsID;
+                        resultid = lastIdResult[0].asd;
                         connection.commit();
                         connection.release();
                     })
@@ -135,9 +135,11 @@ async function closeOpenQuizzes(user, callback) {
                 return callback(error, null);
             }
             quizid = results[0].id;
-            log(quizid);
         }
     );
+
+    log("quizid"+quizid);
+    log("resultid"+resultid);
 
 
     db.query(
