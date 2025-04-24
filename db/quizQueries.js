@@ -87,7 +87,7 @@ async function dbGetAllQuizzes(callback) {
     );
 }
 
-async function closeOpenQuizzes(user, callback) {
+async function closeOpenQuizzes(user, callback1) {
     const conn = (user, callback) =>
         db.getConnection(async (error, connection) => {
             if (error) {
@@ -162,7 +162,7 @@ async function closeOpenQuizzes(user, callback) {
             }
         );
 
-    const del = (user,callback) =>
+    const del = (user, callback) =>
         db.query(
         `DELETE FROM CurrentQuizzes WHERE userID = ?`,
         [user],
@@ -174,25 +174,23 @@ async function closeOpenQuizzes(user, callback) {
         }
     );
 
-    conn(user,
-        (error) => {
-            if(error)
-                return callback(error, null);
-            getID(user, (error2)=>{
-                if(error2)
-                    return callback(error2, null);
-                insertquestions(resultid, quizid, (error3)=> {
-                    if (error3)
-                        return callback(error3, null);
-                    del(user, (error4) => {
-                        if (error4)
-                            return callback(error4, null);
-                        callback();
-                    })
-                })
-            })
+    conn(user,(error) => {
+        if(error)
+            return callback1(error, null);
+        getID(user, (error2)=>{
+            if(error2)
+                return callback1(error2, null);
+            insertquestions(resultid, quizid, (error3)=> {
+                if (error3)
+                    return callback1(error3, null);
+                del(user, (error4) => {
+                    if (error4)
+                        return callback1(error4, null);
+                    callback1();
+                });
+            });
         });
-
+    });
 }
 
 async function dbAddQuiz(title, description, sub, callback) {
