@@ -116,7 +116,7 @@ async function closeOpenQuizzes(user, callback1) {
                                 errorLog(lastIdResulterror);
                                 callback2(lastIdResulterror);
                             }
-                            const resultid = lastIdResult;
+                            const resultid = lastIdResult.asd;
                             log("result id "+resultid);
                             connection.commit();
                             connection.release();
