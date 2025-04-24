@@ -168,7 +168,7 @@ router.get('/quiz/:id', authAll, getSubQuizzes);
 /**
  * @swagger
  * /startQuiz/{id}:
- *   get:
+ *   post:
  *     summary: start quiz
  *     description: This endpoint allows one to start a quiz
  *     parameters:

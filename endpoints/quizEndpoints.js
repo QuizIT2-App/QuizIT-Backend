@@ -1,5 +1,5 @@
 const { returnHTML, shuffleArray } = require("../utils/utils");
-const { dbGetQuizzes, dbGetSubQuizzes, dbGetQuizzesByID, dbStartQuiz, dbAllGetQuizzes, dbAddQuiz } = require("../db/quizQueries");
+const { dbGetQuizzes, dbGetSubQuizzes, dbGetQuizzesByID, dbStartQuiz, dbAllGetQuizzes, dbAddQuiz, closeOpenQuizzes} = require("../db/quizQueries");
 const { dbFragenFromPool, dbAddCurrentQuestion } = require("../db/fragenQueries");
 const { log } = require("../utils/logger");
 const { getCurrentQuiz } = require("./fragenEndpoints");
@@ -89,7 +89,12 @@ async function startQuiz(req, res) {
 
 async function endQuiz(req, res) {
     let user = req.user.id;
-
+    await closeOpenQuizzes(user, (error, results) => {
+        if (error) {
+            return returnHTML(res, 500, { error: error })
+        }
+        return returnHTML(res, 200, { data: "" })
+    });
 }
 
 async function getAllQuizzes(req, res) {
@@ -128,5 +133,4 @@ module.exports = {
     getAllQuizzes,
     addQuiz,
     endQuiz,
-    getAllQuizzes
 };
