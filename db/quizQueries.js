@@ -120,7 +120,7 @@ async function closeOpenQuizzes(user, callback1) {
                             log("result id "+resultid);
                             connection.commit();
                             connection.release();
-                            callback2();
+                            callback2(null, resultid);
                         })
                 }
             );
@@ -136,7 +136,7 @@ async function closeOpenQuizzes(user, callback1) {
             }
             const quizid = results[0].id;
             log("quizid "+quizid);
-            callback3();
+            callback3(null,quizid);
         }
     );
 
@@ -175,12 +175,14 @@ async function closeOpenQuizzes(user, callback1) {
         }
     );
 
-    conn(user,(error) => {
+    conn(user,(error, result1) => {
         if(error)
             return callback1(error, null);
-        getID(user, (error2)=>{
+        const resultid = result1;
+        getID(user, (error2, result2)=>{
             if(error2)
                 return callback1(error2, null);
+            const quizid = result2;
             insertquestions(resultid, quizid, (error3)=> {
                 if (error3)
                     return callback1(error3, null);
