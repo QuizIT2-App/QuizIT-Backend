@@ -116,7 +116,7 @@ async function closeOpenQuizzes(user, callback) {
                         if (lastIdResulterror) {
                             errorLog(lastIdResulterror);
                         }
-                        resultid = lastIdResult.asd;
+                        resultid = lastIdResult;
                         connection.commit();
                         connection.release();
                     })
@@ -133,7 +133,7 @@ async function closeOpenQuizzes(user, callback) {
                 errorLog(error);
                 return callback(error, null);
             }
-            quizid = results[0].id;
+            quizid = results;
         }
     );
 
