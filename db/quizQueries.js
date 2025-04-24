@@ -88,11 +88,11 @@ async function dbGetAllQuizzes(callback) {
 }
 
 async function closeOpenQuizzes(user, callback1) {
-    const conn = (user, callback) =>
+    const conn = (user, callback2) =>
         db.getConnection(async (error, connection) => {
             if (error) {
                 errorLog(error);
-                return callback(error, null);
+                return callback2(error, null);
             }
             connection.beginTransaction();
             connection.query(
@@ -108,39 +108,40 @@ async function closeOpenQuizzes(user, callback1) {
                 (insertResulterror, insertResult, insertResultfields) => {
                     if (insertResulterror) {
                         errorLog(insertResulterror);
-                        return callback(insertResulterror, null);
+                        return callback2(insertResulterror, null);
                     }
                     connection.query(`SELECT LAST_INSERT_ID() AS asd`,
                         (lastIdResulterror, lastIdResult, insertResultfields) => {
                             if (lastIdResulterror) {
                                 errorLog(lastIdResulterror);
+                                callback2(lastIdResulterror);
                             }
                             const resultid = lastIdResult;
                             log("result id "+resultid);
                             connection.commit();
                             connection.release();
-                            callback();
+                            callback2();
                         })
                 }
             );
         });
 
-    const getID = (callback) => db.query(
+    const getID = (callback3) => db.query(
         `SELECT id FROM CurrentQuizzes WHERE userID = ?`,
         [user],
         (error, results, fields) => {
             if (error) {
                 errorLog(error);
-                return callback(error, null);
+                return callback3(error, null);
             }
             const quizid = results[0].id;
             log("quizid "+quizid);
-            callback();
+            callback3();
         }
     );
 
 
-    const insertquestions = (resultid, quizid, callback) =>
+    const insertquestions = (resultid, quizid, callback4) =>
         db.query(
             `
                 INSERT INTO QuestionResults (resultID, questionID, answer)
@@ -156,20 +157,20 @@ async function closeOpenQuizzes(user, callback1) {
             (error, results, fields) => {
                 if (error) {
                     errorLog(error);
-                    return callback(error, null);
+                    return callback4(error, null);
                 }
-                callback();
+                callback4();
             }
         );
 
-    const del = (user, callback) =>
+    const del = (user, callback5) =>
         db.query(
         `DELETE FROM CurrentQuizzes WHERE userID = ?`,
         [user],
         (error, results, fields) => {
             if (error) {
                 errorLog(error);
-                return callback(error, null);
+                return callback5(error, null);
             }
         }
     );
