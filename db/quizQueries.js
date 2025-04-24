@@ -1,5 +1,5 @@
 const db = require("./db");
-const {errorLog} = require("../utils/logger");
+const {errorLog, log} = require("../utils/logger");
 
 async function dbGetQuizzes(callback) {
     db.query(
@@ -134,7 +134,8 @@ async function closeOpenQuizzes(user, callback) {
                 errorLog(error);
                 return callback(error, null);
             }
-            quizid = results[0];
+            quizid = results[0]
+            log(quizid);
         }
     );
 
