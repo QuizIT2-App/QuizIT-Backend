@@ -137,21 +137,11 @@ async function closeOpenQuizzes(user, callback) {
             quizid = results[0].id;
         }
     );
-    db.query(
-        `DELETE FROM CurrentQuizzes WHERE userID = ?`,
-        [user],
-        (error, results, fields) => {
-            if (error) {
-                errorLog(error);
-                return callback(error, null);
-            }
-        }
-    );
 
 
     db.query(
         `
-            INSERT INTO QuestionResults (resultID,questionID, answer)
+            INSERT INTO QuestionResults (resultID, questionID, answer) 
             SELECT
               ?,
               questionID,
@@ -161,6 +151,17 @@ async function closeOpenQuizzes(user, callback) {
             WHERE currentQuizID = ?;
         `,
         [resultid, quizid],
+        (error, results, fields) => {
+            if (error) {
+                errorLog(error);
+                return callback(error, null);
+            }
+        }
+    );
+
+    db.query(
+        `DELETE FROM CurrentQuizzes WHERE userID = ?`,
+        [user],
         (error, results, fields) => {
             if (error) {
                 errorLog(error);
