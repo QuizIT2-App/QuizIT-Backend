@@ -126,7 +126,7 @@ async function closeOpenQuizzes(user, callback1) {
             );
         });
 
-    const getID = (callback3) => db.query(
+    const getID = (user, callback3) => db.query(
         `SELECT id FROM CurrentQuizzes WHERE userID = ?`,
         [user],
         (error, results, fields) => {
