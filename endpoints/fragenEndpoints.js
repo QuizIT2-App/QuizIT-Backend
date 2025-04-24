@@ -128,7 +128,7 @@ async function getCurrentQuiz(req, res) {
        * }
        * ]
        */
-      
+
       if (error) {
         errorLog(error);
         return returnHTML(res, 500, { error: error });
@@ -253,15 +253,30 @@ async function getCurrentQuiz(req, res) {
   }
 }
 
-async function setCurrentQuestionStat(req, res) {
+/* async function setCurrentQuestionStat(req, res) {
   let user = req.user.id;
   let runId = req.params.questionid;
-}
+} */
 
 module.exports = {
   getQuizes,
   getCurrentQuiz,
-  setCurrentQuestionStat,
+  //setCurrentQuestionStat,
+  setCurrentQuestionInput: async (req,res) => {
+    let user = req.user.id;
+    let runId = req.params.id;
+    let input = req.body.input;
+    if (!input) {
+      return returnHTML(res, 400, { error: "MissingCredentialsError" });
+    }
+    dbSetCurrentQuestionInput(user, runId, input, (error, results) => {
+      if (error) {
+        errorLog(error);
+        return returnHTML(res, 500, { error: error });
+      }
+      return returnHTML(res, 200, { data: results });
+    });
+  }
 };
 
 // ? QuestionType is an enum that is used to define the type of a question.

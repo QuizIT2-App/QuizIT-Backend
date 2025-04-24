@@ -82,4 +82,22 @@ module.exports = {
       return callback(error, null);
     }
   },
+  dbSetCurrentQuestionInput: async (userID, questionID, input, callback) => {
+    try {
+      db.query(
+        "UPDATE `CurrentQuestions` SET `currentInput` = ? WHERE JOIN `CurrentQuizzes` ON `CurrentQuizzes`.`id` = `CurrentQuestions`.`currentQuizID` AND `CurrentQuizzes`.`userID` = ? JOIN `Questions` ON `Questions`.`id` = `CurrentQuestions`.`questionID` AND `CurrentQuestions`.`questionID` = ?;",
+        [input, userID, questionID],
+        (error, results, fields) => {
+          if (error) {
+            errorLog(error);
+            return callback(error, null);
+          }
+          return callback(null, results);
+        }
+      );
+    } catch (error) {
+      errorLog(error);
+      return callback(error, null);
+    }
+  }
 };

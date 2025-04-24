@@ -1,5 +1,5 @@
 const { returnHTML, shuffleArray } = require("../utils/utils");
-const { dbGetQuizzes, dbGetSubQuizzes, dbGetQuizzesByID, dbStartQuiz, dbAllGetQuizzes } = require("../db/quizQueries");
+const { dbGetQuizzes, dbGetSubQuizzes, dbGetQuizzesByID, dbStartQuiz, dbAllGetQuizzes, dbAddQuiz } = require("../db/quizQueries");
 const { dbFragenFromPool, dbAddCurrentQuestion } = require("../db/fragenQueries");
 const { log } = require("../utils/logger");
 const { getCurrentQuiz } = require("./fragenEndpoints");
@@ -38,7 +38,6 @@ async function getSubQuizzes(req, res) {
 }
 
 async function startQuiz(req, res) {
-    await endQuiz(req, res);
     let quizID = req.params.id;
     let userID = req.user.id;
     let { count, timelimit } = req.body;
@@ -102,10 +101,32 @@ async function getAllQuizzes(req, res) {
     });
 }
 
+async function addQuiz(req, res) {
+      /**   {
+        *       "quizTitle": "",
+        *       "quizDescription": "",
+        *       "quizSub": 1,
+        *   }
+        **/
+    let { quizTitle, quizDescription, quizSub } = req.body;
+    if (!quizTitle || !quizDescription || !quizSub) {
+        return returnHTML(res, 400, { error: "MissingCredentialsError" })
+    }
+    dbAddQuiz(quizTitle, quizDescription, quizSub, (error, results) => {
+        if (error) {
+            return returnHTML(res, 500, { error: error })
+        }
+        return returnHTML(res, 200, { data: results })
+    });
+
+}
+
 module.exports = {
     getQuizzes,
     getSubQuizzes,
     startQuiz,
+    getAllQuizzes,
+    addQuiz,
     endQuiz,
     getAllQuizzes
 };

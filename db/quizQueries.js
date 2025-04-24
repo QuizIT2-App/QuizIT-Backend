@@ -170,11 +170,26 @@ async function closeOpenQuizzes(user, callback) {
     );
 }
 
+async function dbAddQuiz(title, description, sub, callback) {
+    db.query(
+        "INSERT INTO `Quizzes` (`id`, `sub`, `title`, `description`) VALUES (NULL, ?, ?, ?)",
+        [title, description, sub],
+        (error, results, fields) => {
+            if (error) {
+                errorLog(error);
+                return callback(error, null);
+            }
+            return callback(null, results);
+        }
+    );
+}
+
 module.exports = {
     dbGetQuizzes,
     dbGetSubQuizzes,
     dbGetQuizzesByID,
     dbStartQuiz,
     dbGetAllQuizzes,
+    dbAddQuiz,
     closeOpenQuizzes
 }
