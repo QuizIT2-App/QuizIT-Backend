@@ -117,7 +117,7 @@ async function closeOpenQuizzes(user, callback) {
                         if (lastIdResulterror) {
                             errorLog(lastIdResulterror);
                         }
-                        resultid = lastIdResult[0].asd;
+                        resultid = lastIdResult;
                         connection.commit();
                         connection.release();
                     })
