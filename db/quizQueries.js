@@ -88,8 +88,6 @@ async function dbGetAllQuizzes(callback) {
 }
 
 async function closeOpenQuizzes(user, callback) {
-    let quizid;
-    let resultid;
 
     db.getConnection(async (error, connection) => {
         if (error) {
@@ -117,7 +115,7 @@ async function closeOpenQuizzes(user, callback) {
                         if (lastIdResulterror) {
                             errorLog(lastIdResulterror);
                         }
-                        resultid = lastIdResult.asd;
+                        const resultid = lastIdResult.asd;
                         connection.commit();
                         connection.release();
                     })
@@ -134,7 +132,7 @@ async function closeOpenQuizzes(user, callback) {
                 errorLog(error);
                 return callback(error, null);
             }
-            quizid = results[0].id;
+            const quizid = results[0].id;
         }
     );
 
