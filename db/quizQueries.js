@@ -134,7 +134,7 @@ async function closeOpenQuizzes(user, callback) {
                 errorLog(error);
                 return callback(error, null);
             }
-            quizid = results[0]
+            quizid = results[0].id;
             log(quizid);
         }
     );
