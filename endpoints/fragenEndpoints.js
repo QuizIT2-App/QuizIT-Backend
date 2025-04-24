@@ -1,5 +1,5 @@
 const { returnHTML } = require("../utils/utils");
-const { dbFragenFromPool, dbGetCurrentQuiz, dbGetCurrentQuizOptions } = require("../db/fragenQueries");
+const { dbFragenFromPool, dbGetCurrentQuiz, dbGetCurrentQuizOptions, dbSetCurrentQuestionInput } = require("../db/fragenQueries");
 const { errorLog, log } = require("../utils/logger");
 
 async function getQuizes(req, res) {
@@ -129,13 +129,13 @@ async function getCurrentQuiz(req, res) {
        * ]
        */
 
+      if (0 <= runId < results.lenth) {
+        return returnHTML(res, 404, { error: "RunId out of scope" });
+      }
+
       if (error) {
         errorLog(error);
         return returnHTML(res, 500, { error: error });
-      }
-
-      if (0 <= runId < results.lenth) {
-        return returnHTML(res, 404, { error: "RunId out of scope" });
       }
 
       dbGetCurrentQuizOptions(results[runId].questDbId, (error, options) => {
