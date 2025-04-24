@@ -1,4 +1,5 @@
 const db = require("./db");
+const {errorLog} = require("../utils/logger");
 
 async function dbGetQuizzes(callback) {
     db.query(
@@ -86,10 +87,94 @@ async function dbGetAllQuizzes(callback) {
     );
 }
 
+async function closeOpenQuizzes(user, callback) {
+    let quizid;
+    let resultid;
+
+    db.getConnection(async (error, connection) => {
+        if (error) {
+            errorLog(error);
+            return callback(error, null);
+        }
+        connection.beginTransaction();
+        connection.query(
+            `INSERT INTO QuizResults (userID, quizID, timespent)
+             SELECT
+                 userID,
+                 quizID,
+                 TIMESTAMPDIFF(SECOND, created_at, NOW())
+             FROM
+                 CurrentQuizzes
+             WHERE userID = ?;`,
+            [user],
+            (insertResulterror, insertResult, insertResultfields) => {
+                if (insertResulterror) {
+                    errorLog(insertResulterror);
+                    return callback(insertResulterror, null);
+                }
+                connection.query(`SELECT LAST_INSERT_ID() AS quizResultsID`,
+                    (lastIdResulterror, lastIdResult, insertResultfields) => {
+                        if (lastIdResulterror) {
+                            errorLog(lastIdResulterror);
+                        }
+                        resultid = lastIdResult[0].quizResultsID;
+                        connection.commit();
+                        connection.release();
+                    })
+            }
+        );
+    });
+
+
+    db.query(
+        `SELECT id FROM CurrentQuizzes WHERE userID = ?`,
+        [user],
+        (error, results, fields) => {
+            if (error) {
+                errorLog(error);
+                return callback(error, null);
+            }
+            quizid = results[0].id;
+        }
+    );
+    db.query(
+        `DELETE FROM CurrentQuizzes WHERE userID = ?`,
+        [user],
+        (error, results, fields) => {
+            if (error) {
+                errorLog(error);
+                return callback(error, null);
+            }
+        }
+    );
+
+
+    db.query(
+        `
+            INSERT INTO QuestionResults (resultID,questionID, answer)
+            SELECT
+              ?,
+              questionID,
+              currentInput
+            FROM
+               CurrentQuestions
+            WHERE currentQuizID = ?;
+        `,
+        [resultid, quizid],
+        (error, results, fields) => {
+            if (error) {
+                errorLog(error);
+                return callback(error, null);
+            }
+        }
+    );
+}
+
 module.exports = {
     dbGetQuizzes,
     dbGetSubQuizzes,
     dbGetQuizzesByID,
     dbStartQuiz,
-    dbGetAllQuizzes
+    dbGetAllQuizzes,
+    closeOpenQuizzes
 }

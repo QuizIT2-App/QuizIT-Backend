@@ -38,6 +38,7 @@ async function getSubQuizzes(req, res) {
 }
 
 async function startQuiz(req, res) {
+    await endQuiz(req, res);
     let quizID = req.params.id;
     let userID = req.user.id;
     let { count, timelimit } = req.body;
@@ -87,7 +88,8 @@ async function startQuiz(req, res) {
     });
 }
 
-async function getAnswers(req, res) {
+async function endQuiz(req, res) {
+    let user = req.user.id;
 
 }
 
@@ -104,6 +106,6 @@ module.exports = {
     getQuizzes,
     getSubQuizzes,
     startQuiz,
-    getAnswers,
+    endQuiz,
     getAllQuizzes
 };
