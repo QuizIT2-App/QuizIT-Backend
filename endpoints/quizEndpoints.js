@@ -110,7 +110,7 @@ async function getAllQuizzesSub(req, res) {
                 sub: result.sub,
                 title: result.title,
                 description: result.description,
-                children: {}
+                children: new Array()
             });
         });
 
