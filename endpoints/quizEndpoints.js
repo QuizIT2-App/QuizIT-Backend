@@ -116,6 +116,7 @@ async function getAllQuizzesSub(req, res) {
         map.forEach((item) => {
             if (item.sub != null)
                 map.get(item.sub).children.push(item);
+            log(""+item.id+ " "+item.title+ " "+item.children.length);
         });
 
         return returnHTML(res, 200, {data: map.get(req.params.id)})
