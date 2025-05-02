@@ -1,5 +1,5 @@
 const { returnHTML, shuffleArray } = require("../utils/utils");
-const { dbGetQuizzes, dbGetSubQuizzes, dbGetQuizzesByID, dbStartQuiz, dbAllGetQuizzes, dbAddQuiz, closeOpenQuizzes} = require("../db/quizQueries");
+const { dbGetQuizzes, dbGetSubQuizzes, dbGetQuizzesByID, dbStartQuiz, dbGetAllQuizzes, dbAddQuiz, closeOpenQuizzes, dbGetAllQuizzesSub} = require("../db/quizQueries");
 const { dbFragenFromPool, dbAddCurrentQuestion } = require("../db/fragenQueries");
 const { log } = require("../utils/logger");
 const { getCurrentQuiz } = require("./fragenEndpoints");
@@ -97,12 +97,40 @@ async function endQuiz(req, res) {
     });
 }
 
-async function getAllQuizzes(req, res) {
-    dbAllGetQuizzes((error, results) => {
+async function getAllQuizzesSub(req, res) {
+    await dbGetAllQuizzes((error, results) => {
         if (error) {
-            return returnHTML(res, 500, { error: error })
+            return returnHTML(res, 500, {error: error})
         }
-        return returnHTML(res, 200, { data: results })
+        let idk;
+        let mappedresults = {}
+        results.forEach((result) => {
+            mappedresults[result.id] = {
+                id: result.id,
+                sub: result.sub,
+                title: result.title,
+                description: result.description,
+                children: []
+            };
+        });
+
+        mappedresults.forEach((item) => {
+            if(item.id === req.params.id)
+                idk = item;
+            else
+                mappedresults[item.sub].children.push(item);
+        })
+
+        return returnHTML(res, 200, {data: idk})
+    })
+}
+
+async function getAllQuizzes(req, res) {
+    await dbGetAllQuizzes((error, results) => {
+        if (error) {
+            return returnHTML(res, 500, {error: error})
+        }
+        return returnHTML(res, 200, {data: results})
     });
 }
 
