@@ -114,7 +114,7 @@ async function getAllQuizzesSub(req, res) {
             };
         });
 
-        mappedresults.forEach((item) => {
+        mappedresults.values.forEach((item) => {
             if(item.id === req.params.id)
                 idk = item;
             else
@@ -122,7 +122,7 @@ async function getAllQuizzesSub(req, res) {
         });
 
         return returnHTML(res, 200, {data: idk})
-    })
+    });
 }
 
 async function getAllQuizzes(req, res) {
