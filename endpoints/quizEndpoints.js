@@ -103,7 +103,7 @@ async function getAllQuizzesSub(req, res) {
             return returnHTML(res, 500, {error: error})
         }
         let idk;
-        let mappedresults = {}
+        let mappedresults = {};
         results.forEach((result) => {
             mappedresults[result.id] = {
                 id: result.id,
@@ -119,7 +119,7 @@ async function getAllQuizzesSub(req, res) {
                 idk = item;
             else
                 mappedresults[item.sub].children.push(item);
-        })
+        });
 
         return returnHTML(res, 200, {data: idk})
     })
