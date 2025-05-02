@@ -161,4 +161,5 @@ module.exports = {
     getAllQuizzes,
     addQuiz,
     endQuiz,
+    getAllQuizzesSub
 };
