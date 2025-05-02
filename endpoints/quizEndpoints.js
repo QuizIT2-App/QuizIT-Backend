@@ -111,6 +111,7 @@ async function getAllQuizzesSub(req, res) {
                 description: result.description,
                 children: []
             };
+            log("length: "+map.length);
         });
 
         map.forEach((item) => {
