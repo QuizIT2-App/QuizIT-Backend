@@ -103,22 +103,22 @@ async function getAllQuizzesSub(req, res) {
             return returnHTML(res, 500, {error: error})
         }
         let idk;
-        let mappedresults = {};
+        let map = new Map();
         results.forEach((result) => {
-            mappedresults[result.id] = {
+            map.set(result.id, {
                 id: result.id,
                 sub: result.sub,
                 title: result.title,
                 description: result.description,
                 children: []
-            };
+            });
         });
 
-        mappedresults.values.forEach((item) => {
+        map.forEach((item) => {
             if(item.id === req.params.id)
                 idk = item;
             else
-                mappedresults[item.sub].children.push(item);
+                map.get(item.sub).children.push(item);
         });
 
         return returnHTML(res, 200, {data: idk})
