@@ -198,8 +198,8 @@ async function closeOpenQuizzes(user, callback1) {
 
 async function dbAddQuiz(title, description, sub, callback) {
     db.query(
-        "INSERT INTO `Quizzes` (`id`, `sub`, `title`, `description`) VALUES (NULL, ?, ?, ?)",
-        [title, description, sub],
+        "INSERT INTO `Quizzes` (`sub`, `title`, `description`) VALUES (?, ?, ?)",
+        [sub, title, description],
         (error, results, fields) => {
             if (error) {
                 errorLog(error);

@@ -111,13 +111,11 @@ async function getAllQuizzesSub(req, res) {
                 description: result.description,
                 children: []
             };
-            log("length: "+map.length);
         });
 
         map.forEach((item) => {
             if (item.sub != null)
                 map[item.sub].children.push(item);
-            log(""+item.id+ " "+item.title+ " "+item.children.length);
         });
 
         return returnHTML(res, 200, {data: map[req.params.id]})
