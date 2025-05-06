@@ -49,7 +49,7 @@ function deleteUser(id) {
 }
 
 function changeUserName(id,name,callback) {
-    db.query(`UPDATE Users SET name = ? WHERE uuid = ?`,
+    db.query(`UPDATE Users SET displayName = ? WHERE uuid = ?`,
         [name, id],
         (error, results, fields) => {
             if (error) {

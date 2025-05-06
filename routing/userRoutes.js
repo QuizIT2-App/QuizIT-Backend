@@ -67,7 +67,7 @@ const {getSelf, deleteSelf, putSelf} = require('../endpoints/userEndpoints');
  *                   example: InsufficientPermissionsError
  */
 router.get('/self', authAll, getSelf);
-router.put('/self', authAll, putSelf);                //TODO
+router.put('/self', authAll, putSelf);
 
 /**
  * @swagger
