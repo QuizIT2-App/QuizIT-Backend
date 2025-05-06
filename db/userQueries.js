@@ -1,5 +1,6 @@
 const db = require("./db");
 const mysql = require("mysql2");
+const {errorLog} = require("../utils/logger");
 
 async function getUserByDN(dn, callback) {
     db.query(
@@ -47,10 +48,24 @@ function deleteUser(id) {
     db.query(`DELETE FROM Users WHERE uuid = ?`, [id]);
 }
 
+function changeUserName(id,name,callback) {
+    db.query(`UPDATE Users SET name = ? WHERE uuid = ?`,
+        [name, id],
+        (error, results, fields) => {
+            if (error) {
+                errorLog(error);
+                return callback(error, null);
+            }
+            return callback(null, results);
+        }
+    )
+}
+
 module.exports = {
     getUserByDN,
     getUserByID,
     newUser,
     updateUser,
-    deleteUser
+    deleteUser,
+    changeUserName
 };

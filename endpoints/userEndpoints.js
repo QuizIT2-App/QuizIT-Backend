@@ -1,5 +1,5 @@
 const { returnHTML } = require("../utils/utils");
-const { getUserByID, deleteUser } = require('../db/userQueries');
+const { getUserByID, deleteUser, changeUserName } = require('../db/userQueries');
 
 async function getSelf(req, res) {
     getUserByID(req.user.id, (error, results) => {
@@ -13,8 +13,14 @@ async function getSelf(req, res) {
 
 }
 
-async function updateSelf(req, res) {
-    //TODO
+async function putSelf(req, res) {
+    let { name } = req.body;
+    changeUserName(req.user.id, name, (err, results) => {
+        if (err) {
+            return returnHTML(res, 500, { error: err })
+        }
+        return returnHTML(res, 200, { data: name })
+    })
 }
 
 async function deleteSelf(req, res) {
@@ -26,6 +32,6 @@ async function deleteSelf(req, res) {
 
 module.exports = {
     getSelf,
-    updateSelf,
+    putSelf,
     deleteSelf,
 };

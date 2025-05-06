@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const {authAll, authLA, authAdmin} = require('./validation');
-const {getSelf, deleteSelf} = require('../endpoints/userEndpoints');
+const {getSelf, deleteSelf, putSelf} = require('../endpoints/userEndpoints');
 
 /**
  * @swagger
@@ -67,7 +67,7 @@ const {getSelf, deleteSelf} = require('../endpoints/userEndpoints');
  *                   example: InsufficientPermissionsError
  */
 router.get('/self', authAll, getSelf);
-router.post('/self', authAll, );                //TODO
+router.put('/self', authAll, putSelf);                //TODO
 
 /**
  * @swagger
