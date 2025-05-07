@@ -135,10 +135,7 @@ async function endQuiz(req, res) {
                 }
             });
 
-            Array.from(resultsMap.values());
-
-
-            return returnHTML(res, 200, { data: results })
+            return returnHTML(res, 200, { data: Array.from(resultsMap.values()) })
         })
     });
 }
