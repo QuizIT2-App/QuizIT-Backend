@@ -216,7 +216,11 @@ function timeline(req, res) {
         if (error) {
             return returnHTML(res, 500, { error: error })
         }
-        return returnHTML(res, 200, { data: results })
+        let prettydingi;
+        results.forEach((result) => {
+            prettydingi.push(result)
+        })
+        return returnHTML(res, 200, { data: prettydingi })
     })
 
 }
