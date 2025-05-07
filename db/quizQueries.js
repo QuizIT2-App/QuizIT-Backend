@@ -178,6 +178,7 @@ async function closeOpenQuizzes(user, callback1) {
                 errorLog(error);
                 return callback5(error, null);
             }
+            callback5();
         }
     );
 
