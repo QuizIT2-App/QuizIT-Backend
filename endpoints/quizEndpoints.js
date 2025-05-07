@@ -98,7 +98,7 @@ async function endQuiz(req, res) {
                 return returnHTML(res, 500, { error: error })
             }
 
-            const resultsMap = new Map();
+            const resultsMap = [];
 
             results.forEach(row => {
                 const {
@@ -113,7 +113,7 @@ async function endQuiz(req, res) {
                     optionIsTrue
                 } = row;
 
-                let question = resultsMap.questions.find(q => q.questionID === questionID);
+                let question = resultsMap.find(q => q.questionID === questionID);
                 if (!question) {
                     question = {
                         questionID,
@@ -125,7 +125,7 @@ async function endQuiz(req, res) {
                         isAnswerCorrect: isAnswerCorrect == null ? null : Boolean(isAnswerCorrect),
                         options: []
                     };
-                    resultEntry.questions.push(question);
+                    resultsMap.push(question);
                 }
                 if (optionKey !== null && !question.options.some(o => o.key === optionKey)) {
                     question.options.push({
