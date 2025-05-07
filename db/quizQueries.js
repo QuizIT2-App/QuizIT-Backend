@@ -237,7 +237,7 @@ function getResults(quizId, callback) {
     db.query(`
             SELECT
               qr.resultID,
-              q.questionID,
+              qr.questionID,
               q.title,
               q.type,
               qr.answer           AS givenAnswer,
@@ -251,14 +251,14 @@ function getResults(quizId, callback) {
               opts.isTrue          AS optionIsTrue
             FROM QuestionResults qr 
             JOIN Questions q
-              ON qr.questionID = q.questionID
+              ON qr.questionID = qr.questionID
             LEFT JOIN QuestionOptions correctOpt
-              ON correctOpt.questionID = q.questionID
+              ON correctOpt.questionID = qr.questionID
              AND correctOpt.isTrue = 1
             LEFT JOIN QuestionOptions opts
-              ON opts.questionID = q.questionID
+              ON opts.questionID = qr.questionID
             WHERE resultID = ?
-            ORDER BY qr.resultID, q.questionID, opts.key;
+            ORDER BY qr.resultID, qr.questionID, opts.key;
           `,
         [quizId],
         (error, results, fields) => {
