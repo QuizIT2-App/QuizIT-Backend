@@ -120,6 +120,7 @@ async function closeOpenQuizzes(user, callback1) {
                                      callback2(lastIdResulterror);
                                  }
                                  const resultid = lastIdResult[0].asd;
+                                 log(lastIdResult.toString());
                                  log("result id "+resultid);
                                  connection.commit();
                                  connection.release();
@@ -139,6 +140,7 @@ async function closeOpenQuizzes(user, callback1) {
                 return callback3(error, null);
             }
             const quizid = results[0].id;
+            log(results.toString());
             log("quizid "+quizid);
             callback3(null,quizid);
         }
