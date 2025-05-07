@@ -85,10 +85,6 @@ module.exports = {
   dbSetCurrentQuestionInput: async (userID, questionID, input, callback) => {
     try {
       db.query(
-/**
- * 
- */
-
         "UPDATE `CurrentQuestions` JOIN `CurrentQuizzes` ON `CurrentQuizzes`.`id` = `CurrentQuestions`.`currentQuizID` JOIN `Questions` ON `Questions`.`id` = `CurrentQuestions`.`questionID` SET `CurrentQuestions`.`currentInput` = ? WHERE `CurrentQuizzes`.`userID` = ? AND `CurrentQuestions`.`questionID` = ?;",
         [input, userID, questionID],
         (error, results, fields) => {

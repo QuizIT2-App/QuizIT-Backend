@@ -140,7 +140,7 @@ async function addQuiz(req, res) {
         **/
     let { quizTitle, quizDescription, quizSub } = req.body;
     if (!quizTitle || !quizDescription) {
-        return returnHTML(res, 400, { error: "MissingCredentialsError" })
+        return returnHTML(res, 400, { error: "MissingParametersError" })
     }
     dbAddQuiz(quizTitle, quizDescription, quizSub, (error, results) => {
         if (error) {
