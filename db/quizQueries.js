@@ -94,36 +94,40 @@ async function closeOpenQuizzes(user, callback1) {
                 errorLog(error);
                 return callback2(error, null);
             }
-            connection.beginTransaction();
-            connection.query(
-                `INSERT INTO QuizResults (userID, quizID, timespent)
-                 SELECT
-                     userID,
-                     quizID,
-                     TIMESTAMPDIFF(SECOND, created_at, NOW())
-                 FROM
-                     CurrentQuizzes
-                 WHERE userID = ?;`,
-                [user],
-                (insertResulterror, insertResult, insertResultfields) => {
-                    if (insertResulterror) {
-                        errorLog(insertResulterror);
-                        return callback2(insertResulterror, null);
-                    }
-                    connection.query(`SELECT LAST_INSERT_ID() AS asd`,
-                        (lastIdResulterror, lastIdResult, insertResultfields) => {
-                            if (lastIdResulterror) {
-                                errorLog(lastIdResulterror);
-                                callback2(lastIdResulterror);
-                            }
-                            const resultid = lastIdResult[0].asd;
-                            log("result id "+resultid);
-                            connection.commit();
-                            connection.release();
-                            callback2(null, resultid);
-                        })
-                }
-            );
+            connection.beginTransaction(function(QueryError){
+                if(QueryError){
+                    callback1(error, null);
+                } else
+                    connection.query(
+                        `INSERT INTO QuizResults (userID, quizID, timespent)
+                         SELECT
+                             userID,
+                             quizID,
+                             TIMESTAMPDIFF(SECOND, created_at, NOW())
+                         FROM
+                             CurrentQuizzes
+                         WHERE userID = ?;`,
+                         [user],
+                         (insertResulterror, insertResult, insertResultfields) => {
+                             if (insertResulterror) {
+                                 errorLog(insertResulterror);
+                                 return callback2(insertResulterror, null);
+                             }
+                             connection.query(`SELECT LAST_INSERT_ID() AS asd`,
+                                 (lastIdResulterror, lastIdResult, insertResultfields) => {
+                                 if (lastIdResulterror) {
+                                     errorLog(lastIdResulterror);
+                                     callback2(lastIdResulterror);
+                                 }
+                                 const resultid = lastIdResult[0].asd;
+                                 log("result id "+resultid);
+                                 connection.commit();
+                                 connection.release();
+                                 callback2(null, resultid);
+                             })
+                         }
+                 );
+            });
         });
 
     const getID = (user, callback3) => db.query(
