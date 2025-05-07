@@ -278,5 +278,6 @@ module.exports = {
     dbGetAllQuizzes,
     dbAddQuiz,
     closeOpenQuizzes,
-    dbDeleteQuiz
+    dbDeleteQuiz,
+    getResults
 }
