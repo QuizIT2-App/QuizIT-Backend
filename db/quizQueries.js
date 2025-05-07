@@ -233,6 +233,43 @@ function dbDeleteQuiz(id, callback) {
     )
 }
 
+function getResults(quizId, callback) {
+    db.query(`
+            SELECT
+              qr.resultID,
+              q.questionID,
+              q.title,
+              q.type,
+              qr.answer           AS givenAnswer,
+              q.solution,
+              correctOpt.key      AS correctKey,
+              CASE
+                WHEN qr.answer = correctOpt.key THEN 1
+                ELSE 0
+              END                  AS isAnswerCorrect,
+              opts.key             AS optionKey,
+              opts.isTrue          AS optionIsTrue
+            FROM QuestionResults qr 
+            JOIN Questions q
+              ON qr.questionID = q.questionID
+            LEFT JOIN QuestionOptions correctOpt
+              ON correctOpt.questionID = q.questionID
+             AND correctOpt.isTrue = 1
+            LEFT JOIN QuestionOptions opts
+              ON opts.questionID = q.questionID
+            WHERE resultID = ?
+            ORDER BY qr.resultID, q.questionID, opts.key;
+          `,
+        [quizId],
+        (error, results, fields) => {
+            if (error) {
+                errorLog(error);
+                callback(error, null);
+            }
+            callback(null, results);
+        });
+}
+
 module.exports = {
     dbGetQuizzes,
     dbGetSubQuizzes,
