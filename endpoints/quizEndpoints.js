@@ -1,5 +1,5 @@
 const { returnHTML, shuffleArray } = require("../utils/utils");
-const { dbGetQuizzes, dbGetSubQuizzes, dbGetQuizzesByID, dbStartQuiz, dbGetAllQuizzes, dbAddQuiz, closeOpenQuizzes, dbGetAllQuizzesSub} = require("../db/quizQueries");
+const { dbGetQuizzes, dbGetSubQuizzes, dbGetQuizzesByID, dbStartQuiz, dbGetAllQuizzes, dbAddQuiz, closeOpenQuizzes, dbDeleteQuiz, dbGetAllQuizzesSub} = require("../db/quizQueries");
 const { dbFragenFromPool, dbAddCurrentQuestion } = require("../db/fragenQueries");
 const { log } = require("../utils/logger");
 const { getCurrentQuiz } = require("./fragenEndpoints");
@@ -151,6 +151,12 @@ async function addQuiz(req, res) {
 
 }
 
+function deleteQuiz(req, res) {
+    dbDeleteQuiz(req.params.id, (error, results) => {
+
+    });
+}
+
 module.exports = {
     getQuizzes,
     getSubQuizzes,
@@ -158,5 +164,6 @@ module.exports = {
     getAllQuizzes,
     addQuiz,
     endQuiz,
-    getAllQuizzesSub
+    getAllQuizzesSub,
+    deleteQuiz
 };

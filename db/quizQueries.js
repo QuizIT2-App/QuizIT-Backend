@@ -210,6 +210,19 @@ async function dbAddQuiz(title, description, sub, callback) {
     );
 }
 
+function dbDeleteQuiz(id, callback) {
+    db.query(`DELETE FROM Quizzes WHERE id=?`,
+        [id],
+        (error, results, fields) => {
+            if (error) {
+                errorLog(error);
+                return callback(error, null);
+            }
+            return callback(null, results);
+        }
+    )
+}
+
 module.exports = {
     dbGetQuizzes,
     dbGetSubQuizzes,
@@ -217,5 +230,6 @@ module.exports = {
     dbStartQuiz,
     dbGetAllQuizzes,
     dbAddQuiz,
-    closeOpenQuizzes
+    closeOpenQuizzes,
+    dbDeleteQuiz
 }
