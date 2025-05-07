@@ -191,8 +191,7 @@ async function closeOpenQuizzes(user, callback1) {
             log("2");
             if(error2)
                 return callback1(error2, null);
-            const quizid = result2;
-            insertquestions(resultid, quizid, (error3)=> {
+            insertquestions(resultid, result2, (error3)=> {
                 log("3");
                 if (error3)
                     return callback1(error3, null);
@@ -200,7 +199,7 @@ async function closeOpenQuizzes(user, callback1) {
                     log("4");
                     if (error4)
                         return callback1(error4, null);
-                    callback1(null, quizid);
+                    callback1(null, resultid);
                 });
             });
         });

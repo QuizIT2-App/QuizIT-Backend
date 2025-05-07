@@ -93,7 +93,7 @@ async function endQuiz(req, res) {
         if (error) {
             return returnHTML(res, 500, { error: error })
         }
-        return returnHTML(res, 200, { data: "" })
+        return returnHTML(res, 200, { data: results })
     });
 }
 
