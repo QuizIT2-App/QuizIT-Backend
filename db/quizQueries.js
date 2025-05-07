@@ -182,20 +182,24 @@ async function closeOpenQuizzes(user, callback1) {
     );
 
     conn(user,(error, result1) => {
+        log("1");
         if(error)
             return callback1(error, null);
         const resultid = result1;
         getID(user, (error2, result2)=>{
+            log("2");
             if(error2)
                 return callback1(error2, null);
             const quizid = result2;
             insertquestions(resultid, quizid, (error3)=> {
+                log("3");
                 if (error3)
                     return callback1(error3, null);
                 del(user, (error4) => {
+                    log("4");
                     if (error4)
                         return callback1(error4, null);
-                    callback1();
+                    callback1(null, quizid);
                 });
             });
         });
