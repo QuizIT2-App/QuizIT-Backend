@@ -241,12 +241,8 @@ function getResults(quizId, callback) {
               q.title,
               q.type,
               qr.answer           AS givenAnswer,
-              q.solution,
               correctOpt.key      AS correctKey,
-              CASE
-                WHEN qr.answer = correctOpt.key THEN 1
-                ELSE 0
-              END                  AS isAnswerCorrect,
+              qr.answer = correctOpt.key AS isAnswerCorrect,
               opts.key             AS optionKey,
               opts.isTrue          AS optionIsTrue
             FROM QuestionResults qr 
