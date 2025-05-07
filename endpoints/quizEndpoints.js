@@ -153,7 +153,10 @@ async function addQuiz(req, res) {
 
 function deleteQuiz(req, res) {
     dbDeleteQuiz(req.params.id, (error, results) => {
-
+        if (error) {
+            return returnHTML(res, 500, { error: error })
+        }
+        return returnHTML(res, 200, { data: results })
     });
 }
 
