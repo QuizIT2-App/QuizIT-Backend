@@ -1,5 +1,5 @@
 const { returnHTML, shuffleArray } = require("../utils/utils");
-const { dbGetQuizzes, dbGetSubQuizzes, dbGetQuizzesByID, dbStartQuiz, dbGetAllQuizzes, dbAddQuiz, closeOpenQuizzes, dbDeleteQuiz, dbGetAllQuizzesSub, getResults} = require("../db/quizQueries");
+const { dbGetQuizzes, dbGetSubQuizzes, dbGetQuizzesByID, dbStartQuiz, dbGetAllQuizzes, dbAddQuiz, closeOpenQuizzes,hasQuizzesOpen, dbDeleteQuiz, dbGetAllQuizzesSub, getResults} = require("../db/quizQueries");
 const { dbFragenFromPool, dbAddCurrentQuestion } = require("../db/fragenQueries");
 const { log } = require("../utils/logger");
 const { getCurrentQuiz } = require("./fragenEndpoints");
@@ -89,55 +89,63 @@ async function startQuiz(req, res) {
 
 async function endQuiz(req, res) {
     let user = req.user.id;
-    await closeOpenQuizzes(user, (error, results) => {
-        if (error) {
-            return returnHTML(res, 500, { error: error })
+    hasQuizzesOpen(user, (err, results) => {
+        if (err) {
+            return returnHTML(res, 500, { error: err })
         }
-        getResults(results, (error, results) => {
-            if (error) {
-                return returnHTML(res, 500, { error: error })
-            }
-
-            const resultsMap = [];
-
-            results.forEach(row => {
-                const {
-                    questionID,
-                    title,
-                    type,
-                    givenAnswer,
-                    solution,
-                    correctKey,
-                    isAnswerCorrect,
-                    optionKey,
-                    optionIsTrue
-                } = row;
-
-                let question = resultsMap.find(q => q.questionID === questionID);
-                if (!question) {
-                    question = {
-                        questionID,
-                        title,
-                        type,
-                        givenAnswer,
-                        ...(solution !== undefined && { solution }),
-                        correctKey,
-                        isAnswerCorrect: isAnswerCorrect == null ? null : Boolean(isAnswerCorrect),
-                        options: []
-                    };
-                    resultsMap.push(question);
+        if (results)
+            closeOpenQuizzes(user, (error, results) => {
+                if (error) {
+                    return returnHTML(res, 500, { error: error })
                 }
-                if (optionKey !== null && !question.options.some(o => o.key === optionKey)) {
-                    question.options.push({
-                        key: optionKey,
-                        isTrue: Boolean(optionIsTrue)
+                getResults(results, (error, results) => {
+                    if (error) {
+                        return returnHTML(res, 500, { error: error })
+                    }
+
+                    const resultsMap = [];
+
+                    results.forEach(row => {
+                        const {
+                            questionID,
+                            title,
+                            type,
+                            givenAnswer,
+                            solution,
+                            correctKey,
+                            isAnswerCorrect,
+                            optionKey,
+                            optionIsTrue
+                        } = row;
+
+                        let question = resultsMap.find(q => q.questionID === questionID);
+                        if (!question) {
+                            question = {
+                                questionID,
+                                title,
+                                type,
+                                givenAnswer,
+                                ...(solution !== undefined && { solution }),
+                                correctKey,
+                                isAnswerCorrect: isAnswerCorrect == null ? null : Boolean(isAnswerCorrect),
+                                options: []
+                            };
+                            resultsMap.push(question);
+                        }
+                        if (optionKey !== null && !question.options.some(o => o.key === optionKey)) {
+                            question.options.push({
+                                key: optionKey,
+                                isTrue: Boolean(optionIsTrue)
+                            });
+                        }
                     });
-                }
-            });
 
-            return returnHTML(res, 200, { data: Array.from(resultsMap.values()) })
-        })
-    });
+                    return returnHTML(res, 200, { data: Array.from(resultsMap.values()) })
+                })
+            });
+        else
+            returnHTML(res, 200, { data: "no open quizzes"});
+    })
 }
 
 async function getAllQuizzesSub(req, res) {

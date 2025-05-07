@@ -265,6 +265,17 @@ function getResults(quizId, callback) {
         });
 }
 
+function hasQuizzesOpen(user, callback) {
+    db.query('SELECT * FROM CurrentQuizzes WHERE userID = ?',
+        [user], (error, results, fields) => {
+            if (error) {
+                errorLog(error);
+                return callback(error, null);
+            }
+            callback(null, results.length>0);
+        })
+}
+
 module.exports = {
     dbGetQuizzes,
     dbGetSubQuizzes,
