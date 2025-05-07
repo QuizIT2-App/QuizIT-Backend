@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const {authAll, authLA, authAdmin} = require('./validation');
-const {getAllQuizzes, getQuizzes, getSubQuizzes, startQuiz, endQuiz, deleteQuiz, getAnswers, addQuiz, getAllQuizzesSub} = require("../endpoints/quizEndpoints");
+const {getAllQuizzes, getQuizzes, getSubQuizzes, startQuiz, endQuiz, timeline,deleteQuiz, getAnswers, addQuiz, getAllQuizzesSub} = require("../endpoints/quizEndpoints");
 /**
  * @swagger
  * /quiz:
@@ -244,6 +244,8 @@ router.get('/endQuiz', authAll, endQuiz);
 router.get('/getAllQuizzes', authLA, getAllQuizzes);
 
 router.get('/getAllQuizzes/:id', authLA, getAllQuizzesSub);
+
+router.get('/timeline', authAll, timeline);
 
 router.post('/quiz', authLA, addQuiz)
 

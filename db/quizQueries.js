@@ -276,6 +276,17 @@ function hasQuizzesOpen(user, callback) {
         })
 }
 
+function dbGetTimeline(user, callback) {
+    db.query('SELECT DISTINCT q.title FROM QuizResults qr LEFT JOIN Quizzes q ON qr.quizID = q.id WHERE userID = ?',
+        [user], (error, results, fields) => {
+            if (error) {
+                errorLog(error);
+                return callback(error, null);
+            }
+            return callback(null, results);
+        })
+}
+
 module.exports = {
     dbGetQuizzes,
     dbGetSubQuizzes,
@@ -284,6 +295,7 @@ module.exports = {
     dbGetAllQuizzes,
     dbAddQuiz,
     closeOpenQuizzes,
+    hasQuizzesOpen,
     dbDeleteQuiz,
     getResults
 }
