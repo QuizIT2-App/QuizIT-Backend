@@ -218,7 +218,7 @@ function timeline(req, res) {
         }
         const prettydingi = [];
         results.forEach((result) => {
-            prettydingi.push(result)
+            prettydingi.push(result.title)
         })
         return returnHTML(res, 200, { data: prettydingi })
     })
