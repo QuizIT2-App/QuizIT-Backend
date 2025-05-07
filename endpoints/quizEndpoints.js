@@ -216,7 +216,7 @@ function timeline(req, res) {
         if (error) {
             return returnHTML(res, 500, { error: error })
         }
-        let prettydingi;
+        const prettydingi = [];
         results.forEach((result) => {
             prettydingi.push(result)
         })
