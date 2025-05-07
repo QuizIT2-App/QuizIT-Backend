@@ -236,7 +236,6 @@ function dbDeleteQuiz(id, callback) {
 function getResults(quizId, callback) {
     db.query(`
             SELECT
-              qr.resultID,
               qr.questionID,
               q.title,
               q.type,

@@ -97,6 +97,47 @@ async function endQuiz(req, res) {
             if (error) {
                 return returnHTML(res, 500, { error: error })
             }
+
+            const resultsMap = new Map();
+
+            results.forEach(row => {
+                const {
+                    questionID,
+                    title,
+                    type,
+                    givenAnswer,
+                    solution,
+                    correctKey,
+                    isAnswerCorrect,
+                    optionKey,
+                    optionIsTrue
+                } = row;
+
+                let question = resultsMap.questions.find(q => q.questionID === questionID);
+                if (!question) {
+                    question = {
+                        questionID,
+                        title,
+                        type,
+                        givenAnswer,
+                        ...(solution !== undefined && { solution }),
+                        correctKey,
+                        isAnswerCorrect: isAnswerCorrect == null ? null : Boolean(isAnswerCorrect),
+                        options: []
+                    };
+                    resultEntry.questions.push(question);
+                }
+                if (optionKey !== null && !question.options.some(o => o.key === optionKey)) {
+                    question.options.push({
+                        key: optionKey,
+                        isTrue: Boolean(optionIsTrue)
+                    });
+                }
+            });
+
+            Array.from(resultsMap.values());
+
+
             return returnHTML(res, 200, { data: results })
         })
     });
