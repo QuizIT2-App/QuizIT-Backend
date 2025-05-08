@@ -1,5 +1,5 @@
 const { returnHTML } = require("../utils/utils");
-const { dbFragenFromPool, dbGetCurrentQuiz, dbGetCurrentQuizOptions, dbSetCurrentQuestionInput,dbAddQuestion,getQuestionsFromQuiz,
+const { dbFragenFromPool, dbGetCurrentQuiz, dbGetCurrentQuizOptions, dbDeleteQuestion,dbSetCurrentQuestionInput,dbAddQuestion,getQuestionsFromQuiz,
   addOption
 } = require("../db/fragenQueries");
 const { errorLog, log } = require("../utils/logger");
@@ -131,7 +131,7 @@ async function getCurrentQuiz(req, res) {
        * ]
        */
 
-      if (0 <= runId < results.lenth) {
+      if (0 <= runId < results.length) {
         return returnHTML(res, 404, { error: "RunId out of scope" });
       }
 
@@ -333,11 +333,21 @@ function postQuestion(req, res) {
   }
 }
 
+function deleteQuestion(req, res) {
+  dbDeleteQuestion(req.params.id, (error, result) => {
+    if (error) {
+      return returnHTML(res, 500, { error: error });
+    }
+    return returnHTML(res, 200, { data: "complete" });
+  })
+}
+
 module.exports = {
   getQuizes,
   getCurrentQuiz,
   getQuestionsQuiz,
   postQuestion,
+  deleteQuestion,
   //setCurrentQuestionStat,
   setCurrentQuestionInput: async (req,res) => {
     let user = req.user.id;

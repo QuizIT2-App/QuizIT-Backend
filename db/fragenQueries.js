@@ -85,10 +85,21 @@ function addOption(questionid, key, isTrue, callback) {
     },)
 }
 
+function dbDeleteQuestion(id, callback) {
+    db.query("DELETE FROM Questions WHERE id = ?", [id],(error, results, fields) => {
+        if (error) {
+            errorLog(error);
+            return callback(error, null);
+        }
+        return callback(null, results);
+    })
+}
+
 module.exports = {
   dbFragenFromPool,
   dbAddQuestion,
   addOption,
+  dbDeleteQuestion,
   dbAddCurrentQuestion,
     getQuestionsFromQuiz,
   dbGetCurrentQuiz: async (userID, callback) => {
