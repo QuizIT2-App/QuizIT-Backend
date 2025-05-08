@@ -262,7 +262,7 @@ function getQuestionsQuiz(req, res) {
     if (error) {
       return returnHTML(res, 500, { error: error });
     }
-    let list = [];
+    const list = [];
     results.forEach(row => {
       const {
         id,
@@ -286,6 +286,7 @@ function getQuestionsQuiz(req, res) {
         isTrue: Boolean(isTrue)
       });
     });
+    log(JSON.stringify(list))
     return returnHTML(res, 200, { data: list });
   })
 }

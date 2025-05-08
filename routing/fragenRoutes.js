@@ -393,7 +393,7 @@ router.patch("/question/currentquiz/:id", authAll, setCurrentQuestionInput);
  *                   example: InsufficientPermissionsError
  */
 //router.get("/question/:id", authLA, getQuizes);
-router.get("/question/:id",authLA,getQuestionsQuiz)
+router.get("/questions/:id",authLA,getQuestionsQuiz)
 
 
 module.exports = router;
