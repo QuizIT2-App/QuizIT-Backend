@@ -79,7 +79,7 @@ function dbAddQuestion(quiz, title, type, callback) {
 }
 
 function addOption(questionid, key, isTrue, callback) {
-    db.query("INSERT INTO QuestionOptions (questionId, key, isTrue) VALUES (?, ?, ?)", [questionid, key, isTrue], (error, results, fields) => {
+    db.query("INSERT INTO QuestionOptions (questionId, `key`, isTrue) VALUES (?, ?, ?)", [questionid, key, isTrue], (error, results, fields) => {
         if (error)
             errorLog(error);
     },)
