@@ -286,8 +286,12 @@ function getQuestionsQuiz(req, res) {
         isTrue: Boolean(isTrue)
       });
     });
-    log(JSON.stringify(list))
-    return returnHTML(res, 200, { data: list });
+    let actual = [];
+    list.forEach(row => {
+      if(row != null)
+        actual.push(row);
+    })
+    return returnHTML(res, 200, { data: actual });
   })
 }
 
