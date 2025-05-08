@@ -53,7 +53,12 @@ async function dbGetSubQuizzes(id, callback) {
 
 async function dbGetQuizzesByID(id, callback) {
     db.query(
-        `SELECT q.id, q.sub, q.title, q.description, EXISTS(SELECT s.id FROM Quizzes s WHERE s.sub = q.id) as hasChildren FROM Quizzes q WHERE id=?`,
+        `SELECT q.id, q.sub, q.title, q.description, (
+            SELECT COUNT(DISTINCT quest.id)
+            FROM Questions quest
+            WHERE quest.quiz = q.id
+        ) AS QuestionCount,
+        EXISTS(SELECT s.id FROM Quizzes s WHERE s.sub = q.id) as hasChildren FROM Quizzes q WHERE id=?`,
         [id],
         (error, results, fields) => {
             if (error) {
