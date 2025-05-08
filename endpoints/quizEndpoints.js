@@ -29,6 +29,7 @@ async function getSubQuizzes(req, res) {
                 sub: quizresults.sub,
                 title: quizresults.title,
                 description: quizresults.description,
+                QuestionCount: quizresults.QuestionCount,
                 children: subresults
             }
             return returnHTML(res, 200, { data: jsonformat })
