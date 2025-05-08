@@ -272,7 +272,7 @@ function getQuestionsQuiz(req, res) {
         isTrue
       } = row;
       let question = list[id]
-      if (question) {
+      if (!question) {
         question = {
           title,
           type,
