@@ -1,5 +1,7 @@
 const { returnHTML } = require("../utils/utils");
-const { dbFragenFromPool, dbGetCurrentQuiz, dbGetCurrentQuizOptions, dbSetCurrentQuestionInput,getQuestionsFromQuiz } = require("../db/fragenQueries");
+const { dbFragenFromPool, dbGetCurrentQuiz, dbGetCurrentQuizOptions, dbSetCurrentQuestionInput,dbAddQuestion,getQuestionsFromQuiz,
+  addOption
+} = require("../db/fragenQueries");
 const { errorLog, log } = require("../utils/logger");
 
 async function getQuizes(req, res) {
@@ -294,12 +296,48 @@ function getQuestionsQuiz(req, res) {
     return returnHTML(res, 200, { data: actual });
   })
 }
-
+function postQuestion(req, res) {
+  let {title, select, quiz} = req.body;
+  if(!title || !select || !quiz) {
+    return returnHTML(res, 500, { error: "Please enter a title & type" });
+  }
+  switch(select) {
+    case "radio":
+    case "checkbox":
+      dbAddQuestion(quiz,title, select, (error, result)=> {
+        if (error) {
+          return returnHTML(res, 500, { error: error });
+        }
+          let {options} = req.body;
+          for (let option of options) {
+            addOption(result, option.key, option.isTrue);
+          }
+          returnHTML(res, 200, { data: "complete" });
+      });
+      break;
+    case "text":
+    case "boolean":
+    case "number":
+      dbAddQuestion(quiz,title, select, (error, result)=> {
+        if (error) {
+          return returnHTML(res, 500, { error: error });
+        }
+        let {key, isTrue} = req.body;
+        addOption(result, key, isTrue)
+        returnHTML(res, 200, { data: "complete" });
+      });
+      break;
+    default:
+      return returnHTML(res, 500, { error: "type not found" });
+      break;
+  }
+}
 
 module.exports = {
   getQuizes,
   getCurrentQuiz,
   getQuestionsQuiz,
+  postQuestion,
   //setCurrentQuestionStat,
   setCurrentQuestionInput: async (req,res) => {
     let user = req.user.id;
@@ -317,6 +355,8 @@ module.exports = {
     });
   }
 };
+
+
 
 // ? QuestionType is an enum that is used to define the type of a question.
 // ? It is used in the frontend to determine the correct input field for the question.

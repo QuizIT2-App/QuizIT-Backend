@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const { authAll, authLA, authAdmin } = require("./validation");
-const { getQuizes, getCurrentQuiz, setCurrentQuestionInput,getQuestionsQuiz } = require("../endpoints/fragenEndpoints");
+const { getQuizes, getCurrentQuiz, setCurrentQuestionInput,getQuestionsQuiz, postQuestion} = require("../endpoints/fragenEndpoints");
+const {addOption} = require("../db/fragenQueries");
 
 
 /**
@@ -394,6 +395,7 @@ router.patch("/question/currentquiz/:id", authAll, setCurrentQuestionInput);
  */
 //router.get("/question/:id", authLA, getQuizes);
 router.get("/questions/:id",authLA,getQuestionsQuiz)
+router.post("/question/:id", authLA, postQuestion)
 
 
 module.exports = router;
