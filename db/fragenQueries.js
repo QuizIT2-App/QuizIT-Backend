@@ -34,11 +34,24 @@ function dbAddCurrentQuestion(currentQuizID, questions, callback) {
           return callback(null, results);
         }
     );
-
 }
+
+function getQuestionsFromQuiz(id, callback) {
+    db.query(`SELECT q.id, q.title, q.type, qopt.key, qopt.isTrue FROM Questions q LEFT JOIN QuestionOptions qopt ON q.id = qopt.questionId WHERE quiz = ?`,
+        [id],
+        (error, results, fields) => {
+            if (error) {
+                errorLog(error);
+                return callback(error, null);
+            }
+            return callback(null, results);
+        })
+}
+
 module.exports = {
   dbFragenFromPool,
   dbAddCurrentQuestion,
+    getQuestionsFromQuiz,
   dbGetCurrentQuiz: async (userID, callback) => {
     try {
       db.query(

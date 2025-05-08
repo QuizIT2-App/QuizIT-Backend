@@ -1,5 +1,5 @@
 const { returnHTML } = require("../utils/utils");
-const { dbFragenFromPool, dbGetCurrentQuiz, dbGetCurrentQuizOptions, dbSetCurrentQuestionInput } = require("../db/fragenQueries");
+const { dbFragenFromPool, dbGetCurrentQuiz, dbGetCurrentQuizOptions, dbSetCurrentQuestionInput,getQuestionsFromQuiz } = require("../db/fragenQueries");
 const { errorLog, log } = require("../utils/logger");
 
 async function getQuizes(req, res) {
@@ -257,10 +257,44 @@ async function getCurrentQuiz(req, res) {
   let user = req.user.id;
   let runId = req.params.questionid;
 } */
+function getQuestionsQuiz(req, res) {
+  getQuestionsFromQuiz(req.params.id, (error, results) => {
+    if (error) {
+      return returnHTML(res, 500, { error: error });
+    }
+    let list = [];
+    results.forEach(row => {
+      const {
+        id,
+        title,
+        type,
+        key,
+        isTrue
+      } = row;
+      let question = list[id]
+      if (question) {
+        question = {
+          title,
+          type,
+          options: []
+        };
+        list[id] = question;
+      }
+
+      list[id].options.push({
+        key: key,
+        isTrue: Boolean(isTrue)
+      });
+    });
+    return returnHTML(res, 200, { data: list });
+  })
+}
+
 
 module.exports = {
   getQuizes,
   getCurrentQuiz,
+  getQuestionsQuiz,
   //setCurrentQuestionStat,
   setCurrentQuestionInput: async (req,res) => {
     let user = req.user.id;
