@@ -395,7 +395,8 @@ router.patch("/question/currentquiz/:id", authAll, setCurrentQuestionInput);
  */
 //router.get("/question/:id", authLA, getQuizes);
 router.get("/questions/:id",authLA,getQuestionsQuiz)
-router.post("/question/:id", authLA, postQuestion)
+router.post("/question", authLA, postQuestion)
+router.delete("/question:id", authLA)
 
 
 module.exports = router;
