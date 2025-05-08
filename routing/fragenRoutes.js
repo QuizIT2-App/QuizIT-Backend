@@ -130,8 +130,19 @@ router.get("/question/currentquiz/:id", authAll, getCurrentQuiz);
  *             type: object
  *             properties:
  *               input:
- *                 type: Array
- *                 example: "New input for the question"
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *                   properties:
+ *                     key:
+ *                       type: string
+ *                     isTrue:
+ *                       type: boolean
+ *                 example:
+ *                   - key: "Option 1"
+ *                     isTrue: false
+ *                   - key: "Option 2"
+ *                     isTrue: true
  *     tags:
  *       - Question
  *     security:
