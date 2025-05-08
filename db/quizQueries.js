@@ -2,8 +2,26 @@ const db = require("./db");
 const {errorLog, log} = require("../utils/logger");
 
 async function dbGetQuizzes(callback) {
-    db.query(
-        `SELECT q.id, q.sub, q.title, q.description, EXISTS(SELECT s.id FROM Quizzes s WHERE s.sub = q.id) as hasChildren FROM Quizzes q WHERE sub IS NULL`,
+    db.query(`SELECT
+                q.id,
+                q.sub,
+                q.title,
+                q.description,
+                (
+                    SELECT COUNT(DISTINCT quest.id)
+                    FROM Questions quest
+                    WHERE quest.quiz = q.id
+                ) AS QuestionCount,
+                EXISTS (
+                    SELECT 1
+                    FROM Quizzes s
+                    WHERE s.sub = q.id
+                ) AS hasChildren
+                FROM
+                Quizzes q
+                WHERE
+                q.sub IS NULL;
+            `,
         (error, results, fields) => {
             if (error) {
                 errorLog(error);
@@ -16,7 +34,12 @@ async function dbGetQuizzes(callback) {
 
 async function dbGetSubQuizzes(id, callback) {
     db.query(
-        `SELECT q.id, q.sub, q.title, q.description, EXISTS(SELECT s.id FROM Quizzes s WHERE s.sub = q.id) as hasChildren FROM Quizzes q WHERE sub=?`,
+        `SELECT q.id, q.sub, q.title, q.description, (
+            SELECT COUNT(DISTINCT quest.id)
+            FROM Questions quest
+            WHERE quest.quiz = q.id
+        ) AS QuestionCount,
+       EXISTS(SELECT s.id FROM Quizzes s WHERE s.sub = q.id) as hasChildren FROM Quizzes q WHERE sub=?`,
         [id],
         (error, results, fields) => {
             if (error) {
