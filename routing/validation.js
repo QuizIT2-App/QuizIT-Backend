@@ -147,6 +147,7 @@ function authenticateRole(roles) {
           return returnHTML(res, 403, { error: "InsufficientPermissionsError" });
   
         req.user = user;
+        req.type = role;
         next();
       });
     });

@@ -308,7 +308,7 @@ module.exports = {
     if (!input) {
       return returnHTML(res, 400, { error: "MissingCredentialsError" });
     }
-    dbSetCurrentQuestionInput(user, runId, input, (error, results) => {
+    dbSetCurrentQuestionInput(user, runId, JSON.stringify(input), (error, results) => {
       if (error) {
         errorLog(error);
         return returnHTML(res, 500, { error: error });
