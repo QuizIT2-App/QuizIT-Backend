@@ -112,9 +112,9 @@ router.get("/question/currentquiz/:id", authAll, getCurrentQuiz);
 /**
  * @swagger
  * /question/currentquiz/{id}:
- *   get:
- *     summary: get current quiz questions
- *     description: This endpoint allows one to access all questions in a pool
+ *   patch:
+ *     summary: Update current quiz question input
+ *     description: This endpoint allows updating the input for a specific question in the current quiz.
  *     parameters:
  *       - name: id
  *         in: path
@@ -122,6 +122,27 @@ router.get("/question/currentquiz/:id", authAll, getCurrentQuiz);
  *         schema:
  *           type: integer
  *         description: The ID of the quiz.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               input:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *                   properties:
+ *                     key:
+ *                       type: string
+ *                     isTrue:
+ *                       type: boolean
+ *                 example:
+ *                   - key: "Option 1"
+ *                     isTrue: false
+ *                   - key: "Option 2"
+ *                     isTrue: true
  *     tags:
  *       - Question
  *     security:
@@ -138,41 +159,11 @@ router.get("/question/currentquiz/:id", authAll, getCurrentQuiz);
  *                   type: boolean
  *                   example: true
  *                 data:
- *                   type: array
- *                   items:
- *                     type: object
- *                     properties:
- *                       runId:
- *                         type: integer
- *                         example: 200
- *                       question:
- *                         type: object
- *                         properties:
- *                           title:
- *                             type: string
- *                             example: "Was ist 1+1?"
- *                           type:
- *                             type: integer
- *                             example: 1
- *                           options:
- *                             type: array
- *                             items:
- *                               type: object
- *                               properties:
- *                                 id:
- *                                   type: integer
- *                                 text:
- *                                   type: string
- *                               example:
- *                               - id: 1
- *                                 text: "1"
- *                               - id: 2
- *                                 text: "2"
- *                               - id: 3
- *                                 text: "3"
- *                               - id: 4
- *                                 text: "4"
- * 
+ *                   type: object
+ *                   properties:
+ *                     message:
+ *                       type: string
+ *                       example: "Question input updated successfully."
  *       400:
  *         description: MissingCredentialsError
  *         content:
