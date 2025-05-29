@@ -131,6 +131,8 @@ async function getCurrentQuiz(req, res) {
        * ]
        */
 
+      log(runId);
+      log(results.length);
       if (!(0 <= runId < results.length)) {
         return returnHTML(res, 404, { error: "RunId out of scope" });
       }
