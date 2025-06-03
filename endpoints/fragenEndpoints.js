@@ -95,6 +95,10 @@ async function getCurrentQuiz(req, res) {
   try {
     log("try started");
     dbGetCurrentQuiz(user, (error, results) => {
+      if (error) {
+        errorLog(error);
+        return returnHTML(res, 500, { error: error });
+      }
 
       /**
        * [
@@ -133,11 +137,6 @@ async function getCurrentQuiz(req, res) {
       log(results.length);
       if (!(0 <= runId && runId < results.length)) {
         return returnHTML(res, 404, { error: "RunId out of scope" });
-      }
-
-      if (error) {
-        errorLog(error);
-        return returnHTML(res, 500, { error: error });
       }
 
       dbGetCurrentQuizOptions(results[runId].questDbId, (error, options) => {
