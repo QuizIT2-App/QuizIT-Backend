@@ -91,12 +91,12 @@ async function getCurrentQuiz(req, res) {
 async function getCurrentQuiz(req, res) {
   const user = req.user.id;
   const runId = req.params.id;
-  console.log(`[getCurrentQuiz] error: ${error || "no error"}\n[getCurrentQuiz] results: ${results || "no results"}`);
+  console.log(`[getCurrentQuiz] user: ${user || "no user"}\n[getCurrentQuiz] results: ${runId || "no runId"}`);
   log(user);
   try {
     log("try started");
     dbGetCurrentQuiz(user, (error, results) => {
-      log(`[getCurrentQuiz] error: ${error}\n[getCurrentQuiz] results: ${results}`);
+      console.log(`[getCurrentQuiz] error: ${error || "no error"}\n[getCurrentQuiz] results: ${results || "no results"}`);
       /**
        * [
        * {
