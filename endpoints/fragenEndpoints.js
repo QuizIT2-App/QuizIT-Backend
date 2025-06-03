@@ -91,7 +91,7 @@ async function getCurrentQuiz(req, res) {
 async function getCurrentQuiz(req, res) {
   const user = req.user.id;
   const runId = req.params.id;
-  console.log(`[getCurrentQuiz] error: ${error}\n[getCurrentQuiz] results: ${results}`);
+  console.log(`[getCurrentQuiz] error: ${error || "no error"}\n[getCurrentQuiz] results: ${results || "no results"}`);
   log(user);
   try {
     log("try started");
