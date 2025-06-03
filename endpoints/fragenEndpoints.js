@@ -96,6 +96,10 @@ async function getCurrentQuiz(req, res) {
   try {
     log("try started");
     dbGetCurrentQuiz(user, (error, results) => {
+      if (error) {
+        errorLog(error);
+        return returnHTML(res, 500, { error: error });
+      }
       console.log(`[getCurrentQuiz] error: ${error || "no error"}\n[getCurrentQuiz] results: ${results || "no results"}`);
       /**
        * [
