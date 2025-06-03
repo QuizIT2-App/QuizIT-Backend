@@ -1,5 +1,5 @@
 const { returnHTML } = require("../utils/utils");
-const { dbFragenFromPool, dbGetCurrentQuiz, dbGetCurrentQuizOptions, dbDeleteQuestion,dbSetCurrentQuestionInput,dbAddQuestion,getQuestionsFromQuiz,
+const { dbFragenFromPool, dbGetCurrentQuiz, dbGetCurrentQuizOptions, dbDeleteQuestion, dbSetCurrentQuestionInput, dbAddQuestion, getQuestionsFromQuiz,
   addOption
 } = require("../db/fragenQueries");
 const { errorLog, log } = require("../utils/logger");
@@ -95,6 +95,8 @@ async function getCurrentQuiz(req, res) {
   try {
     log("try started");
     dbGetCurrentQuiz(user, (error, results) => {
+      console.log(`[getCurrentQuiz] error: ${error}\n[getCurrentQuiz] results: ${results}`);
+
       if (error) {
         errorLog(error);
         return returnHTML(res, 500, { error: error });
@@ -289,39 +291,39 @@ function getQuestionsQuiz(req, res) {
     });
     let actual = [];
     list.forEach(row => {
-      if(row != null)
+      if (row != null)
         actual.push(row);
     })
     return returnHTML(res, 200, { data: actual });
   })
 }
 function postQuestion(req, res) {
-  let {title, select, quiz} = req.body;
-  if(!title || !select || !quiz) {
+  let { title, select, quiz } = req.body;
+  if (!title || !select || !quiz) {
     return returnHTML(res, 500, { error: "Please enter a title & type" });
   }
-  switch(select) {
+  switch (select) {
     case "radio":
     case "checkbox":
-      dbAddQuestion(quiz,title, select, (error, result)=> {
+      dbAddQuestion(quiz, title, select, (error, result) => {
         if (error) {
           return returnHTML(res, 500, { error: error });
         }
-          let {options} = req.body;
-          for (let option of options) {
-            addOption(result, option.key, option.isTrue);
-          }
-          returnHTML(res, 200, { data: "complete" });
+        let { options } = req.body;
+        for (let option of options) {
+          addOption(result, option.key, option.isTrue);
+        }
+        returnHTML(res, 200, { data: "complete" });
       });
       break;
     case "text":
     case "boolean":
     case "number":
-      dbAddQuestion(quiz,title, select, (error, result)=> {
+      dbAddQuestion(quiz, title, select, (error, result) => {
         if (error) {
           return returnHTML(res, 500, { error: error });
         }
-        let {key, isTrue} = req.body;
+        let { key, isTrue } = req.body;
         addOption(result, key, isTrue)
         returnHTML(res, 200, { data: "complete" });
       });
@@ -348,7 +350,7 @@ module.exports = {
   postQuestion,
   deleteQuestion,
   //setCurrentQuestionStat,
-  setCurrentQuestionInput: async (req,res) => {
+  setCurrentQuestionInput: async (req, res) => {
     let user = req.user.id;
     let runId = req.params.id;
     let input = req.body.input;
