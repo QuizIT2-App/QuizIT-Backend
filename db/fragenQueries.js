@@ -112,7 +112,7 @@ module.exports = {
             errorLog(error);
             return callback(error, null);
           }
-          if (!results || results.length == null || results.length === 0) {
+          if (!results || !results.length || results.length === 0) {
             return callback("No Data", null);
           }
           log(results);
