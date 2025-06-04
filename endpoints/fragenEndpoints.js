@@ -325,7 +325,6 @@ function postQuestion(req, res) {
       break;
     default:
       return returnHTML(res, 500, { error: "type not found" });
-      break;
   }
 }
 
@@ -352,7 +351,7 @@ module.exports = {
     if (!input) {
       return returnHTML(res, 400, { error: "MissingCredentialsError" });
     }
-    dbSetCurrentQuestionInput(user, runId, JSON.stringify(input), (error, results) => {
+    dbSetCurrentQuestionInput(user, runId, input, (error, results) => {
       if (error) {
         errorLog(error);
         return returnHTML(res, 500, { error: error });
