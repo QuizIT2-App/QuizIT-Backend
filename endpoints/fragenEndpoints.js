@@ -329,7 +329,6 @@ function postQuestion(req, res) {
       break;
     default:
       return returnHTML(res, 500, { error: "type not found" });
-      break;
   }
 }
 
