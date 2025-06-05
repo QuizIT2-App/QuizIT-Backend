@@ -352,16 +352,31 @@ module.exports = {
     let user = req.user.id;
     let runId = req.params.id;
     let input = req.body.input;
+    log(`[setCurrentQuestionInput] user: ${user || "no user"}\n[setCurrentQuestionInput] runId: ${runId || "no runId"}`);
     if (!input) {
       return returnHTML(res, 400, { error: "MissingCredentialsError" });
     }
-    dbSetCurrentQuestionInput(user, runId, input, (error, results) => {
+    dbGetCurrentQuiz(user, (error, currentquizzes) => {
+      log(`[setCurrentQuestionInput] currentquizzes: ${currentquizzes || "no currentquizzes"}`);
       if (error) {
         errorLog(error);
         return returnHTML(res, 500, { error: error });
       }
-      return returnHTML(res, 200, { data: results });
-    });
+      if (!(0 <= runId && runId < currentquizzes.length)) {
+        return returnHTML(res, 404, { error: "RunId out of scope" });
+      }
+
+      dbSetCurrentQuestionInput(user, currentquizzes[runId].questDbId, JSON.stringify(input), (error, results) => {
+        if (error) {
+          errorLog(error);
+          return returnHTML(res, 500, { error: error });
+        }
+        return returnHTML(res, 200, { data: results });
+      });
+
+    })
+
+
   }
 };
 

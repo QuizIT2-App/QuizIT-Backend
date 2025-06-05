@@ -19,80 +19,80 @@ async function dbFragenFromPool(id, callback) {
 }
 
 function dbAddCurrentQuestion(currentQuizID, questions, callback) {
-    const queryString = questions.map(questionID =>
-        `INSERT INTO CurrentQuestions (currentQuizID, questionID) VALUES (${currentQuizID}, ${questionID});`
-    ).join(' ');
+  const queryString = questions.map(questionID =>
+    `INSERT INTO CurrentQuestions (currentQuizID, questionID) VALUES (${currentQuizID}, ${questionID});`
+  ).join(' ');
 
-    log(queryString);
+  log(queryString);
 
-    db.query(queryString,
-        (error, results, fields) => {
-          if (error) {
-            errorLog(error);
-            return callback(error, null);
-          }
-          return callback(null, results);
-        }
-    );
+  db.query(queryString,
+    (error, results, fields) => {
+      if (error) {
+        errorLog(error);
+        return callback(error, null);
+      }
+      return callback(null, results);
+    }
+  );
 }
 
 function getQuestionsFromQuiz(id, callback) {
-    db.query(`SELECT q.id, q.title, q.type, qopt.key, qopt.isTrue FROM Questions q LEFT JOIN QuestionOptions qopt ON q.id = qopt.questionId WHERE quiz = ?`,
-        [id],
-        (error, results, fields) => {
-            if (error) {
-                errorLog(error);
-                return callback(error, null);
-            }
-            return callback(null, results);
-        })
+  db.query(`SELECT q.id, q.title, q.type, qopt.key, qopt.isTrue FROM Questions q LEFT JOIN QuestionOptions qopt ON q.id = qopt.questionId WHERE quiz = ?`,
+    [id],
+    (error, results, fields) => {
+      if (error) {
+        errorLog(error);
+        return callback(error, null);
+      }
+      return callback(null, results);
+    })
 }
 
 function dbAddQuestion(quiz, title, type, callback) {
-    db.getConnection(async (error, connection) => {
-        if (error) {
-            errorLog(error);
-            return callback(error, null);
+  db.getConnection(async (error, connection) => {
+    if (error) {
+      errorLog(error);
+      return callback(error, null);
+    }
+    connection.beginTransaction();
+    connection.query(
+      `INSERT INTO Questions(quiz, title, type) VALUES (?, ?, ?)`,
+      [quiz, title, type],
+      (insertResulterror, insertResult, insertResultfields) => {
+        if (insertResulterror) {
+          errorLog(insertResulterror);
+          return callback(insertResulterror, null);
         }
-        connection.beginTransaction();
-        connection.query(
-            `INSERT INTO Questions(quiz, title, type) VALUES (?, ?, ?)`,
-            [quiz, title, type],
-            (insertResulterror, insertResult, insertResultfields) => {
-                if (insertResulterror) {
-                    errorLog(insertResulterror);
-                    return callback(insertResulterror, null);
-                }
-                connection.query(`SELECT LAST_INSERT_ID() AS lastid`,
-                    (lastIdResulterror, lastIdResult, insertResultfields) => {
-                        if (lastIdResulterror) {
-                            errorLog(lastIdResulterror);
-                        }
-                        const quizID = lastIdResult[0].lastid;
-                        connection.commit();
-                        callback(null, quizID);
-                        return connection.release();
-                    })
+        connection.query(`SELECT LAST_INSERT_ID() AS lastid`,
+          (lastIdResulterror, lastIdResult, insertResultfields) => {
+            if (lastIdResulterror) {
+              errorLog(lastIdResulterror);
             }
-        );
-    });
+            const quizID = lastIdResult[0].lastid;
+            connection.commit();
+            callback(null, quizID);
+            return connection.release();
+          })
+      }
+    );
+  });
 }
 
 function addOption(questionid, key, isTrue, callback) {
-    db.query("INSERT INTO QuestionOptions (questionId, `key`, isTrue) VALUES (?, ?, ?)", [questionid, key, isTrue], (error, results, fields) => {
-        if (error)
-            errorLog(error);
-    },)
+  db.query("INSERT INTO QuestionOptions (questionId, `key`, isTrue) VALUES (?, ?, ?)", [questionid, key, isTrue], (error, results, fields) => {
+    if (error)
+      errorLog(error);
+  },)
 }
 
 function dbDeleteQuestion(id, callback) {
-    db.query("DELETE FROM Questions WHERE id = ?", [id],(error, results, fields) => {
-        if (error) {
-            errorLog(error);
-            return callback(error, null);
-        }
-        return callback(null, results);
-    })
+  db.query("DELETE FROM Questions WHERE id = ?", [id], (error, results, fields) => {
+    if (error) {
+      errorLog(error);
+      return callback(error, null);
+    }
+    return callback(null, results);
+  })
 }
 
 module.exports = {
@@ -101,7 +101,7 @@ module.exports = {
   addOption,
   dbDeleteQuestion,
   dbAddCurrentQuestion,
-    getQuestionsFromQuiz,
+  getQuestionsFromQuiz,
   dbGetCurrentQuiz: async (userID, callback) => {
     try {
       db.query(
