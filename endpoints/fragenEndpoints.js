@@ -366,7 +366,7 @@ module.exports = {
         return returnHTML(res, 404, { error: "RunId out of scope" });
       }
 
-      dbSetCurrentQuestionInput(user, runId, JSON.stringify(input), (error, results) => {
+      dbSetCurrentQuestionInput(user, currentquizzes[runId], JSON.stringify(input), (error, results) => {
       if (error) {
         errorLog(error);
         return returnHTML(res, 500, { error: error });
