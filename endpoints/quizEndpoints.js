@@ -128,7 +128,7 @@ async function endQuiz(req, res) {
                                 type,
                                 givenAnswer,
                                 ...(solution !== undefined && { solution }),
-                                correctKey,
+                                correctKey: [],
                                 isAnswerCorrect: isAnswerCorrect == null ? null : Boolean(isAnswerCorrect),
                                 options: []
                             };
@@ -138,6 +138,7 @@ async function endQuiz(req, res) {
                             }
                         }
                         if (optionKey !== null && !question.options.some(o => o.key === optionKey)) {
+                            question.correctKey.push(correctKey);
                             question.options.push({
                                 key: optionKey,
                                 isTrue: Boolean(optionIsTrue)
