@@ -274,7 +274,7 @@ function getResults(quizId, callback) {
               opts.isTrue          AS optionIsTrue
             FROM QuestionResults qr 
             JOIN Questions q
-              ON qr.questionID = q.questionID
+              ON qr.questionID = q.id
             LEFT JOIN QuestionOptions correctOpt
               ON correctOpt.questionID = qr.questionID
              AND correctOpt.isTrue = 1
