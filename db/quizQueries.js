@@ -267,9 +267,9 @@ function getResults(quizId, callback) {
               qr.questionID,
               q.title,
               q.type,
-              qr.answer           AS givenAnswer,
+              REPLACE(qr.answer, '\"', '')       AS givenAnswer,
               correctOpt.key      AS correctKey,
-              qr.answer = correctOpt.key AS isAnswerCorrect,
+              REPLACE(qr.answer, '\"', '') = correctOpt.key AS isAnswerCorrect,
               opts.key             AS optionKey,
               opts.isTrue          AS optionIsTrue
             FROM QuestionResults qr 
