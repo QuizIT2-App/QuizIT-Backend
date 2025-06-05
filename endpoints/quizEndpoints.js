@@ -114,6 +114,7 @@ async function endQuiz(req, res) {
                             type,
                             givenAnswer,
                             solution,
+                            correctKey,
                             isAnswerCorrect,
                             optionKey,
                             optionIsTrue
@@ -127,6 +128,7 @@ async function endQuiz(req, res) {
                                 type,
                                 givenAnswer,
                                 ...(solution !== undefined && { solution }),
+                                correctKey,
                                 isAnswerCorrect: isAnswerCorrect == null ? null : Boolean(isAnswerCorrect),
                                 options: []
                             };
