@@ -1,6 +1,7 @@
 const { returnHTML, shuffleArray } = require("../utils/utils");
 const { dbGetQuizzes, dbGetSubQuizzes, dbGetQuizzesByID, dbStartQuiz, dbGetAllQuizzes, dbAddQuiz, closeOpenQuizzes,hasQuizzesOpen, dbDeleteQuiz, dbGetAllQuizzesSub, getResults, dbGetTimeline} = require("../db/quizQueries");
-const { dbFragenFromPool, dbAddCurrentQuestion } = require("../db/fragenQueries");
+const { dbFragenFromPool, dbAddCurrentQuestion } = require("../db/fragenQueries")
+const {increasePoints} = require("../db/userQueries");
 const { log } = require("../utils/logger");
 const { getCurrentQuiz } = require("./fragenEndpoints");
 
@@ -113,7 +114,6 @@ async function endQuiz(req, res) {
                             type,
                             givenAnswer,
                             solution,
-                            correctKey,
                             isAnswerCorrect,
                             optionKey,
                             optionIsTrue
@@ -127,11 +127,13 @@ async function endQuiz(req, res) {
                                 type,
                                 givenAnswer,
                                 ...(solution !== undefined && { solution }),
-                                correctKey,
                                 isAnswerCorrect: isAnswerCorrect == null ? null : Boolean(isAnswerCorrect),
                                 options: []
                             };
                             resultsMap.push(question);
+                            if(Boolean(isAnswerCorrect)) {
+                                increasePoints(user);
+                            }
                         }
                         if (optionKey !== null && !question.options.some(o => o.key === optionKey)) {
                             question.options.push({

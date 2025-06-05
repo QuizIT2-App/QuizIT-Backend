@@ -16,6 +16,10 @@ async function getUserByDN(dn, callback) {
     );
 }
 
+function increasePoints(id) {
+    db.query(`UPDATE Users SET punkte = punkte + 100 WHERE uuid = ?`, [id])
+}
+
 async function getUserByID(id, callback) {
     db.query(
         `SELECT * FROM Users WHERE uuid = ?`,
@@ -67,5 +71,6 @@ module.exports = {
     newUser,
     updateUser,
     deleteUser,
-    changeUserName
+    changeUserName,
+    increasePoints
 };
