@@ -356,13 +356,28 @@ module.exports = {
     if (!input) {
       return returnHTML(res, 400, { error: "MissingCredentialsError" });
     }
-    dbSetCurrentQuestionInput(user, runId, JSON.stringify(input), (error, results) => {
+    dbGetCurrentQuiz(user, (error, currentquizzes) => {
+      log(`[setCurrentQuestionInput] user: ${user || "no user"}\n[setCurrentQuestionInput] runId: ${runId || "no runId"}`);
+      log(`[setCurrentQuestionInput] currentquizzes: ${currentquizzes || "no currentquizzes"}`);
+      if (error) {
+        errorLog(error);
+        return returnHTML(res, 500, { error: error });
+      }
+      if (!(0 <= runId && runId < currentquizzes.length)) {
+        return returnHTML(res, 404, { error: "RunId out of scope" });
+      }
+
+      dbSetCurrentQuestionInput(user, runId, JSON.stringify(input), (error, results) => {
       if (error) {
         errorLog(error);
         return returnHTML(res, 500, { error: error });
       }
       return returnHTML(res, 200, { data: results });
     });
+
+    })
+
+    
   }
 };
 
